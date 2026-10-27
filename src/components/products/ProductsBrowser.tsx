@@ -676,18 +676,6 @@ function FilterPanel({
         )}
       </FilterGroup>
 
-      <FilterGroup legend="Finish / lid">
-        {filterOptions.lids.map((option) => (
-          <CheckRow
-            key={option.value}
-            checked={filters.lids.includes(option.value)}
-            onChange={() => toggle("lids", option.value)}
-            label={option.value === "Flat Lid" ? "Flat Lid (Plain)" : "Tind Lid (Tin/Sp.)"}
-            count={option.count}
-          />
-        ))}
-      </FilterGroup>
-
       <FilterGroup legend="Lock type">
         {filterOptions.locks.map((option) => (
           <CheckRow

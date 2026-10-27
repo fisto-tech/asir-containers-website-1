@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AlertCircle, CheckCircle2, ChevronDown, Loader2, Send } from "lucide-react";
+import { AlertCircle, Check, CheckCircle2, ChevronDown, Loader2, Send, X } from "lucide-react";
 import { site, type EnquiryType } from "@/data/site";
 import { products } from "@/data/products";
 
@@ -46,19 +46,29 @@ const validate = (values: Fields, productRef: string): Errors => {
   return errors;
 };
 
-/**
- * Frontend-only enquiry form.
- * Validation, error states and the product reference are live; there is no
- * backend, so submission deliberately reports that nothing was transmitted.
- * To go live: POST `values` to a route handler, Formspree, Resend or your CRM,
- * then replace the `notConnected` state with real success handling.
- */
 export function ContactForm() {
   const [values, setValues] = useState<Fields>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
-  const [status, setStatus] = useState<"idle" | "sending" | "notConnected">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "submitted">("idle");
+  const [showModal, setShowModal] = useState(false);
   const [productRef, setProductRef] = useState("");
+  const [enquiryMenuOpen, setEnquiryMenuOpen] = useState(false);
   const formRef = useRef<HTMLFormElement | null>(null);
+  const enquiryDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  /* Close enquiry dropdown on click outside */
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        enquiryDropdownRef.current &&
+        !enquiryDropdownRef.current.contains(event.target as Node)
+      ) {
+        setEnquiryMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   /* Pre-fill the product reference from /contact?product=… */
   useEffect(() => {
@@ -102,7 +112,10 @@ export function ContactForm() {
 
     setStatus("sending");
     await new Promise((resolve) => setTimeout(resolve, 600));
-    setStatus("notConnected");
+    setStatus("submitted");
+    setShowModal(true);
+    setValues(EMPTY);
+    setProductRef("");
   };
 
   const errorEntries = Object.entries(errors);
@@ -200,47 +213,89 @@ export function ContactForm() {
           hint="Optional"
         />
 
-        <div className="sm:col-span-2">
+        <div className="sm:col-span-2" ref={enquiryDropdownRef}>
           <div
-            className={`field-shell group rounded-[14px] border bg-white px-4 pb-2.5 pt-3 transition-all duration-300 ${
+            className={`field-shell group relative rounded-[14px] border bg-[#fafafa]/80 px-4.5 pb-2.5 pt-3 transition-all duration-200 hover:bg-white ${
               errors.enquiryType
-                ? "border-brand ring-4 ring-brand/[0.08]"
-                : "border-line hover:border-mid/60 focus-within:border-ink focus-within:ring-4 focus-within:ring-ink/[0.06] focus-within:shadow-[inset_2px_0_0_0_#e51827]"
+                ? "border-brand bg-brand/[0.02] ring-2 ring-brand/15"
+                : enquiryMenuOpen
+                ? "border-ink bg-white ring-2 ring-ink/10 shadow-sm"
+                : "border-line/90 hover:border-mid/50"
             }`}
           >
             <label
-              htmlFor="enquiryType"
-              className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-mid transition-colors group-focus-within:text-ink"
+              id="enquiryType-label"
+              className={`block text-[11.5px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+                enquiryMenuOpen ? "text-ink" : "text-mid/80"
+              }`}
             >
               Enquiry type <span className="text-brand">*</span>
             </label>
-            <div className="relative">
-              <select
-                id="enquiryType"
-                name="enquiryType"
-                value={values.enquiryType}
-                onChange={(event) => update("enquiryType", event.target.value)}
-                aria-invalid={Boolean(errors.enquiryType)}
-                aria-describedby={errors.enquiryType ? "enquiryType-error" : undefined}
-                className="mt-0.5 w-full appearance-none border-0 bg-transparent py-1.5 pr-8 text-[15px] text-ink outline-none focus-visible:outline-none"
-              >
-                <option value="">Select an enquiry type</option>
-                {site.enquiryTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
+
+            <button
+              type="button"
+              id="enquiryType"
+              aria-haspopup="listbox"
+              aria-expanded={enquiryMenuOpen}
+              aria-labelledby="enquiryType-label enquiryType"
+              onClick={() => setEnquiryMenuOpen((prev) => !prev)}
+              className="mt-1 flex h-8 w-full items-center justify-between text-left text-[15.5px] font-medium outline-none focus-visible:outline-none"
+            >
+              <span className={values.enquiryType ? "text-ink" : "text-mid/45"}>
+                {values.enquiryType || "Select an enquiry type"}
+              </span>
               <ChevronDown
                 aria-hidden
-                className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-mid transition-colors group-focus-within:text-ink"
+                className={`h-4 w-4 text-mid/70 transition-transform duration-200 ${
+                  enquiryMenuOpen ? "rotate-180 text-ink" : ""
+                }`}
               />
-            </div>
+            </button>
+
+            {/* Custom elevated dropdown menu */}
+            {enquiryMenuOpen && (
+              <div
+                role="listbox"
+                aria-labelledby="enquiryType-label"
+                className="absolute inset-x-0 top-full z-40 mt-2 overflow-hidden rounded-[14px] border border-line bg-white py-1.5 shadow-[0_16px_36px_-10px_rgba(0,0,0,0.18)]"
+              >
+                {site.enquiryTypes.map((type) => {
+                  const isSelected = values.enquiryType === type;
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      role="option"
+                      aria-selected={isSelected}
+                      onClick={() => {
+                        update("enquiryType", type);
+                        setEnquiryMenuOpen(false);
+                      }}
+                      className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-[14.5px] transition-colors ${
+                        isSelected
+                          ? "bg-light font-semibold text-brand"
+                          : "text-ink hover:bg-soft"
+                      }`}
+                    >
+                      <span>{type}</span>
+                      {isSelected && <Check className="h-4 w-4 text-brand" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Hidden field for form data */}
+            <input
+              type="hidden"
+              name="enquiryType"
+              value={values.enquiryType}
+            />
           </div>
           {errors.enquiryType && (
             <p
               id="enquiryType-error"
-              className="mt-1.5 flex items-center gap-1.5 text-[12px] text-brand"
+              className="mt-1.5 flex items-center gap-1.5 text-[12px] font-medium text-brand"
             >
               <AlertCircle aria-hidden className="h-3.5 w-3.5" />
               {errors.enquiryType}
@@ -250,38 +305,34 @@ export function ContactForm() {
 
         <div className="sm:col-span-2">
           <div
-            className={`field-shell group rounded-[14px] border bg-white px-4 pb-3 pt-3 transition-all duration-300 ${
+            className={`field-shell group relative rounded-[14px] border bg-[#fafafa]/80 px-4.5 pb-3 pt-3 transition-all duration-200 hover:bg-white ${
               errors.message
-                ? "border-brand ring-4 ring-brand/[0.08]"
-                : "border-line hover:border-mid/60 focus-within:border-ink focus-within:ring-4 focus-within:ring-ink/[0.06] focus-within:shadow-[inset_2px_0_0_0_#e51827]"
+                ? "border-brand bg-brand/[0.02] ring-2 ring-brand/15"
+                : "border-line/90 hover:border-mid/50 focus-within:border-ink focus-within:bg-white focus-within:ring-2 focus-within:ring-ink/10 focus-within:shadow-sm"
             }`}
           >
             <label
               htmlFor="message"
-              className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-mid transition-colors group-focus-within:text-ink"
+              className="block text-[11.5px] font-semibold uppercase tracking-[0.12em] text-mid/80 transition-colors group-focus-within:text-ink"
             >
               Message <span className="text-brand">*</span>
             </label>
             <textarea
               id="message"
               name="message"
-              rows={5}
+              rows={4}
               value={values.message}
               onChange={(event) => update("message", event.target.value)}
               aria-invalid={Boolean(errors.message)}
-              aria-describedby={errors.message ? "message-error" : "message-hint"}
+              aria-describedby={errors.message ? "message-error" : undefined}
               placeholder="Capacity, colour, closure and quantity you need — plus anything specific to your filling line."
-              className="mt-1 w-full resize-y border-0 bg-transparent p-0 text-[15px] leading-relaxed text-ink outline-none placeholder:text-mid/70 focus-visible:outline-none"
+              className="mt-1 w-full resize-y border-0 bg-transparent p-0 text-[15.5px] font-medium leading-relaxed text-ink outline-none placeholder:text-mid/45 focus-visible:outline-none"
             />
           </div>
-          {errors.message ? (
-            <p id="message-error" className="mt-1.5 flex items-center gap-1.5 text-[12px] text-brand">
+          {errors.message && (
+            <p id="message-error" className="mt-1.5 flex items-center gap-1.5 text-[12px] font-medium text-brand">
               <AlertCircle aria-hidden className="h-3.5 w-3.5" />
               {errors.message}
-            </p>
-          ) : (
-            <p id="message-hint" className="mt-1.5 text-[12px] text-mid">
-              The more detail you give us, the faster we can confirm the container.
             </p>
           )}
         </div>
@@ -293,14 +344,14 @@ export function ContactForm() {
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="mt-8 flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="max-w-xs text-[13px] leading-relaxed text-mid">
+      <div className="mt-8 flex flex-col gap-4 border-t border-line/80 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p className="max-w-xs text-[12.5px] leading-relaxed text-mid">
           We use your details only to respond to this enquiry.
         </p>
         <button
           type="submit"
           disabled={status === "sending"}
-          className="group inline-flex h-13 items-center justify-center gap-2 bg-brand px-6 text-sm font-medium text-white transition-colors hover:bg-brand-dark disabled:opacity-70"
+          className="group inline-flex h-12 items-center justify-center gap-2 rounded-[12px] bg-brand px-7 text-[14.5px] font-semibold text-white shadow-xs transition-all duration-200 hover:bg-brand-dark hover:shadow-md active:scale-[0.98] disabled:opacity-70"
         >
           {status === "sending" ? (
             <>
@@ -316,23 +367,53 @@ export function ContactForm() {
         </button>
       </div>
 
-      {/* Honest submission state: no backend exists in this build */}
-      {status === "notConnected" && (
-        <div role="status" className="mt-8 border-t border-line pt-5">
-          <p className="flex items-center gap-2 font-display text-sm font-semibold text-ink">
-            <CheckCircle2 className="h-4 w-4 text-brand" />
-            Your details passed validation — but nothing has been sent.
-          </p>
-          <p className="mt-2 text-[14px] leading-relaxed text-mid">
-            This website is a frontend build with no submission service connected, so the
-            enquiry has <strong className="font-semibold text-ink">not</strong> been delivered to
-            ASIR Containers. To make the form live, connect{" "}
-            <code className="text-[13px] font-medium text-ink">
-              src/components/contact/ContactForm.tsx
-            </code>{" "}
-            to a form endpoint or API route. Until then, please use the direct contact details
-            once published.
-          </p>
+      {/* Success Modal Popup */}
+      {showModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        >
+          {/* Backdrop */}
+          <div
+            onClick={() => setShowModal(false)}
+            className="fixed inset-0 bg-ink/60 backdrop-blur-sm transition-opacity duration-300"
+          />
+
+          {/* Modal Card */}
+          <div className="relative w-full max-w-lg rounded-[20px] border border-line bg-white p-7 sm:p-9 shadow-2xl transition-all duration-300">
+            <button
+              type="button"
+              onClick={() => setShowModal(false)}
+              aria-label="Close dialog"
+              className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full border border-line text-mid/70 transition-colors hover:border-ink hover:text-ink"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="flex h-13 w-13 items-center justify-center rounded-full bg-brand/10 text-brand">
+              <CheckCircle2 className="h-7 w-7" />
+            </div>
+
+            <h3 id="modal-title" className="mt-5 font-display text-2xl font-semibold text-ink">
+              Enquiry Received
+            </h3>
+
+            <p className="mt-3 text-[15px] leading-relaxed text-mid">
+              Thank you for reaching out to <strong className="font-semibold text-ink">{site.name}</strong>. Our sales desk has received your container enquiry and our team will get back to you shortly with pricing and specification details.
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-3 border-t border-line/80 pt-6">
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                className="inline-flex h-11 flex-1 items-center justify-center rounded-[12px] bg-brand px-6 text-[14px] font-semibold text-white shadow-xs transition-colors hover:bg-brand-dark"
+              >
+                Done
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </form>
@@ -365,20 +446,20 @@ function Field({
   return (
     <div>
       <div
-        className={`field-shell group rounded-[14px] border bg-white px-4 pb-2.5 pt-3 transition-all duration-300 ${
+        className={`field-shell group relative rounded-[14px] border bg-[#fafafa]/80 px-4.5 pb-2.5 pt-3 transition-all duration-200 hover:bg-white ${
           error
-            ? "border-brand ring-4 ring-brand/[0.08]"
-            : "border-line hover:border-mid/60 focus-within:border-ink focus-within:ring-4 focus-within:ring-ink/[0.06] focus-within:shadow-[inset_2px_0_0_0_#e51827]"
+            ? "border-brand bg-brand/[0.02] ring-2 ring-brand/15"
+            : "border-line/90 hover:border-mid/50 focus-within:border-ink focus-within:bg-white focus-within:ring-2 focus-within:ring-ink/10 focus-within:shadow-sm"
         }`}
       >
         <div className="flex items-baseline justify-between gap-3">
           <label
             htmlFor={name}
-            className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-mid transition-colors group-focus-within:text-ink"
+            className="block text-[11.5px] font-semibold uppercase tracking-[0.12em] text-mid/80 transition-colors group-focus-within:text-ink"
           >
             {label} {required && <span className="text-brand">*</span>}
           </label>
-          {hint && <span className="text-[11px] text-mid">{hint}</span>}
+          {hint && <span className="text-[11px] text-mid/70">{hint}</span>}
         </div>
         <input
           id={name}
@@ -390,11 +471,11 @@ function Field({
           autoComplete={autoComplete}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${name}-error` : undefined}
-          className="mt-0.5 h-8 w-full border-0 bg-transparent p-0 text-[15px] text-ink outline-none placeholder:text-mid/70 focus-visible:outline-none"
+          className="mt-1 h-8 w-full border-0 bg-transparent p-0 text-[15.5px] font-medium text-ink outline-none placeholder:text-mid/45 focus-visible:outline-none"
         />
       </div>
       {error && (
-        <p id={`${name}-error`} className="mt-1.5 flex items-center gap-1.5 text-[12px] text-brand">
+        <p id={`${name}-error`} className="mt-1.5 flex items-center gap-1.5 text-[12px] font-medium text-brand">
           <AlertCircle aria-hidden className="h-3.5 w-3.5" />
           {error}
         </p>

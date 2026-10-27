@@ -89,8 +89,8 @@ export function Header() {
   };
 
   const linkTone = overHero
-    ? "text-white/85 hover:text-white"
-    : "text-mid hover:text-ink";
+    ? "text-white/80 hover:text-white"
+    : "text-mid/90 hover:text-ink";
 
   return (
     <>
@@ -102,18 +102,22 @@ export function Header() {
       </a>
 
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,height] duration-500 ${
-          overHero ? "border-b border-white/15 bg-transparent" : "border-b border-line bg-white"
+        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,height,box-shadow] duration-500 ${
+          overHero
+            ? "border-b border-white/15 bg-transparent"
+            : scrolled
+              ? "border-b border-line/80 bg-white/95 backdrop-blur-md shadow-xs"
+              : "border-b border-line bg-white"
         }`}
       >
         <div
           className={`shell flex items-center justify-between gap-6 transition-[height] duration-500 ${
-            scrolled ? "h-[66px]" : "h-[78px]"
+            scrolled ? "h-[64px]" : "h-[74px]"
           }`}
         >
           <Logo tone={overHero ? "light" : "dark"} />
 
-          <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
+          <nav aria-label="Primary" className="hidden items-center gap-9 lg:flex">
             {navigation.map((item) =>
               item.hasMenu ? (
                 <div
@@ -126,8 +130,8 @@ export function Header() {
                   <div className="flex items-center gap-1">
                     <Link
                       href={item.href}
-                      className={`link-rule text-[13px] font-medium ${linkTone} ${
-                        onProductsPage ? (overHero ? "text-white" : "text-ink") : ""
+                      className={`link-rule text-[14px] font-medium tracking-tight ${linkTone} ${
+                        onProductsPage ? (overHero ? "text-white font-semibold" : "!text-ink font-semibold") : ""
                       }`}
                       data-active={onProductsPage}
                     >
@@ -139,12 +143,12 @@ export function Header() {
                       aria-controls="products-menu"
                       aria-label={productsOpen ? "Close products menu" : "Open products menu"}
                       onClick={() => setProductsOpen((value) => !value)}
-                      className={`flex h-8 w-5 items-center justify-center ${linkTone}`}
+                      className={`flex h-8 w-5 items-center justify-center transition-colors ${linkTone}`}
                     >
                       <ChevronDown
                         aria-hidden
                         className={`h-3.5 w-3.5 transition-transform duration-300 ${
-                          productsOpen ? "rotate-180" : ""
+                          productsOpen ? "rotate-180 text-brand" : ""
                         }`}
                       />
                     </button>
@@ -214,7 +218,9 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   data-active={isActive(item.href)}
-                  className={`link-rule text-[13px] font-medium ${linkTone}`}
+                  className={`link-rule text-[14px] font-medium tracking-tight ${linkTone} ${
+                    isActive(item.href) ? (overHero ? "text-white font-semibold" : "!text-ink font-semibold") : ""
+                  }`}
                 >
                   {item.label}
                 </Link>
@@ -222,20 +228,26 @@ export function Header() {
             )}
           </nav>
 
-          <div className="hidden items-center gap-7 lg:flex">
+          <div className="hidden items-center gap-6 lg:flex">
             <a
               href="https://www.example.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className={`link-rule group inline-flex items-center gap-1.5 text-[13px] font-medium ${linkTone}`}
+              className={`link-rule group inline-flex items-center gap-1.5 text-[14px] font-medium tracking-tight ${linkTone}`}
             >
               Catalogue
               <ArrowUpRight
                 aria-hidden
-                className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 text-brand"
               />
             </a>
-            <Button href="/contact" variant="primary" size="sm" withArrow>
+            <Button
+              href="/contact"
+              variant="primary"
+              size="sm"
+              withArrow
+              className="rounded-[4px] px-5 font-semibold shadow-xs hover:shadow-md transition-all duration-200"
+            >
               Enquire now
             </Button>
           </div>

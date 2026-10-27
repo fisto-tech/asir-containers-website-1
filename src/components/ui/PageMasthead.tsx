@@ -17,17 +17,25 @@ export function PageMasthead({
   meta,
   action,
   children,
+  compact = false,
 }: {
-  index: string;
-  label: string;
+  index?: string;
+  label?: string;
   title: React.ReactNode;
   intro: string;
   meta?: { label: string; value: React.ReactNode }[];
   action?: { href: string; label: string };
   children?: React.ReactNode;
+  compact?: boolean;
 }) {
+  const showMetaRule = Boolean(label || (meta && meta.length > 0));
+
   return (
-    <section className="relative overflow-hidden border-b border-ink/10 bg-soft pb-12 pt-28 lg:pb-14 lg:pt-34">
+    <section
+      className={`relative overflow-hidden border-b border-ink/10 bg-soft ${
+        compact ? "pb-7 pt-24 lg:pb-8 lg:pt-28" : "pb-12 pt-28 lg:pb-14 lg:pt-34"
+      }`}
+    >
       {/* Soft arc that ties the masthead to the brand red without a band */}
       <span
         aria-hidden
@@ -40,32 +48,36 @@ export function PageMasthead({
 
       <div className="shell relative">
         {/* Meta rule */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-ink/15 pb-4">
-          <SectionLabel index={index}>{label}</SectionLabel>
-          {meta && meta.length > 0 && (
-            <dl className="flex flex-wrap items-center gap-x-7 gap-y-2">
-              {meta.map((item) => (
-                <div key={item.label} className="flex items-baseline gap-2">
-                  <dt className="text-[12px] text-mid">{item.label}</dt>
-                  <dd className="tabular text-[13px] font-semibold text-ink">{item.value}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-        </div>
+        {showMetaRule && (
+          <div className={`flex flex-wrap items-center justify-between gap-4 border-b border-ink/15 ${compact ? "pb-3" : "pb-4"}`}>
+            {label && <SectionLabel index={index ?? "00"}>{label}</SectionLabel>}
+            {meta && meta.length > 0 && (
+              <dl className="flex flex-wrap items-center gap-x-7 gap-y-2">
+                {meta.map((item) => (
+                  <div key={item.label} className="flex items-baseline gap-2">
+                    <dt className="text-[12px] text-mid">{item.label}</dt>
+                    <dd className="tabular text-[13px] font-semibold text-ink">{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </div>
+        )}
 
         {/* Title block */}
-        <div className="mt-10 grid items-end gap-8 lg:grid-cols-12 lg:gap-12">
+        <div className={`grid items-baseline gap-6 sm:grid-cols-12 sm:gap-8 ${compact ? (showMetaRule ? "mt-6 lg:mt-7" : "mt-0") : "mt-10 lg:gap-12"}`}>
           <h1
-            className="display-lg max-w-2xl text-ink lg:col-span-7"
+            className={`font-semibold tracking-tight text-ink sm:col-span-7 lg:col-span-6 ${
+              compact ? "text-[32px] sm:text-[40px] lg:text-[48px] leading-tight" : "display-lg max-w-2xl"
+            }`}
             data-reveal="letters"
           >
             {title}
           </h1>
 
-          <div className="lg:col-span-5">
-            <span aria-hidden className="mb-5 block h-px w-14 bg-brand" />
-            <p className="max-w-sm text-[16px] leading-relaxed text-mid" data-reveal>
+          <div className="sm:col-span-5 lg:col-span-6 sm:self-center">
+            {!compact && <span aria-hidden className="mb-5 block h-px w-14 bg-brand" />}
+            <p className={`leading-relaxed text-mid ${compact ? "text-[14.5px] max-w-lg" : "max-w-sm text-[16px]"}`} data-reveal>
               {intro}
             </p>
             {action && (

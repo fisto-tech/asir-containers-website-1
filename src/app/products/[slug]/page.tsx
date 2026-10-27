@@ -91,7 +91,7 @@ export default async function ProductPage({ params }: PageProps) {
       label: "Lock type",
       value: product.locks.length > 0 ? product.locks.join(" · ") : "Not applicable",
     },
-    { label: "Available colours", value: colors.join(" · ") },
+   
   ];
 
   const structuredData = {
@@ -141,21 +141,21 @@ export default async function ProductPage({ params }: PageProps) {
         <div className="shell">
           <nav
             aria-label="Breadcrumb"
-            className="flex flex-wrap items-center gap-2 text-[13px] text-mid"
+            className="flex flex-wrap items-center gap-2.5 text-[15px] font-medium text-mid sm:text-[15.5px]"
           >
             <Link href="/" className="transition-colors hover:text-ink">
               Home
             </Link>
-            <span aria-hidden className="text-line">
+            <span aria-hidden className="text-mid/40">
               /
             </span>
             <Link href="/products" className="transition-colors hover:text-ink">
               Products
             </Link>
-            <span aria-hidden className="text-line">
+            <span aria-hidden className="text-mid/40">
               /
             </span>
-            <span className="text-ink">{product.codes.plain}</span>
+            <span className="font-semibold text-ink">{product.codes.plain}</span>
           </nav>
 
           <div className="mt-8 grid gap-10 pb-14 lg:grid-cols-12 lg:gap-14 lg:pb-20">
@@ -170,26 +170,9 @@ export default async function ProductPage({ params }: PageProps) {
               </div>
             </div>
 
-            <Reveal className="lg:col-span-6">
-              {/* Applications — plain text links */}
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2" data-reveal>
-                {productApplications.map((application) => (
-                  <Link
-                    key={application.slug}
-                    href={`/products?application=${application.slug}`}
-                    className="group inline-flex items-center gap-2 text-[13px] font-medium text-mid transition-colors hover:text-ink"
-                  >
-                    <AnimatedIcon
-                      name={applicationIcons[application.slug]}
-                      motion={motionByApplication[application.slug]}
-                      className="h-5 w-5 text-brand"
-                    />
-                    {application.name}
-                  </Link>
-                ))}
-              </div>
+            <Reveal className="lg:col-span-6">          
 
-              <h1 className="display-lg sheen-ink mt-5 text-ink" data-reveal="letters">
+              <h1 className="display-lg sheen-ink text-ink" data-reveal="letters">
                 {product.name}
               </h1>
 
@@ -262,10 +245,7 @@ export default async function ProductPage({ params }: PageProps) {
                     </li>
                   ))}
                 </ul>
-                <p className="mt-3 max-w-md text-[11px] leading-relaxed text-mid">
-                  Colour options follow the supplied configuration for the applications this
-                  container serves ({applicationNames.join(", ")}).
-                </p>
+                
               </div>
 
               {/* CTAs */}
@@ -286,10 +266,7 @@ export default async function ProductPage({ params }: PageProps) {
                 </Link>
               </div>
 
-              <p className="mt-5 flex max-w-md items-start gap-2 text-[13px] leading-relaxed text-mid" data-reveal>
-                <Info aria-hidden className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                {product.context}
-              </p>
+              
             </Reveal>
           </div>
         </div>

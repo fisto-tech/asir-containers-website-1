@@ -208,19 +208,22 @@
   content: "";
   position: absolute;
   left: 0;
-  bottom: -0.35rem;
-  height: 1px;
+  bottom: -0.45rem;
+  height: 2px;
   width: 100%;
-  background-color: currentColor;
+  background-color: var(--color-brand);
+  border-radius: 9999px;
   transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.45s var(--ease-out-expo);
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  opacity: 0;
 }
 
 .link-rule:hover::after,
 .link-rule:focus-visible::after,
 .link-rule[data-active="true"]::after {
   transform: scaleX(1);
+  opacity: 1;
 }
 
 /* Product card image treatment */

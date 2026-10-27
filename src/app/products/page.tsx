@@ -22,8 +22,7 @@ export default function ProductsPage() {
     <>
       <Reveal>
         <PageMasthead
-          index="01"
-          label="Products"
+          compact
           title="Product Range"
           intro="Explore our industrial plastic containers, pails, and closures."
         />

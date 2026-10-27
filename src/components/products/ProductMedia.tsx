@@ -100,10 +100,6 @@ export function ProductMedia({ src, alt, capacity, category }: ProductMediaProps
           </figure>
         ))}
       </div>
-
-      <p className="mt-3 text-[12px] text-mid">
-        Representative images — studio packshots to be supplied.
-      </p>
     </div>
   );
 }

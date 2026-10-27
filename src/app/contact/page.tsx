@@ -28,60 +28,13 @@ export default function ContactPage() {
     <>
       <Reveal>
         <PageMasthead
-          index="00"
-          label="Contact"
-          title={
-            <>
-              Tell us what
-              <br />
-              you need to fill.
-            </>
-          }
-          intro="Send the pack size, format and quantity — we reply with the matching container."
-        >
-          <div
-            className="mt-10 flex flex-col gap-5 border-t border-ink/15 pt-6 sm:flex-row sm:items-center sm:justify-between"
-            data-reveal
-          >
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
-              {contact.phone && (
-                <a
-                  href={`tel:${contact.phone.replace(/\s/g, "")}`}
-                  className="group inline-flex items-center gap-2.5 text-[14px] font-medium text-ink transition-colors hover:text-brand"
-                >
-                  <Phone aria-hidden className="h-4 w-4 text-brand" />
-                  Call the sales desk
-                  <span aria-hidden className="text-mid">·</span>
-                  <span className="tabular text-mid">{contact.phone}</span>
-                </a>
-              )}
-              {contact.email && (
-                <a
-                  href={`mailto:${contact.email}`}
-                  className="group inline-flex items-center gap-2.5 text-[14px] font-medium text-ink transition-colors hover:text-brand"
-                >
-                  <Mail aria-hidden className="h-4 w-4 text-brand" />
-                  Email an enquiry
-                </a>
-              )}
-              <a
-                href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2.5 text-[14px] font-medium text-ink transition-colors hover:text-brand"
-              >
-                <Navigation aria-hidden className="h-4 w-4 text-brand" />
-                Directions
-              </a>
-            </div>
-            {contact.businessHours.length > 0 && (
-              <p className="text-[13px] text-mid">{contact.businessHours.join(" · ")}</p>
-            )}
-          </div>
-        </PageMasthead>
+          compact
+          title="Contact Us"
+          intro="Get in touch for product specifications, bulk orders, and custom packaging requirements."
+        />
       </Reveal>
 
-      <section className="bg-white py-14 lg:py-20">
+      <section className="bg-white py-10 lg:py-14">
         <div className="shell grid gap-12 lg:grid-cols-12 lg:gap-14">
           {/* Enquiry form */}
           <div className="lg:col-span-7">
@@ -90,8 +43,8 @@ export default function ContactPage() {
 
           {/* Contact details + map */}
           <aside className="lg:col-span-5">
-            <SectionLabel index="01">Contact details</SectionLabel>
-            <ul className="mt-5 border-t border-line">
+            <h2 className="text-[13px] font-semibold uppercase tracking-wider text-mid">Contact details</h2>
+            <ul className="mt-4 border-t border-line">
               <ContactRow
                 icon={<Phone aria-hidden className="h-5 w-5" />}
                 label="Mobile"
@@ -118,9 +71,9 @@ export default function ContactPage() {
               />
             </ul>
 
-            {/* Map — embeds when a key exists, otherwise links to the address */}
-            <div className="mt-9">
-              <SectionLabel index="02">Find us</SectionLabel>
+            {/* Map */}
+            <div className="mt-8">
+              <h2 className="text-[13px] font-semibold uppercase tracking-wider text-mid">Find us</h2>
               {contact.mapEmbedUrl ? (
                 <iframe
                   src={contact.mapEmbedUrl}
@@ -128,7 +81,7 @@ export default function ContactPage() {
                   loading="lazy"
                   allowFullScreen
                   referrerPolicy="strict-origin-when-cross-origin"
-                  className="mt-4 aspect-4/3 w-full rounded-[18px] border border-line"
+                  className="mt-3 aspect-4/3 w-full rounded-[16px] border border-line shadow-xs"
                 />
               ) : (
                 <a

@@ -44,12 +44,12 @@ export const site = {
     email: "sales@asircontainers.com" as string | null,
     salesEmail: null as string | null,
     addressLines: [
-      "Plot 00, SIDCO Industrial Estate",
-      "Coimbatore, Tamil Nadu 641 000",
+      "1 734-c1, Pallapatti Rd, near Central Excise Office",
+      "Thiruthangal, Sivakasi, Tamil Nadu 626130",
     ] as string[],
-    city: "Coimbatore" as string | null,
+    city: "Sivakasi" as string | null,
     region: "Tamil Nadu" as string | null,
-    postalCode: "641 000" as string | null,
+    postalCode: "626130" as string | null,
     country: "India",
     businessHours: ["Mon–Sat: 9:00 – 18:00"] as string[],
     mapEmbedUrl:
