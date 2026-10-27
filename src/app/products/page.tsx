@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { ProductsBrowser } from "@/components/products/ProductsBrowser";
 import { Reveal } from "@/components/motion/Reveal";
-import { rangeStats } from "@/data/products";
 import { site } from "@/data/site";
 import { PageMasthead } from "@/components/ui/PageMasthead";
-import { Counter } from "@/components/ui/Counter";
 
 export const metadata: Metadata = {
   title: "Products — Plastic Pails & Containers",
@@ -24,23 +22,10 @@ export default function ProductsPage() {
     <>
       <Reveal>
         <PageMasthead
-          index="00"
+          index="01"
           label="Products"
-          title={
-            <>
-              Every container,
-              <br />
-              one range.
-            </>
-          }
-          intro="Filter by application, capacity, finish or colour — or search a code. Open any container for its full record."
-          meta={[
-            { label: "Containers", value: <Counter value={rangeStats.products} suffix="+" loop /> },
-            { label: "Codes", value: <Counter value={rangeStats.codes} suffix="+" loop /> },
-            { label: "Applications", value: <Counter value={rangeStats.applications} loop /> },
-            { label: "Capacities", value: <Counter value={rangeStats.capacities} suffix="+" loop /> },
-          ]}
-          action={{ href: "/contact", label: "Send an enquiry" }}
+          title="Product Range"
+          intro="Explore our industrial plastic containers, pails, and closures."
         />
       </Reveal>
 

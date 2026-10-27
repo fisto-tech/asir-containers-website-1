@@ -313,16 +313,16 @@ export function ProductsBrowser() {
       </div>
 
       <div className="shell">
-        <div className="grid gap-10 pt-10 lg:grid-cols-12 lg:gap-12">
+        <div className="grid gap-10 pt-10 lg:grid-cols-12 lg:gap-10 xl:gap-14">
           {/* Desktop filter rail */}
-          <aside className="hidden lg:col-span-3 lg:block">
+          <aside className="hidden lg:col-span-4 lg:block xl:col-span-3">
             <div
               data-lenis-prevent
-              className="sticky top-24 max-h-[calc(100vh-8rem)] space-y-8 overflow-y-auto overscroll-contain pb-6 pr-2 [scrollbar-width:thin]"
+              className="sticky top-24 max-h-[calc(100vh-8rem)] space-y-7 overflow-y-auto overscroll-contain border-r border-line/60 pb-8 pr-6 [scrollbar-width:thin]"
             >
-              <div className="flex items-center justify-between border-b border-ink pb-3">
+              <div className="flex items-center justify-between border-b border-ink/15 pb-3.5">
                 <h2 className="inline-flex items-center gap-2 text-[13px] font-semibold text-ink">
-                  <Filter className="h-5 w-5 text-brand" />
+                  <Filter className="h-4 w-4 text-brand" />
                   Filter
                 </h2>
                 {total > 0 && (
@@ -349,7 +349,7 @@ export function ProductsBrowser() {
           </aside>
 
           {/* Results */}
-          <div className="lg:col-span-9 lg:min-h-[80vh]">
+          <div className="lg:col-span-8 lg:min-h-[80vh] xl:col-span-9">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4 lg:hidden">
               <p className="text-[12px] text-mid">
                 <span className="font-semibold tabular text-ink">{results.length}</span> of{" "}
@@ -432,7 +432,7 @@ export function ProductsBrowser() {
 
             <div
               ref={gridRef}
-              className="mt-8 grid gap-x-6 gap-y-12 sm:grid-cols-2 xl:gap-x-7 xl:grid-cols-3"
+              className="mt-8 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xl:gap-x-9 xl:gap-y-16"
               aria-live="polite"
               aria-busy={!hydrated}
             >

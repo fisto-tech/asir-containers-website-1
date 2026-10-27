@@ -53,23 +53,23 @@ export function ProductCard({ product, index = 0, priority = false }: ProductCar
         </span>
       </div>
 
-      <div className="pt-5">
+      <div className="pt-5 pb-1">
         <div className="flex items-baseline justify-between gap-4">
-          <p className="text-[13px] font-semibold tabular text-brand">
+          <p className="text-[12.5px] font-semibold tracking-wide tabular text-brand">
             {codesFor(product).join("  /  ")}
           </p>
           <ArrowUpRight
             aria-hidden
-            className="h-4 w-4 shrink-0 text-mid transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand"
+            className="h-4 w-4 shrink-0 text-mid/60 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand"
           />
         </div>
 
-        <h3 className="mt-2 font-display text-[17px] font-semibold leading-snug text-ink transition-colors group-hover:text-brand">
+        <h3 className="mt-2 font-display text-[16.5px] font-semibold leading-snug tracking-tight text-ink transition-colors group-hover:text-brand">
           {productDisplayName(product)}
         </h3>
 
-        <div className="mt-4 flex items-center justify-between gap-4 border-t border-line pt-3">
-          <p className="min-w-0 text-[12.5px] leading-relaxed text-mid">
+        <div className="mt-4 flex items-center justify-between gap-3 border-t border-line/80 pt-3">
+          <p className="min-w-0 truncate text-[12px] leading-relaxed text-mid/90">
             {lids.length === 2 ? "Plain & Tin/Sp." : "Plain"}
             {product.locks.length > 0 ? ` · ${product.locks.join(", ")}` : ""}
             {" · "}
@@ -81,7 +81,7 @@ export function ProductCard({ product, index = 0, priority = false }: ProductCar
               <span
                 key={color}
                 title={swatches[color].label}
-                className={`h-3 w-3 rounded-full border ${swatches[color].ring}`}
+                className={`h-2.5 w-2.5 rounded-full border ${swatches[color].ring}`}
                 style={{ backgroundColor: swatches[color].hex }}
               />
             ))}
