@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" role="img" aria-label="Placeholder client logo — Agrovista">
+  <g fill="none" stroke="#111111" stroke-width="2.4">
+    <circle cx="28" cy="28" r="15" />
+    <path d="M28 42c0-9 5-15 13-17-1 9-6 15-13 17z" />
+  </g>
+  <text x="56" y="36" font-family="Helvetica, Arial, sans-serif" font-size="21" font-weight="700" letter-spacing="1.6" fill="#111111">AGROVISTA</text>
+</svg>

@@ -1,0 +1,717 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   ASIR CONTAINERS — design tokens
+   Brand palette is intentionally restrained: light/white dominates, charcoal
+   carries industrial weight, red is reserved for action and key detail.
+   ========================================================================== */
+@theme {
+  --color-brand: #e51827;
+  --color-brand-dark: #b8121e;
+  --color-ink: #111111;
+  --color-charcoal: #1b1b1b;
+  --color-charcoal-soft: #242424;
+  --color-mid: #333333;
+  --color-light: #f1f1ef;
+  --color-line: #e5e5e5;
+  --color-soft: #fafafa;
+  --color-white: #ffffff;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), var(--font-inter), ui-sans-serif, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --breakpoint-3xl: 1600px;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Lenis */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  html.lenis {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    background-color: var(--color-white);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-brand);
+    color: #fff;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+  }
+
+  /* Prevent iOS zoom on form focus without disabling pinch zoom */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* ==========================================================================
+   Layout + typography helpers
+   ========================================================================== */
+@utility shell {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 96rem; /* 1536px */
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .shell {
+    padding-inline: 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .shell {
+    padding-inline: 3.5rem;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+@utility display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7.2vw, 6.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4.6vw, 4.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+@utility display-sm {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.9vw, 1.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ==========================================================================
+   Motion primitives
+   Elements flagged with [data-reveal] are hidden only once JavaScript has
+   booted (html.js), so content stays visible and indexable without JS.
+   ========================================================================== */
+.js [data-reveal] {
+  opacity: 0;
+}
+
+.js [data-reveal-mask] {
+  clip-path: inset(0 0 100% 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1 !important;
+  }
+
+  .js [data-reveal-mask] {
+    clip-path: none !important;
+  }
+}
+
+/* SplitText line masking */
+.split-line {
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+
+/* Underline link used in nav + footer */
+.link-rule {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.link-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.35rem;
+  height: 1px;
+  width: 100%;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease-out-expo);
+}
+
+.link-rule:hover::after,
+.link-rule:focus-visible::after,
+.link-rule[data-active="true"]::after {
+  transform: scaleX(1);
+}
+
+/* Product card image treatment */
+.media-frame {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-light);
+}
+
+.media-frame img {
+  transition: transform 0.9s var(--ease-out-expo);
+}
+
+.group:hover .media-frame img {
+  transform: scale(1.045);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .media-frame img {
+    transform: none;
+  }
+  .link-rule::after {
+    transition: none;
+  }
+}
+
+/* Fine industrial grid texture used behind light sections */
+.grid-texture {
+  background-image: linear-gradient(to right, var(--color-line) 1px, transparent 1px);
+  background-size: 25% 100%;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide the browser's default search-input clear affordance for consistency */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+
+/* ==========================================================================
+   Looping / ambient motion
+   Deliberately CSS-only: continuous animations run on the compositor and do
+   not add JavaScript per icon. Everything stops under reduced-motion.
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  /* --- Icon loops -------------------------------------------------------- */
+  .icon-spin {
+    animation: icon-spin 12s linear infinite;
+  }
+
+  .icon-spin-slow {
+    animation: icon-spin 22s linear infinite;
+  }
+
+  .icon-float {
+    animation: icon-float 4.5s ease-in-out infinite;
+  }
+
+  .icon-pulse {
+    animation: icon-pulse 2.8s ease-in-out infinite;
+  }
+
+  .icon-swing {
+    animation: icon-swing 4s ease-in-out infinite;
+    transform-origin: top center;
+  }
+
+  .icon-travel {
+    animation: icon-travel 3.2s ease-in-out infinite;
+  }
+
+  @keyframes icon-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes icon-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+
+  @keyframes icon-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.12);
+      opacity: 0.85;
+    }
+  }
+
+  @keyframes icon-swing {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    30% {
+      transform: rotate(7deg);
+    }
+    60% {
+      transform: rotate(-5deg);
+    }
+  }
+
+  @keyframes icon-travel {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(3px);
+    }
+  }
+
+  /* --- Soft ambient drift for decorative marks --------------------------- */
+  .drift {
+    animation: drift 14s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(0, -14px, 0);
+    }
+  }
+}
+
+/* Hover lift used on interactive cards */
+.lift {
+  transition:
+    transform 0.6s var(--ease-out-expo),
+    box-shadow 0.6s var(--ease-out-expo),
+    border-color 0.4s ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .lift:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Ambient card motion
+   Continuously running, compositor-only loops that make the "active" element
+   in a group read as live. All disabled under prefers-reduced-motion.
+   -------------------------------------------------------------------------- */
+@keyframes ambient-zoom {
+  from {
+    transform: scale(1.015);
+  }
+  to {
+    transform: scale(1.085);
+  }
+}
+
+@keyframes ambient-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes ambient-ring {
+  0% {
+    transform: scale(0.86);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes ambient-sheen {
+  0% {
+    opacity: 0.15;
+    transform: translate3d(-12%, 0, 0);
+  }
+  50% {
+    opacity: 0.32;
+  }
+  100% {
+    opacity: 0.15;
+    transform: translate3d(12%, 0, 0);
+  }
+}
+
+@keyframes ambient-breathe {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.ambient-media {
+  animation: ambient-zoom 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.ambient-media-slow {
+  animation: ambient-zoom 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.ambient-progress {
+  transform-origin: left center;
+  animation: ambient-progress var(--ambient-duration, 5.6s) linear infinite;
+}
+
+.ambient-ring {
+  animation: ambient-ring 3.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.ambient-sheen {
+  animation: ambient-sheen 12s ease-in-out infinite;
+}
+
+.ambient-breathe {
+  animation: ambient-breathe 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-media,
+  .ambient-media-slow,
+  .ambient-progress,
+  .ambient-ring,
+  .ambient-sheen,
+  .ambient-breathe {
+    animation: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Always-running type treatment
+   A red highlight travels through the headline letters on a long loop, giving
+   the headings a live, dual-colour read without moving the text itself.
+   Falls back to solid colour where background-clip:text is unsupported.
+   -------------------------------------------------------------------------- */
+/* Long, calm cycle: the highlight crosses in ~3.5 s then rests ~10 s before
+   the next pass, so the movement never feels restless. */
+@keyframes type-sheen {
+  0% {
+    background-position: 100% 50%;
+  }
+  22% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .sheen-ink,
+  .sheen-light,
+  .sheen-brand {
+    background-size: 260% 100%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: type-sheen 15s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+  .sheen-ink {
+    background-image: linear-gradient(
+      100deg,
+      #111111 0%,
+      #111111 38%,
+      #e51827 50%,
+      #111111 62%,
+      #111111 100%
+    );
+  }
+
+  .sheen-light {
+    background-image: linear-gradient(
+      100deg,
+      #ffffff 0%,
+      #ffffff 38%,
+      #ff8a92 50%,
+      #ffffff 62%,
+      #ffffff 100%
+    );
+  }
+
+  /* SplitText rewrites a heading into nested line spans, so the clipped
+     gradient has to be applied to each descendant as well. */
+  .sheen-ink *,
+  .sheen-light *,
+  .sheen-brand * {
+    background-image: inherit;
+    background-size: 260% 100%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: type-sheen 15s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+  /* White text that picks up a red bleed on red/dark brand grounds */
+  .sheen-brand {
+    background-image: linear-gradient(
+      100deg,
+      #ffffff 0%,
+      #ffffff 40%,
+      #111111 50%,
+      #ffffff 60%,
+      #ffffff 100%
+    );
+  }
+}
+
+/* --- Interaction states ------------------------------------------------- */
+
+/* Underline that draws in from the left on hover */
+.underline-grow {
+  position: relative;
+}
+
+.underline-grow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.underline-grow:hover::after,
+.underline-grow:focus-visible::after,
+.group:hover .underline-grow::after {
+  transform: scaleX(1);
+}
+
+/* Light sweep across a button on hover */
+.sheen-sweep {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.sheen-sweep::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 75%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sheen-sweep:hover::before,
+.sheen-sweep:focus-visible::before {
+  transform: translateX(120%);
+}
+
+/* Row / card hover lift */
+.hover-lift {
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.4s ease,
+    border-color 0.4s ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hover-lift:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* Image plate: subtle scale + colour lift on hover */
+.plate-hover {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hover-lift:hover .plate-hover,
+  a:hover > .plate-hover {
+    transform: scale(1.03);
+  }
+}
+
+/* Hover zoom for photo plates — the image creeps in, the frame stays put. */
+.zoom-plate img {
+  transition: transform 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .zoom-plate:hover img,
+  .zoom-plate:focus-within img {
+    transform: scale(1.08);
+  }
+}
+
+/* Fields that sit inside a bordered well show focus on the well itself, so the
+   control must not paint its own ring on top of the shell. */
+.field-shell input:focus-visible,
+.field-shell textarea:focus-visible,
+.field-shell select:focus-visible {
+  outline: none;
+}
+
+/* Focus visibility across the site */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #e51827;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen-ink,
+  .sheen-light,
+  .sheen-brand {
+    animation: none !important;
+    background: none !important;
+    -webkit-text-fill-color: currentColor;
+    color: inherit;
+  }
+
+  .sheen-sweep::before {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Per-letter scroll reveal
+   SplitText puts each character in a .split-char inside a masked .split-line,
+   so letters rise out of the line rather than fading on top of it.
+   -------------------------------------------------------------------------- */
+.split-line {
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.split-word,
+.split-char {
+  display: inline-block;
+  will-change: transform;
+}
+
+.split-char {
+  transform-origin: 50% 100%;
+}
+
+/* Keep italics/descenders from clipping in the mask */
+.split-line-mask {
+  padding-bottom: 0.08em;
+}
+@media (prefers-reduced-motion: reduce) {
+  .split-line,
+  .split-line-mask {
+    overflow: visible;
+  }
+}
