@@ -4,6 +4,8 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { Preloader } from "@/components/ui/Preloader";
+import { BackToTop } from "@/components/ui/BackToTop";
 import { site } from "@/data/site";
 
 const inter = Inter({
@@ -81,10 +83,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-white text-ink antialiased">
+        <Preloader />
         <SmoothScroll />
         <Header />
         <main id="main">{children}</main>
         <Footer />
+        <BackToTop />
       </body>
     </html>
   );

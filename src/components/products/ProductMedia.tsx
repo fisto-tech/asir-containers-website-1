@@ -55,7 +55,7 @@ export function ProductMedia({ src, alt, capacity, category }: ProductMediaProps
 
   return (
     <div ref={root} className="relative">
-      <div className="relative aspect-square overflow-hidden rounded-[20px] bg-light">
+      <div className="group/main relative aspect-square overflow-hidden rounded-[20px] bg-light">
         <div data-pm-frame className="absolute inset-0">
           <div data-pm-image className="relative h-full w-full">
             <Image
@@ -64,7 +64,7 @@ export function ProductMedia({ src, alt, capacity, category }: ProductMediaProps
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
+              className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover/main:scale-105"
             />
           </div>
         </div>
@@ -93,7 +93,7 @@ export function ProductMedia({ src, alt, capacity, category }: ProductMediaProps
                 alt={shot.alt}
                 fill
                 sizes="(max-width: 1024px) 46vw, 24vw"
-                className="ambient-media-slow object-cover"
+                className="ambient-media-slow object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover/shot:scale-108"
               />
             </span>
             <figcaption className="mt-1.5 text-[12px] text-mid">{shot.caption}</figcaption>

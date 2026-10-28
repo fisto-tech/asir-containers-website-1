@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ProductsBrowser } from "@/components/products/ProductsBrowser";
 import { Reveal } from "@/components/motion/Reveal";
@@ -29,7 +30,9 @@ export default function ProductsPage() {
       </Reveal>
 
       <div id="range" className="scroll-mt-24">
-        <ProductsBrowser />
+        <Suspense fallback={<div className="shell py-12 text-sm text-mid">Loading products…</div>}>
+          <ProductsBrowser />
+        </Suspense>
       </div>
     </>
   );

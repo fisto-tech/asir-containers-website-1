@@ -97,7 +97,7 @@ export function ApplicationShowcase() {
                   alt={application.imageAlt}
                   fill
                   sizes="(max-width: 1536px) 45vw, 620px"
-                  className={`ambient-media-slow object-cover transition-opacity duration-[900ms] ${
+                  className={`ambient-media-slow object-cover transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-105 ${
                     isActive ? "opacity-100" : "opacity-80"
                   }`}
                 />
@@ -176,7 +176,7 @@ export function ApplicationShowcase() {
                       alt={application.imageAlt}
                       fill
                       sizes="100vw"
-                      className="ambient-media-slow object-cover"
+                      className="ambient-media-slow object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-105"
                     />
                     <span className="absolute inset-x-0 bottom-0 h-[75%] bg-gradient-to-t from-ink via-ink/50 to-transparent" />
                     <span className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4 text-white">

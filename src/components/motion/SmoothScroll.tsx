@@ -29,6 +29,7 @@ export function SmoothScroll() {
       wheelMultiplier: 1,
     });
     lenisRef.current = lenis;
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
     // Keep ScrollTrigger in sync with Lenis' virtual scroll position.
     const onScroll = () => ScrollTrigger.update();

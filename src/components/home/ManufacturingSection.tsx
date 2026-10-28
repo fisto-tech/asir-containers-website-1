@@ -78,14 +78,14 @@ export function ManufacturingSection() {
         <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-14">
           {/* Tall stage image */}
           <div className="lg:col-span-5">
-            <div className="relative aspect-4/5 overflow-hidden rounded-[24px] bg-charcoal-soft lg:aspect-3/4">
+            <div className="group relative aspect-4/5 overflow-hidden rounded-[24px] bg-charcoal-soft lg:aspect-3/4">
               <div data-mfg-media className="absolute inset-[-8%]" data-reveal-mask>
                 <Image
                   src={manufacturing.image.src}
                   alt={manufacturing.image.alt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="ambient-media-slow object-cover"
+                  className="ambient-media-slow object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-105"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/20 to-transparent" />

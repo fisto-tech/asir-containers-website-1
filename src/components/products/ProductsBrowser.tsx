@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Filter, RotateCcw, Search, SlidersHorizontal, X } from "lucide-react";
 import { ProductCard } from "@/components/products/ProductCard";
@@ -129,22 +130,27 @@ const activeCount = (filters: Filters) =>
 /* -------------------------------------------------------------------------- */
 
 export function ProductsBrowser() {
-  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+  const searchParams = useSearchParams();
+  const [filters, setFilters] = useState<Filters>(() => parseFilters(searchParams.toString()));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const gridRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    setFilters(parseFilters(window.location.search));
-    setHydrated(true);
-  }, []);
+  const searchString = searchParams.toString();
 
+  // Sync internal filter state whenever the URL search params change (e.g. clicking nav/footer links)
+  useEffect(() => {
+    setFilters(parseFilters(searchString));
+    setHydrated(true);
+  }, [searchString]);
+
+  // Sync state back to the URL when user interacts with internal filter controls
   useEffect(() => {
     if (!hydrated) return;
     const query = toQueryString(filters);
-    const target = `${window.location.pathname}${query}`;
-    if (`${window.location.pathname}${window.location.search}` !== target) {
-      window.history.replaceState(null, "", target);
+    const currentQuery = window.location.search;
+    if (currentQuery !== query) {
+      window.history.replaceState(null, "", `${window.location.pathname}${query}`);
     }
   }, [filters, hydrated]);
 
@@ -370,10 +376,10 @@ export function ProductsBrowser() {
               <label htmlFor="code-search" className="sr-only">
                 Search by product code or container name
               </label>
-              <div className="relative">
+              <div className="group/search relative flex items-center rounded-xl border border-line bg-soft/40 px-3.5 transition-colors focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/10">
                 <Search
                   aria-hidden
-                  className="pointer-events-none absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 text-mid"
+                  className="pointer-events-none h-4 w-4 shrink-0 text-mid transition-colors group-focus-within/search:text-brand"
                 />
                 <input
                   id="code-search"
@@ -383,14 +389,14 @@ export function ProductsBrowser() {
                     setFilters((current) => ({ ...current, query: event.target.value }))
                   }
                   placeholder="Search by product code — e.g. P20ap, F17is, K20t"
-                  className="h-12 w-full border-0 border-b border-line bg-transparent pl-8 pr-10 text-[15px] text-ink outline-none transition-colors placeholder:text-mid focus:border-ink"
+                  className="h-11 w-full bg-transparent px-3 text-[14.5px] text-ink placeholder:text-mid/70 !outline-none !ring-0 focus:outline-none focus:ring-0"
                 />
                 {filters.query && (
                   <button
                     type="button"
                     onClick={() => setFilters((current) => ({ ...current, query: "" }))}
                     aria-label="Clear search"
-                    className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center text-mid hover:text-brand"
+                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-mid/80 transition-colors hover:bg-line/60 hover:text-ink focus:outline-none"
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
@@ -442,28 +448,25 @@ export function ProductsBrowser() {
             </div>
 
             {results.length === 0 && (
-              <div className="mt-10 flex min-h-[300px] flex-col items-start justify-center border-t border-line pt-10">
-                <Filter aria-hidden className="h-5 w-5 text-brand" />
-                <h3 className="mt-5 font-display text-xl font-semibold text-ink">
-                  No containers match this combination
+              <div className="mt-8 flex min-h-[260px] flex-col items-center justify-center rounded-[20px] border border-dashed border-line bg-soft/50 p-8 text-center sm:p-12">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-xs ring-1 ring-line">
+                  <Filter aria-hidden className="h-5 w-5 text-brand" />
+                </div>
+                <h3 className="mt-4 font-display text-lg font-semibold text-ink">
+                  No products found
                 </h3>
-                <p className="mt-2 max-w-sm text-left text-[14px] leading-relaxed text-mid">
-                  The filters you selected don’t overlap anywhere in the range. Clear the filters to see
-                  all {products.length} containers, or send us the code you need and we’ll confirm
-                  what can be produced.
+                <p className="mt-1.5 max-w-sm text-center text-[14px] leading-relaxed text-mid">
+                  No containers match your selected filters. Try clearing filters to see all available products.
                 </p>
-                <div className="mt-7 flex flex-wrap items-center gap-5">
+                <div className="mt-6 flex items-center justify-center">
                   <button
                     type="button"
                     onClick={clearAll}
-                    className="inline-flex h-11 items-center gap-2 bg-brand px-5 text-[14px] font-medium text-white transition-colors hover:bg-brand-dark"
+                    className="inline-flex h-11 items-center gap-2 rounded-full bg-brand px-6 text-[14px] font-medium text-white transition-colors hover:bg-brand-dark"
                   >
                     <RotateCcw className="h-4 w-4" />
                     Clear all filters
                   </button>
-                  <a href="/contact" className="text-[14px] font-medium text-ink underline decoration-line underline-offset-4 hover:decoration-ink">
-                    Send us your requirement
-                  </a>
                 </div>
               </div>
             )}

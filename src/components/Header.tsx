@@ -172,6 +172,7 @@ export function Header() {
                           <Link
                             href={`/products?application=${application.slug}`}
                             tabIndex={productsOpen ? 0 : -1}
+                            onClick={() => setProductsOpen(false)}
                             className="group flex items-baseline justify-between gap-6 border-t border-line py-3.5"
                           >
                             <span className="flex items-baseline gap-3">
@@ -194,21 +195,15 @@ export function Header() {
                       ))}
                     </ul>
 
-                    <div className="mt-3 flex items-center justify-between px-8 text-[12px]">
+                    <div className="mt-3 flex items-center px-8 text-[13px]">
                       <Link
                         href="/products"
                         tabIndex={productsOpen ? 0 : -1}
-                        className="group inline-flex items-center gap-2 font-medium text-ink"
+                        onClick={() => setProductsOpen(false)}
+                        className="group inline-flex items-center gap-2 font-medium text-ink transition-colors hover:text-brand"
                       >
-                        All {rangeStats.products} containers
+                        All products
                         <AnimatedIcon name="arrow" motion="travel" className="h-4 w-4 text-brand" />
-                      </Link>
-                      <Link
-                        href="/contact"
-                        tabIndex={productsOpen ? 0 : -1}
-                        className="text-mid underline decoration-line underline-offset-4 hover:text-ink"
-                      >
-                        Ask about a code
                       </Link>
                     </div>
                   </div>
@@ -313,6 +308,10 @@ export function Header() {
                     key={application.slug}
                     href={`/products?application=${application.slug}`}
                     tabIndex={open && productsOpen ? 0 : -1}
+                    onClick={() => {
+                      setOpen(false);
+                      setProductsOpen(false);
+                    }}
                     className="flex items-center justify-between border-t border-white/15 py-3 text-[15px] text-white/85"
                   >
                     <span className="flex items-center gap-3">
