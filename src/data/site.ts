@@ -25,11 +25,11 @@ export const site = {
     "ASIR Containers manufactures rigid plastic pails and containers for the paint, agro, food and lubricant industries — in round and square formats, with multiple closure options and industry-specific colour availability.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.asircontainers.com",
 
-  /** PLACEHOLDER logotype — replace with the supplied ASIR Containers logo file. */
+  /** Official ASIR Containers logo */
   logo: {
-    supplied: false,
-    note: "Typographic stand-in used until the official logo file is supplied.",
-    src: null as string | null,
+    supplied: true,
+    note: "Official ASIR Containers logo vector.",
+    src: "/images/asir-containers-logo.svg",
     alt: "ASIR Containers",
   },
 
@@ -44,7 +44,8 @@ export const site = {
     email: "sales@asircontainers.com" as string | null,
     salesEmail: null as string | null,
     addressLines: [
-      "1 734-c1, Pallapatti Rd, near Central Excise Office",
+      "1 734-c1, Pallapatti Rd,",
+      "near Central Excise Office",
       "Thiruthangal, Sivakasi, Tamil Nadu 626130",
     ] as string[],
     city: "Sivakasi" as string | null,
@@ -97,13 +98,13 @@ export const site = {
 };
 
 /**
- * Primary navigation — Home, Products, Contact only.
- * `Products` carries an application submenu; the manufacturing section is
- * reachable from the footer instead of the top bar.
+ * Primary navigation — Home, Products, Manufacturing, Contact.
+ * `Products` carries an application submenu.
  */
 export const navigation = [
   { label: "Home", href: "/", hasMenu: false },
   { label: "Products", href: "/products", hasMenu: true },
+  { label: "Manufacturing", href: "/manufacturing", hasMenu: false },
   { label: "Contact", href: "/contact", hasMenu: false },
 ];
 

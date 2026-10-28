@@ -15,57 +15,50 @@ const icons = {
  */
 export function InspectionSection() {
   return (
-    <Reveal className="bg-white py-16 lg:py-20">
-      <div className="shell grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <Reveal className="border-t border-line/60 bg-white py-16 lg:py-20">
+      <div className="shell grid gap-10 lg:grid-cols-12 lg:gap-14 items-center">
+        {/* Left Column: Full Untrimmed Slogan with Modern Industrial Accent */}
         <div className="lg:col-span-5">
-          <SectionLabel index={undefined}>{qualityStatement.eyebrow}</SectionLabel>
+          <SectionLabel index="03">{qualityStatement.eyebrow}</SectionLabel>
 
-          <figure className="mt-6 border-l-2 border-brand pl-6">
+          <figure className="mt-5 border-l-3 border-brand pl-5 lg:pl-6">
             <blockquote
-              className="font-display text-[22px] font-semibold leading-[1.32] tracking-[-0.01em] text-ink lg:text-[28px]"
+              className="font-display text-[22px] font-bold leading-[1.34] tracking-tight text-ink sm:text-[26px] lg:text-[28px]"
               data-reveal
             >
               {qualityStatement.quote}
             </blockquote>
           </figure>
-
-          <p className="mt-6 max-w-sm text-[14px] leading-relaxed text-mid" data-reveal>
-            {qualityStatement.note}
-          </p>
         </div>
 
+        {/* Right Column: Minimal Clean Stage Indicators */}
         <div className="lg:col-span-7">
-          <ol className="border-t border-ink/15">
+          <div className="grid gap-3.5 sm:grid-cols-3">
             {inspectionStages.map((stage, index) => {
               const Icon = icons[stage.icon];
               return (
-                <li
+                <div
                   key={stage.title}
-                  className="group border-b border-line"
+                  className="group relative flex flex-col justify-between rounded-xl border border-line/80 bg-soft/40 p-5 transition-all duration-300 hover:border-brand/40 hover:bg-white hover:shadow-md"
                   data-reveal
                   data-reveal-delay={String(index * 0.08)}
                 >
-                  <div className="flex gap-5 py-6 transition-transform duration-500 group-hover:translate-x-1">
-                    <span className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                  <div className="flex items-center justify-between">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10 text-brand transition-colors group-hover:bg-brand group-hover:text-white">
                       <Icon aria-hidden className="h-5 w-5" />
                     </span>
-
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-baseline justify-between gap-4">
-                        <h3 className="font-display text-[18px] font-semibold leading-snug text-ink">
-                          {stage.title}
-                        </h3>
-                        <span className="tabular text-[12px] font-semibold text-mid">
-                          {stage.index}
-                        </span>
-                      </div>
-                      <p className="mt-2 text-[13.5px] leading-relaxed text-mid">{stage.detail}</p>
-                    </div>
+                    <span className="font-mono text-[13px] font-bold tabular text-brand">
+                      {stage.index}
+                    </span>
                   </div>
-                </li>
+
+                  <h3 className="mt-5 font-display text-[16px] font-bold leading-snug text-ink group-hover:text-brand transition-colors">
+                    {stage.title}
+                  </h3>
+                </div>
               );
             })}
-          </ol>
+          </div>
         </div>
       </div>
     </Reveal>

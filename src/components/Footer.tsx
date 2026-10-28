@@ -88,7 +88,7 @@ export function Footer() {
                   motion="pulse"
                   className="mt-0.5 h-4 w-4 shrink-0 text-brand"
                 />
-                <span className="leading-snug">
+                <span className="leading-relaxed">
                   {contact.addressLines.length > 0 ? (
                     contact.addressLines.map((line) => (
                       <span key={line} className="block group-hover/addr:underline decoration-white/30 underline-offset-2">

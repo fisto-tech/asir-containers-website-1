@@ -749,3 +749,16 @@ select:focus-visible {
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+@keyframes progress-bar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-progress {
+  animation: progress-bar linear forwards;
+}

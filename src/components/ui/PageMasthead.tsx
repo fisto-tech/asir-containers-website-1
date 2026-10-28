@@ -17,15 +17,17 @@ export function PageMasthead({
   meta,
   action,
   children,
+  rightElement,
   compact = false,
 }: {
   index?: string;
   label?: string;
   title: React.ReactNode;
-  intro: string;
+  intro?: string;
   meta?: { label: string; value: React.ReactNode }[];
   action?: { href: string; label: string };
   children?: React.ReactNode;
+  rightElement?: React.ReactNode;
   compact?: boolean;
 }) {
   const showMetaRule = Boolean(label || (meta && meta.length > 0));
@@ -76,20 +78,28 @@ export function PageMasthead({
           </h1>
 
           <div className="sm:col-span-5 lg:col-span-6 sm:self-center">
-            {!compact && <span aria-hidden className="mb-5 block h-px w-14 bg-brand" />}
-            <p className={`leading-relaxed text-mid ${compact ? "text-[14.5px] max-w-lg" : "max-w-sm text-[16px]"}`} data-reveal>
-              {intro}
-            </p>
-            {action && (
-              <Button
-                href={action.href}
-                variant="primary"
-                size="md"
-                className="mt-6"
-                withArrow
-              >
-                {action.label}
-              </Button>
+            {rightElement ? (
+              rightElement
+            ) : (
+              <>
+                {!compact && <span aria-hidden className="mb-5 block h-px w-14 bg-brand" />}
+                {intro && (
+                  <p className={`leading-relaxed text-mid ${compact ? "text-[14.5px] max-w-lg" : "max-w-sm text-[16px]"}`} data-reveal>
+                    {intro}
+                  </p>
+                )}
+                {action && (
+                  <Button
+                    href={action.href}
+                    variant="primary"
+                    size="md"
+                    className="mt-6"
+                    withArrow
+                  >
+                    {action.label}
+                  </Button>
+                )}
+              </>
             )}
           </div>
         </div>

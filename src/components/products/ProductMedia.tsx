@@ -54,8 +54,8 @@ export function ProductMedia({ src, alt, capacity, category }: ProductMediaProps
   );
 
   return (
-    <div ref={root} className="relative">
-      <div className="group/main relative aspect-square overflow-hidden rounded-[20px] bg-light">
+    <div ref={root} className="relative flex h-full flex-col">
+      <div className="group/main relative min-h-[380px] flex-1 overflow-hidden rounded-[20px] bg-light lg:min-h-[480px]">
         <div data-pm-frame className="absolute inset-0">
           <div data-pm-image className="relative h-full w-full">
             <Image

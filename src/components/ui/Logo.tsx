@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { site } from "@/data/site";
 
 type LogoProps = {
@@ -10,10 +11,7 @@ type LogoProps = {
 };
 
 /**
- * PLACEHOLDER LOGOTYPE
- * No official ASIR Containers logo file was supplied, so this is a typographic
- * stand-in built from the brand palette — not an invented logo mark.
- * Replace with the supplied logo: set `site.logo.src` in src/data/site.ts.
+ * Official ASIR Containers brand logo.
  */
 export function Logo({ tone = "dark", className = "", compact = false }: LogoProps) {
   const isLight = tone === "light";
@@ -22,36 +20,27 @@ export function Logo({ tone = "dark", className = "", compact = false }: LogoPro
     <Link
       href="/"
       aria-label={`${site.name} — home`}
-      className={`group inline-flex items-center gap-3 ${className}`}
+      className={`group inline-flex items-center transition-opacity hover:opacity-90 ${className}`}
     >
-      <span
-        aria-hidden
-        className="relative flex h-9 w-9 shrink-0 items-center justify-center bg-brand transition-transform duration-500 group-hover:scale-95"
+      {/* 
+        The official SVG logo has viewBox 0 0 53 16 (aspect ratio 53:16 ~ 3.31:1).
+        When tone is light (over hero dark background or dark footer), we invert the dark letters to crisp white
+        while preserving the red flame icon mark cleanly.
+      */}
+      <div
+        className={`relative flex items-center transition-all ${
+          isLight ? "brightness-0 invert drop-shadow-xs" : ""
+        }`}
       >
-        <span className="font-display text-[15px] font-bold leading-none tracking-tight text-white">
-          A
-        </span>
-        <span className="absolute inset-x-[7px] bottom-[7px] h-[2px] bg-white/70" />
-      </span>
-
-      {!compact && (
-        <span className="flex flex-col leading-none">
-          <span
-            className={`font-display text-[19px] font-semibold uppercase tracking-[0.14em] ${
-              isLight ? "text-white" : "text-ink"
-            }`}
-          >
-            Asir
-          </span>
-          <span
-            className={`mt-[5px] text-[9px] font-semibold uppercase tracking-[0.34em] ${
-              isLight ? "text-white/85" : "text-mid"
-            }`}
-          >
-            Containers
-          </span>
-        </span>
-      )}
+        <Image
+          src="/images/asir-containers-logo.svg"
+          alt={site.name}
+          width={232}
+          height={90}
+          priority
+          className="h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+        />
+      </div>
     </Link>
   );
 }

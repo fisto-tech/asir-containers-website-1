@@ -1,9 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ProductsBrowser } from "@/components/products/ProductsBrowser";
-import { Reveal } from "@/components/motion/Reveal";
 import { site } from "@/data/site";
-import { PageMasthead } from "@/components/ui/PageMasthead";
 
 export const metadata: Metadata = {
   title: "Products — Plastic Pails & Containers",
@@ -20,20 +18,10 @@ export const metadata: Metadata = {
 
 export default function ProductsPage() {
   return (
-    <>
-      <Reveal>
-        <PageMasthead
-          compact
-          title="Product Range"
-          intro="Explore our industrial plastic containers, pails, and closures."
-        />
-      </Reveal>
-
-      <div id="range" className="scroll-mt-24">
-        <Suspense fallback={<div className="shell py-12 text-sm text-mid">Loading products…</div>}>
-          <ProductsBrowser />
-        </Suspense>
-      </div>
-    </>
+    <div id="range" className="scroll-mt-24">
+      <Suspense fallback={<div className="shell py-12 text-sm text-mid">Loading products…</div>}>
+        <ProductsBrowser />
+      </Suspense>
+    </div>
   );
 }

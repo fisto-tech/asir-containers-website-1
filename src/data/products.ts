@@ -53,7 +53,7 @@ export interface Product {
    * Physical record for the container. Placeholder figures supplied for this
    * build — replace with the client's measured drawing values per code.
    */
-  specs: { height: string; brimful: string; gslOfc: string };
+  specs: { height: string; brimful: string; gslOfc: string; weight?: string };
   /** Applications marked "Y" in the table. */
   applications: ApplicationSlug[];
   /** Product codes exactly as supplied. */
@@ -72,7 +72,7 @@ export interface Product {
 /* Reference data                                                              */
 /* -------------------------------------------------------------------------- */
 
-export const applications: {
+export type Application = {
   slug: ApplicationSlug;
   name: string;
   index: string;
@@ -80,7 +80,9 @@ export const applications: {
   longBlurb: string;
   image: string;
   imageAlt: string;
-}[] = [
+};
+
+export const applications: Application[] = [
   {
     slug: "paint",
     name: "Paint",
@@ -154,7 +156,7 @@ export const productTypes: { slug: ProductTypeSlug; name: string; note: string }
 export const products: Product[] = [
   {
     slug: "500ml-paint-pail-p2",
-    name: "500 ml Plastic Pail Container",
+    name: "500 ml",
     type: "paint-pail",
     capacity: { value: 500, unit: "ml" },
     specs: { height: "110 mm", brimful: "0.56 L", gslOfc: "GSL 70 mm / OFC 78 mm" },
@@ -171,7 +173,7 @@ export const products: Product[] = [
   },
   {
     slug: "1l-paint-pail-p1a",
-    name: "1 Litre Plastic Pail Container — P1a",
+    name: "1 Litre",
     type: "paint-pail",
     capacity: { value: 1, unit: "L" },
     specs: { height: "150 mm", brimful: "1.10 L", gslOfc: "GSL 82 mm / OFC 90 mm" },
@@ -187,7 +189,7 @@ export const products: Product[] = [
   },
   {
     slug: "1l-paint-pail-p1b",
-    name: "1 Litre Plastic Pail Container — P1b",
+    name: "1 Litre",
     type: "paint-pail",
     capacity: { value: 1, unit: "L" },
     specs: { height: "148 mm", brimful: "1.08 L", gslOfc: "GSL 80 mm / OFC 88 mm" },
@@ -203,7 +205,7 @@ export const products: Product[] = [
   },
   {
     slug: "4l-paint-pail-p4",
-    name: "4 Litre Plastic Pail Container",
+    name: "4 Litre",
     type: "paint-pail",
     capacity: { value: 4, unit: "L" },
     specs: { height: "235 mm", brimful: "4.40 L", gslOfc: "GSL 108 mm / OFC 118 mm" },
@@ -219,7 +221,7 @@ export const products: Product[] = [
   },
   {
     slug: "10l-paint-pail-p10",
-    name: "10 Litre Plastic Pail Container",
+    name: "10 litre",
     type: "paint-pail",
     capacity: { value: 10, unit: "L" },
     specs: { height: "300 mm", brimful: "11.20 L", gslOfc: "GSL 128 mm / OFC 140 mm" },
@@ -236,7 +238,7 @@ export const products: Product[] = [
   },
   {
     slug: "20l-paint-pail-p20a",
-    name: "20 Litre Plastic Pail Container — P20a",
+    name: "20 Litre",
     type: "paint-pail",
     capacity: { value: 20, unit: "L" },
     specs: { height: "390 mm", brimful: "21.50 L", gslOfc: "GSL 152 mm / OFC 166 mm" },
@@ -253,7 +255,7 @@ export const products: Product[] = [
   },
   {
     slug: "20l-paint-pail-p20b",
-    name: "20 Litre Plastic Pail Container — P20b",
+    name: "20 Litre",
     type: "paint-pail",
     capacity: { value: 20, unit: "L" },
     specs: { height: "386 mm", brimful: "21.30 L", gslOfc: "GSL 150 mm / OFC 164 mm" },
@@ -269,7 +271,7 @@ export const products: Product[] = [
   },
   {
     slug: "1kg-storage-pail-k1",
-    name: "1 KG Plastic Pail Container",
+    name: "1 Kg",
     type: "storage-pail",
     capacity: { value: 1, unit: "kg" },
     specs: { height: "145 mm", brimful: "1.10 L", gslOfc: "GSL 78 mm / OFC 86 mm" },
@@ -285,7 +287,7 @@ export const products: Product[] = [
   },
   {
     slug: "2kg-storage-pail-k2",
-    name: "2 KG Plastic Pail Container",
+    name: "2 Kg",
     type: "storage-pail",
     capacity: { value: 2, unit: "kg" },
     specs: { height: "195 mm", brimful: "2.20 L", gslOfc: "GSL 92 mm / OFC 100 mm" },
@@ -302,7 +304,7 @@ export const products: Product[] = [
   },
   {
     slug: "5kg-storage-pail-k5",
-    name: "5 KG Plastic Pail Container",
+    name: "5 Kg",
     type: "storage-pail",
     capacity: { value: 5, unit: "kg" },
     specs: { height: "265 mm", brimful: "5.60 L", gslOfc: "GSL 112 mm / OFC 122 mm" },
@@ -318,7 +320,7 @@ export const products: Product[] = [
   },
   {
     slug: "10kg-storage-pail-k10",
-    name: "10 KG Plastic Pail Container",
+    name: "10 Kg",
     type: "storage-pail",
     capacity: { value: 10, unit: "kg" },
     specs: { height: "305 mm", brimful: "11.40 L", gslOfc: "GSL 130 mm / OFC 142 mm" },
@@ -334,7 +336,7 @@ export const products: Product[] = [
   },
   {
     slug: "20kg-storage-pail-k20",
-    name: "20 KG Plastic Pail Container",
+    name: "20 Kg",
     type: "storage-pail",
     capacity: { value: 20, unit: "kg" },
     specs: { height: "395 mm", brimful: "21.80 L", gslOfc: "GSL 154 mm / OFC 168 mm" },
@@ -351,7 +353,7 @@ export const products: Product[] = [
   },
   {
     slug: "5l-round-pail-a5",
-    name: "5 Litre Round Plastic Pail Container",
+    name: "5 litre round",
     type: "round-pail",
     capacity: { value: 5, unit: "L" },
     specs: { height: "245 mm", brimful: "5.40 L", gslOfc: "GSL 110 mm / OFC 120 mm" },
@@ -368,7 +370,7 @@ export const products: Product[] = [
   },
   {
     slug: "15l-square-interlock-pail-f15",
-    name: "15 Litre Interlock Pail Container",
+    name: "15 Litre Interlock",
     type: "square-pail",
     capacity: { value: 15, unit: "L" },
     specs: { height: "340 mm", brimful: "16.20 L", gslOfc: "GSL 145 mm / OFC 158 mm" },
@@ -385,7 +387,7 @@ export const products: Product[] = [
   },
   {
     slug: "17l-square-interlock-pail-f17i",
-    name: "17 Litre Square Interlock Pail Container",
+    name: "17 Litre square inter lock",
     type: "square-pail",
     capacity: { value: 17, unit: "L" },
     specs: { height: "355 mm", brimful: "18.00 L", gslOfc: "GSL 150 mm / OFC 164 mm" },
@@ -403,7 +405,7 @@ export const products: Product[] = [
   },
   {
     slug: "17l-square-outer-lock-pail-f17o",
-    name: "17 Litre Square Outer Lock Pail Container",
+    name: "17 Litre square outer lock",
     type: "square-pail",
     capacity: { value: 17, unit: "L" },
     specs: { height: "355 mm", brimful: "18.00 L", gslOfc: "GSL 150 mm / OFC 164 mm" },
@@ -420,7 +422,7 @@ export const products: Product[] = [
   },
   {
     slug: "5l-square-interlock-pail-f5",
-    name: "5 Litre Square Interlock Pail Container",
+    name: "5 litre square interlock",
     type: "square-pail",
     capacity: { value: 5, unit: "L" },
     specs: { height: "250 mm", brimful: "5.40 L", gslOfc: "GSL 118 mm / OFC 128 mm" },
@@ -478,11 +480,9 @@ export const capacityLabel = (product: Product) => capacityDisplay(product);
 export const capacitiesLabel = (product: Product) => capacityDisplay(product);
 
 /**
- * Name without the trailing " — CODE" disambiguator. Cards already print the
- * code above the title, so the suffix is only noise there.
+ * Exact product display name.
  */
-export const productDisplayName = (product: Product) =>
-  product.name.replace(/\s+[—-]\s+[A-Za-z0-9]+$/, "").trim();
+export const productDisplayName = (product: Product) => product.name;
 
 export const typeName = (slug: ProductTypeSlug) =>
   productTypes.find((type) => type.slug === slug)?.name ?? slug;
@@ -560,6 +560,18 @@ export const filterOptions = {
     }))
     .filter((type) => type.count > 0),
   capacities: capacityOptions,
+  names: (() => {
+    const seen = new Map<string, { value: string; label: string; count: number }>();
+    products.forEach((p) => {
+      const entry = seen.get(p.name);
+      if (entry) {
+        entry.count += 1;
+      } else {
+        seen.set(p.name, { value: p.name, label: p.name, count: 1 });
+      }
+    });
+    return [...seen.values()];
+  })(),
   lids: lidOptions
     .map((lid) => ({
       value: lid,

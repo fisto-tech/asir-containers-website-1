@@ -6,16 +6,8 @@ import { usePathname } from "next/navigation";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
-import { AnimatedIcon, applicationIcons, type IconMotion } from "@/components/ui/AnimatedIcon";
 import { navigation, site } from "@/data/site";
-import { applications, applicationCount, rangeStats } from "@/data/products";
-
-const applicationMotion: Record<string, IconMotion> = {
-  paint: "swing",
-  agro: "float",
-  food: "pulse",
-  lube: "float",
-};
+import { products, capacityDisplay, rangeStats } from "@/data/products";
 
 export function Header() {
   const pathname = usePathname();
@@ -154,57 +146,54 @@ export function Header() {
                     </button>
                   </div>
 
-                  {/* Open panel — no boxes, no pills: hairline rules and type only */}
+                  {/* Open panel — clean multi-column listing of all 17 containers */}
                   <div
                     id="products-menu"
                     aria-hidden={!productsOpen}
-                    className={`absolute -left-8 top-full w-[480px] bg-white pb-4 pt-2 shadow-[0_24px_50px_-20px_rgba(17,17,17,0.35)] transition-[opacity,transform,visibility] duration-300 ${
+                    className={`absolute -left-12 top-full w-[640px] rounded-b-xl border-x border-b border-line bg-white p-6 shadow-[0_24px_50px_-20px_rgba(17,17,17,0.35)] transition-[opacity,transform,visibility] duration-300 ${
                       productsOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"
                     }`}
                   >
-                    <p className="px-8 py-3 text-[13px] text-mid">
-                      Browse by application
-                    </p>
-
-                    <ul className="px-8">
-                      {applications.map((application) => (
-                        <li key={application.slug}>
-                          <Link
-                            href={`/products?application=${application.slug}`}
-                            tabIndex={productsOpen ? 0 : -1}
-                            onClick={() => setProductsOpen(false)}
-                            className="group flex items-baseline justify-between gap-6 border-t border-line py-3.5"
-                          >
-                            <span className="flex items-baseline gap-3">
-                              <AnimatedIcon
-                                name={applicationIcons[application.slug]}
-                                motion={applicationMotion[application.slug]}
-                                className="h-5 w-5 shrink-0 translate-y-0.5 text-brand"
-                              />
-                              <span className="text-[15px] font-medium text-ink transition-colors group-hover:text-brand">
-                                {application.name}
-                              </span>
-                            </span>
-                            <span className="flex items-baseline gap-3 text-[12px] text-mid">
-                              <span className="tabular text-[12px] font-semibold text-brand">
-                                {String(applicationCount(application.slug)).padStart(2, "0")}
-                              </span>
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="mt-3 flex items-center px-8 text-[13px]">
+                    <div className="flex items-center justify-between border-b border-line pb-3">
+                      <div>
+                        <span className="font-display text-[15px] font-semibold text-ink">
+                          Container Range
+                        </span>
+                        <span className="ml-2 text-[12px] text-mid">
+                          ({products.length} models)
+                        </span>
+                      </div>
                       <Link
                         href="/products"
                         tabIndex={productsOpen ? 0 : -1}
                         onClick={() => setProductsOpen(false)}
-                        className="group inline-flex items-center gap-2 font-medium text-ink transition-colors hover:text-brand"
+                        className="group inline-flex items-center gap-1.5 text-[12.5px] font-medium text-brand hover:underline"
                       >
-                        All products
-                        <AnimatedIcon name="arrow" motion="travel" className="h-4 w-4 text-brand" />
+                        View all products
+                        <ArrowUpRight aria-hidden className="h-3.5 w-3.5" />
                       </Link>
+                    </div>
+
+                    <div
+                      data-lenis-prevent
+                      className="mt-4 grid max-h-[380px] grid-cols-2 gap-x-4 gap-y-1.5 overflow-y-auto overscroll-contain pr-2 [scrollbar-width:thin] [scrollbar-color:rgba(17,17,17,0.2)_transparent]"
+                    >
+                      {products.map((item) => (
+                        <Link
+                          key={item.slug}
+                          href={`/products/${item.slug}`}
+                          tabIndex={productsOpen ? 0 : -1}
+                          onClick={() => setProductsOpen(false)}
+                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 transition-all hover:bg-soft"
+                        >
+                          <span className="truncate text-[15px] font-semibold text-ink transition-colors group-hover:text-brand">
+                            {item.name}{" "}
+                            <span className="font-mono text-[13px] font-medium text-mid/80 transition-colors group-hover:text-brand">
+                              ({item.codes.plain})
+                            </span>
+                          </span>
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -300,39 +289,39 @@ export function Header() {
 
               <div
                 className={`grid overflow-hidden transition-[max-height,opacity] duration-500 ${
-                  productsOpen ? "mt-4 max-h-80 opacity-100" : "max-h-0 opacity-0"
+                  productsOpen ? "mt-4 max-h-[380px] overflow-y-auto pr-1 opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
-                {applications.map((application) => (
+                {products.map((item) => (
                   <Link
-                    key={application.slug}
-                    href={`/products?application=${application.slug}`}
+                    key={item.slug}
+                    href={`/products/${item.slug}`}
                     tabIndex={open && productsOpen ? 0 : -1}
                     onClick={() => {
                       setOpen(false);
                       setProductsOpen(false);
                     }}
-                    className="flex items-center justify-between border-t border-white/15 py-3 text-[15px] text-white/85"
+                    className="flex items-center justify-between border-t border-white/15 py-2.5 text-[14px] text-white/85 transition-colors hover:text-white"
                   >
-                    <span className="flex items-center gap-3">
-                      <AnimatedIcon
-                        name={applicationIcons[application.slug]}
-                        motion={applicationMotion[application.slug]}
-                        className="h-5 w-5 text-brand"
-                      />
-                      {application.name}
-                    </span>
-                    <span className="tabular text-[11px] text-white/85">
-                      {String(applicationCount(application.slug)).padStart(2, "0")}
+                    <span className="truncate pr-2 text-[15.5px] font-semibold text-white/90">
+                      {item.name}{" "}
+                      <span className="font-mono text-[13px] font-medium text-white/60">
+                        ({item.codes.plain})
+                      </span>
                     </span>
                   </Link>
                 ))}
               </div>
             </div>
 
+            <Link href="/manufacturing" tabIndex={open ? 0 : -1} className="flex items-baseline justify-between border-b border-white/15 py-5">
+              <span className="display-md text-white">Manufacturing</span>
+              <span className="tabular text-[11px] font-semibold text-white/85">03</span>
+            </Link>
+
             <Link href="/contact" tabIndex={open ? 0 : -1} className="flex items-baseline justify-between border-b border-white/15 py-5">
               <span className="display-md text-white">Contact</span>
-              <span className="tabular text-[11px] font-semibold text-white">03</span>
+              <span className="tabular text-[11px] font-semibold text-white">04</span>
             </Link>
 
             <a

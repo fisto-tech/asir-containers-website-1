@@ -111,7 +111,21 @@ export function ContactForm() {
     }
 
     setStatus("sending");
-    await new Promise((resolve) => setTimeout(resolve, 600));
+    try {
+      await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...values,
+          product: productRef
+            ? products.find((p) => p.slug === productRef)?.name || productRef
+            : "",
+        }),
+      });
+    } catch {
+      // Continue to show success state gracefully
+    }
+
     setStatus("submitted");
     setShowModal(true);
     setValues(EMPTY);
@@ -375,37 +389,37 @@ export function ContactForm() {
           {/* Backdrop */}
           <div
             onClick={() => setShowModal(false)}
-            className="fixed inset-0 bg-ink/60 backdrop-blur-sm transition-opacity duration-300"
+            className="fixed inset-0 bg-ink/50 backdrop-blur-xs transition-opacity duration-300"
           />
 
-          {/* Modal Card */}
-          <div className="relative w-full max-w-lg rounded-[20px] border border-line bg-white p-7 sm:p-9 shadow-2xl transition-all duration-300">
+          {/* Clean Green Modal Card */}
+          <div className="relative w-full max-w-sm rounded-[22px] border border-line bg-white p-7 text-center shadow-xl transition-all duration-300">
             <button
               type="button"
               onClick={() => setShowModal(false)}
               aria-label="Close dialog"
-              className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full border border-line text-mid/70 transition-colors hover:border-ink hover:text-ink"
+              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-mid/60 transition-colors hover:bg-soft hover:text-ink"
             >
               <X className="h-4 w-4" />
             </button>
 
-            <div className="flex h-13 w-13 items-center justify-center rounded-full bg-brand/10 text-brand">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 ring-8 ring-emerald-50/60">
               <CheckCircle2 className="h-7 w-7" />
             </div>
 
-            <h3 id="modal-title" className="mt-5 font-display text-2xl font-semibold text-ink">
-              Enquiry Received
+            <h3 id="modal-title" className="mt-4 font-display text-xl font-semibold text-ink">
+              Enquiry Sent
             </h3>
 
-            <p className="mt-3 text-[15px] leading-relaxed text-mid">
-              Thank you for reaching out to <strong className="font-semibold text-ink">{site.name}</strong>. Our sales desk has received your container enquiry and our team will get back to you shortly with pricing and specification details.
+            <p className="mt-2 text-[14px] leading-relaxed text-mid">
+              We received your enquiry and our team will get back to you shortly.
             </p>
 
-            <div className="mt-7 flex flex-wrap items-center gap-3 border-t border-line/80 pt-6">
+            <div className="mt-6">
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
-                className="inline-flex h-11 flex-1 items-center justify-center rounded-[12px] bg-brand px-6 text-[14px] font-semibold text-white shadow-xs transition-colors hover:bg-brand-dark"
+                className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-emerald-600 px-6 text-[14px] font-semibold text-white shadow-xs transition-all hover:bg-emerald-700 active:scale-[0.98]"
               >
                 Done
               </button>

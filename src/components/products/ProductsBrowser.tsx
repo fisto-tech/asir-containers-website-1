@@ -5,6 +5,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Filter, RotateCcw, Search, SlidersHorizontal, X } from "lucide-react";
 import { ProductCard } from "@/components/products/ProductCard";
 import { AnimatedIcon, applicationIcons } from "@/components/ui/AnimatedIcon";
+import { PageMasthead } from "@/components/ui/PageMasthead";
+import { Reveal } from "@/components/motion/Reveal";
 import { gsap, ScrollTrigger, useGSAP, reduceMotion } from "@/lib/animations";
 import {
   applications,
@@ -23,12 +25,13 @@ import {
 } from "@/data/products";
 import { swatches } from "@/lib/colors";
 
-type FilterKey = "applications" | "types" | "capacities" | "lids" | "locks" | "colors";
+type FilterKey = "applications" | "types" | "capacities" | "names" | "lids" | "locks" | "colors";
 
 type Filters = {
   applications: ApplicationSlug[];
   types: ProductTypeSlug[];
   capacities: string[];
+  names: string[];
   lids: LidType[];
   locks: LockType[];
   colors: ColorName[];
@@ -39,6 +42,7 @@ const EMPTY_FILTERS: Filters = {
   applications: [],
   types: [],
   capacities: [],
+  names: [],
   lids: [],
   locks: [],
   colors: [],
@@ -71,6 +75,11 @@ const parseFilters = (search: string): Filters => {
       "capacity",
       filterOptions.capacities.map((option) => `${option.value}-${option.unit}`),
     ),
+    names: readList(
+      params,
+      "name",
+      filterOptions.names.map((option) => option.value),
+    ),
     lids: readList(params, "lid", filterOptions.lids.map((option) => option.value)),
     locks: readList(params, "lock", filterOptions.locks.map((option) => option.value)),
     colors: readList(params, "color", filterOptions.colors.map((option) => option.value)),
@@ -83,6 +92,7 @@ const toQueryString = (filters: Filters) => {
   if (filters.applications.length) params.set("application", filters.applications.join(","));
   if (filters.types.length) params.set("type", filters.types.join(","));
   if (filters.capacities.length) params.set("capacity", filters.capacities.join(","));
+  if (filters.names.length) params.set("name", filters.names.join(","));
   if (filters.lids.length) params.set("lid", filters.lids.join(","));
   if (filters.locks.length) params.set("lock", filters.locks.join(","));
   if (filters.colors.length) params.set("color", filters.colors.join(","));
@@ -110,6 +120,7 @@ const matchesFilters = (product: Product, filters: Filters) => {
   }
   if (filters.types.length && !filters.types.includes(product.type)) return false;
   if (filters.capacities.length && !filters.capacities.includes(capacityKey(product))) return false;
+  if (filters.names.length && !filters.names.includes(product.name)) return false;
   if (filters.lids.length && !filters.lids.some((lid) => lidsFor(product).includes(lid))) return false;
   if (filters.locks.length && !filters.locks.some((lock) => product.locks.includes(lock))) return false;
   if (filters.colors.length && !filters.colors.some((color) => colorsFor(product).includes(color))) {
@@ -122,6 +133,7 @@ const activeCount = (filters: Filters) =>
   filters.applications.length +
   filters.types.length +
   filters.capacities.length +
+  filters.names.length +
   filters.lids.length +
   filters.locks.length +
   filters.colors.length +
@@ -231,6 +243,11 @@ export function ProductsBrowser() {
         value.replace("-", " "),
       remove: () => toggle("capacities", value),
     })),
+    ...filters.names.map((value) => ({
+      key: `name-${value}`,
+      label: value,
+      remove: () => toggle("names", value),
+    })),
     ...filters.lids.map((value) => ({
       key: `lid-${value}`,
       label: value,
@@ -259,64 +276,46 @@ export function ProductsBrowser() {
 
   return (
     <div className="bg-white pb-24">
-      {/* Application chips */}
-      <div className="sticky top-[68px] z-30 border-y border-line bg-white/95 backdrop-blur-md">
-        <div className="shell">
-          <div className="flex items-center gap-2 overflow-x-auto py-3 no-scrollbar lg:gap-2.5">
-            <button
-              type="button"
-              onClick={() => setFilters((current) => ({ ...current, applications: [] }))}
-              aria-pressed={filters.applications.length === 0}
-              className={`h-11 shrink-0 border-b-2 pr-5 text-[13px] font-medium transition-colors ${
-                filters.applications.length === 0
-                  ? "border-ink text-ink"
-                  : "border-transparent text-mid hover:text-ink"
-              }`}
-            >
-              All <span className="ml-1 tabular text-[12px]">{products.length}</span>
-            </button>
-
-            {applications.map((application) => {
-              const option = filterOptions.applications.find((item) => item.value === application.slug);
-              const selected = filters.applications.includes(application.slug);
-              return (
-                <button
-                  key={application.slug}
-                  type="button"
-                  onClick={() => toggleApplication(application.slug)}
-                  aria-pressed={selected}
-                  className={`flex h-11 shrink-0 items-center gap-2 border-b-2 px-1 pr-5 text-[13px] font-medium transition-colors ${
-                    selected ? "border-brand text-ink" : "border-transparent text-mid hover:text-ink"
-                  }`}
-                >
-                  <AnimatedIcon
-                    name={applicationIcons[application.slug]}
-                    motion={selected ? "pulse" : "none"}
-                    className={`h-5 w-5 ${selected ? "text-brand" : "text-mid"}`}
-                  />
-                  {application.name}
-                  <span className="tabular text-[12px]">{option?.count ?? 0}</span>
-                </button>
-              );
-            })}
-
-            <div className="ml-auto hidden items-center gap-4 pl-6 lg:flex">
-              <p className="whitespace-nowrap text-[12px] text-mid">
-                <span className="font-semibold tabular text-ink">{results.length}</span> of{" "}
-                {products.length} containers
-              </p>
-              <button
-                type="button"
-                onClick={() => setDrawerOpen(true)}
-                className="inline-flex h-10 items-center gap-2 text-[13px] font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-ink"
-              >
-                <SlidersHorizontal className="h-[18px] w-[18px]" />
-                Filters{total > 0 ? ` (${total})` : ""}
-              </button>
+      {/* Product Range Page Masthead with Search Input on Right */}
+      <Reveal>
+        <PageMasthead
+          compact
+          title="Product Range"
+          rightElement={
+            <div className="w-full max-w-md sm:ml-auto">
+              <label htmlFor="code-search" className="sr-only">
+                Search by product code or container name
+              </label>
+              <div className="group/search relative flex items-center rounded-xl border border-line bg-white px-3.5 shadow-sm transition-all focus-within:border-brand focus-within:shadow-md focus-within:ring-2 focus-within:ring-brand/10">
+                <Search
+                  aria-hidden
+                  className="pointer-events-none h-4 w-4 shrink-0 text-mid transition-colors group-focus-within/search:text-brand"
+                />
+                <input
+                  id="code-search"
+                  type="search"
+                  value={filters.query}
+                  onChange={(event) =>
+                    setFilters((current) => ({ ...current, query: event.target.value }))
+                  }
+                  placeholder="Search by product code — e.g. P20ap, F17is, K20t"
+                  className="h-11 w-full bg-transparent px-3 text-[14px] text-ink placeholder:text-mid/70 !outline-none !ring-0 focus:outline-none focus:ring-0"
+                />
+                {filters.query && (
+                  <button
+                    type="button"
+                    onClick={() => setFilters((current) => ({ ...current, query: "" }))}
+                    aria-label="Clear search"
+                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-mid/80 transition-colors hover:bg-line/60 hover:text-ink focus:outline-none"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+          }
+        />
+      </Reveal>
 
       <div className="shell">
         <div className="grid gap-10 pt-10 lg:grid-cols-12 lg:gap-10 xl:gap-14">
@@ -326,18 +325,18 @@ export function ProductsBrowser() {
               data-lenis-prevent
               className="sticky top-24 max-h-[calc(100vh-8rem)] space-y-7 overflow-y-auto overscroll-contain border-r border-line/60 pb-8 pr-6 [scrollbar-width:thin]"
             >
-              <div className="flex items-center justify-between border-b border-ink/15 pb-3.5">
-                <h2 className="inline-flex items-center gap-2 text-[13px] font-semibold text-ink">
-                  <Filter className="h-4 w-4 text-brand" />
+              <div className="flex items-center justify-between border-b border-ink/15 pb-4">
+                <h2 className="inline-flex items-center gap-2.5 text-[18px] font-bold text-ink">
+                  <Filter className="h-5 w-5 text-brand" />
                   Filter
                 </h2>
                 {total > 0 && (
                   <button
                     type="button"
                     onClick={clearAll}
-                    className="inline-flex items-center gap-1 text-[12px] text-mid transition-colors hover:text-ink"
+                    className="inline-flex items-center gap-1.5 text-[13px] font-medium text-mid transition-colors hover:text-ink"
                   >
-                    <RotateCcw className="h-3 w-3" />
+                    <RotateCcw className="h-3.5 w-3.5" />
                     Clear all
                   </button>
                 )}
@@ -349,7 +348,6 @@ export function ProductsBrowser() {
                 toggleApplication={toggleApplication}
                 setQuery={(value) => setFilters((current) => ({ ...current, query: value }))}
                 onClear={clearAll}
-                hideApplications
               />
             </div>
           </aside>
@@ -369,39 +367,6 @@ export function ProductsBrowser() {
                 <SlidersHorizontal className="h-[18px] w-[18px]" />
                 Filters{total > 0 ? ` (${total})` : ""}
               </button>
-            </div>
-
-            {/* Code search (visible on all breakpoints) */}
-            <div className="mt-4 lg:mt-0">
-              <label htmlFor="code-search" className="sr-only">
-                Search by product code or container name
-              </label>
-              <div className="group/search relative flex items-center rounded-xl border border-line bg-soft/40 px-3.5 transition-colors focus-within:border-brand focus-within:bg-white focus-within:ring-2 focus-within:ring-brand/10">
-                <Search
-                  aria-hidden
-                  className="pointer-events-none h-4 w-4 shrink-0 text-mid transition-colors group-focus-within/search:text-brand"
-                />
-                <input
-                  id="code-search"
-                  type="search"
-                  value={filters.query}
-                  onChange={(event) =>
-                    setFilters((current) => ({ ...current, query: event.target.value }))
-                  }
-                  placeholder="Search by product code — e.g. P20ap, F17is, K20t"
-                  className="h-11 w-full bg-transparent px-3 text-[14.5px] text-ink placeholder:text-mid/70 !outline-none !ring-0 focus:outline-none focus:ring-0"
-                />
-                {filters.query && (
-                  <button
-                    type="button"
-                    onClick={() => setFilters((current) => ({ ...current, query: "" }))}
-                    aria-label="Clear search"
-                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-mid/80 transition-colors hover:bg-line/60 hover:text-ink focus:outline-none"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                )}
-              </div>
             </div>
 
             {consolidated.length > 0 && (
@@ -543,11 +508,11 @@ function FilterGroup({
 }) {
   return (
     <fieldset>
-      <legend className="text-[13px] font-semibold text-ink">
+      <legend className="text-[15.5px] font-bold tracking-tight text-ink">
         {legend}
-        {hint && <span className="ml-1 normal-case tracking-normal text-mid">{hint}</span>}
+        {hint && <span className="ml-1 text-[13px] font-normal normal-case tracking-normal text-mid">{hint}</span>}
       </legend>
-      <div className="mt-3 space-y-2.5">{children}</div>
+      <div className="mt-3.5 space-y-2.5">{children}</div>
     </fieldset>
   );
 }
@@ -568,18 +533,18 @@ function CheckRow({
   icon?: React.ReactNode;
 }) {
   return (
-    <label className="group flex cursor-pointer items-center gap-2.5 py-0.5 text-[14px] text-ink transition-colors hover:text-brand">
-      <input type="checkbox" checked={checked} onChange={onChange} className="h-[18px] w-[18px] shrink-0 accent-brand" />
+    <label className="group flex cursor-pointer items-center gap-3 py-1 text-[15px] font-medium text-ink transition-colors hover:text-brand">
+      <input type="checkbox" checked={checked} onChange={onChange} className="h-4.5 w-4.5 shrink-0 accent-brand rounded" />
       {icon}
       {swatch && (
         <span
           aria-hidden
-          className="h-3 w-3 rounded-full border border-mid/40"
+          className="h-3.5 w-3.5 rounded-full border border-mid/40"
           style={{ backgroundColor: swatch }}
         />
       )}
-      <span className="flex-1">{label}</span>
-      {typeof count === "number" && <span className="tabular text-[12px] text-mid group-hover:text-brand">{count}</span>}
+      <span className="flex-1 leading-snug">{label}</span>
+      {typeof count === "number" && <span className="tabular text-[13px] font-normal text-mid group-hover:text-brand">{count}</span>}
     </label>
   );
 }
@@ -599,29 +564,22 @@ function FilterPanel({
   onClear: () => void;
   hideApplications?: boolean;
 }) {
-  const grouped = filterOptions.capacities.reduce<Record<CapacityUnit, typeof filterOptions.capacities>>(
-    (accumulator, option) => {
-      accumulator[option.unit] = [...(accumulator[option.unit] ?? []), option];
-      return accumulator;
-    },
-    { ml: [], L: [], kg: [] },
-  );
-
   return (
     <div className="space-y-8">
+      <FilterGroup legend="Product name">
+        {filterOptions.names.map((option) => (
+          <CheckRow
+            key={option.value}
+            checked={filters.names.includes(option.value)}
+            onChange={() => toggle("names", option.value)}
+            label={option.label}
+            count={option.count}
+          />
+        ))}
+      </FilterGroup>
+
       {!hideApplications && (
         <FilterGroup legend="Application">
-          <label htmlFor="drawer-search" className="sr-only">
-            Search by product code
-          </label>
-          <input
-            id="drawer-search"
-            type="search"
-            value={filters.query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search code — P20ap, F17is…"
-            className="mb-4 h-10 w-full border-0 border-b border-line bg-transparent px-0 text-[14px] text-ink outline-none placeholder:text-mid focus:border-ink"
-          />
           <div className="space-y-2.5">
             {applications.map((application) => (
               <CheckRow
@@ -643,40 +601,19 @@ function FilterPanel({
         </FilterGroup>
       )}
 
-      <FilterGroup legend="Product type">
-        {filterOptions.types.map((option) => (
-          <CheckRow
-            key={option.value}
-            checked={filters.types.includes(option.value)}
-            onChange={() => toggle("types", option.value)}
-            label={option.label}
-            count={option.count}
-          />
-        ))}
-      </FilterGroup>
-
       <FilterGroup legend="Capacity">
-        {(["ml", "L", "kg"] as CapacityUnit[]).map((unit) =>
-          grouped[unit]?.length ? (
-            <div key={unit} className="space-y-2.5">
-              <p className="text-[12px] font-semibold text-mid">
-                {unit === "kg" ? "Kilograms" : unit === "ml" ? "Millilitres" : "Litres"}
-              </p>
-              {grouped[unit].map((option) => {
-                const key = `${option.value}-${option.unit}`;
-                return (
-                  <CheckRow
-                    key={key}
-                    checked={filters.capacities.includes(key)}
-                    onChange={() => toggle("capacities", key)}
-                    label={option.label}
-                    count={option.count}
-                  />
-                );
-              })}
-            </div>
-          ) : null,
-        )}
+        {filterOptions.capacities.map((option) => {
+          const key = `${option.value}-${option.unit}`;
+          return (
+            <CheckRow
+              key={key}
+              checked={filters.capacities.includes(key)}
+              onChange={() => toggle("capacities", key)}
+              label={option.label}
+              count={option.count}
+            />
+          );
+        })}
       </FilterGroup>
 
       <FilterGroup legend="Lock type">

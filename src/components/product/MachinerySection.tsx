@@ -1,94 +1,149 @@
+import {
+  Factory,
+  Printer,
+  Flame,
+  Bot,
+  Snowflake,
+  SunMedium,
+  Thermometer,
+  Recycle,
+  Wind,
+  Droplets,
+  type LucideIcon,
+} from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { machinery } from "@/data/manufacturing";
 
-/**
- * Machine ledger — production routes on the left, auxiliaries on the right.
- * Capacities are set in tabular type so the column reads like a spec sheet.
- */
-export function MachinerySection() {
-  return (
-    <Reveal className="bg-charcoal py-16 text-white lg:py-20">
-      <div className="shell">
-        <div className="flex flex-col justify-between gap-6 border-b border-white/15 pb-8 lg:flex-row lg:items-end">
-          <div>
-            <SectionLabel index={undefined} tone="light">
-              {machinery.eyebrow}
-            </SectionLabel>
-            <h2 className="display-md mt-4 max-w-xl text-white" data-reveal="letters">
-              Machines and the envelope they run.
-            </h2>
-          </div>
-          <p className="max-w-sm text-[14px] leading-relaxed text-white/85" data-reveal>
-            {machinery.intro}
-          </p>
-        </div>
+const productionIcons: Record<string, LucideIcon> = {
+  "Direct machineries": Factory,
+  "Screen printing": Printer,
+  "HTL": Flame,
+  "Inmould labeling (IML)": Bot,
+};
 
-        <div className="mt-10 grid gap-12 lg:grid-cols-12 lg:gap-14">
-          {/* Production */}
+const auxiliaryIcons: Record<string, LucideIcon> = {
+  "Chilling plant": Snowflake,
+  "Hopper dryers": SunMedium,
+  "Mould temperature controllers": Thermometer,
+  "Granulators": Recycle,
+  "Air compressors": Wind,
+  "Cooling tower": Droplets,
+};
+
+type MachinerySectionProps = {
+  index?: string;
+};
+
+/**
+ * Machine ledger — human-crafted editorial layout.
+ * Emphasizes typography, clean hierarchy, and authentic industrial catalog aesthetics
+ * with purpose-specific icons instead of sequential numbers.
+ */
+export function MachinerySection({ index = "05" }: MachinerySectionProps = {}) {
+  return (
+    <section className="border-t border-line bg-white py-14 text-ink lg:py-20">
+      <div className="shell">
+        <Reveal>
+          <div className="flex flex-col justify-between gap-6 border-b border-line pb-8 lg:flex-row lg:items-end">
+            <div>
+              <SectionLabel index={index} tone="dark">
+                {machinery.eyebrow}
+              </SectionLabel>
+              <h2 className="display-md mt-4 max-w-xl text-ink">
+                Machines and the envelope they run.
+              </h2>
+            </div>
+            <p className="max-w-sm text-[14.5px] leading-relaxed text-mid">
+              {machinery.intro}
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-16">
+          {/* Main Production Machineries — Editorial Clean Grid */}
           <div className="lg:col-span-7">
-            <div className="flex items-baseline justify-between gap-4 border-b border-white/15 pb-3">
-              <h3 className="font-display text-[18px] font-semibold text-white">
+            <div className="border-b-2 border-ink pb-3">
+              <h3 className="font-display text-xl font-semibold tracking-tight text-ink">
                 {machinery.production.title}
               </h3>
-              <span className="text-[11px] uppercase tracking-[0.16em] text-white/70">
-                {String(machinery.production.rows.length).padStart(2, "0")} routes
-              </span>
             </div>
 
-            <dl>
-              {machinery.production.rows.map((row, index) => (
-                <div
-                  key={row.name}
-                  className="group grid gap-1 border-b border-white/12 py-5 transition-colors duration-500 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-8"
-                  data-reveal
-                  data-reveal-delay={String(index * 0.06)}
-                >
-                  <dt>
-                    <span className="font-display text-[17px] font-semibold text-white">
-                      {row.name}
-                    </span>
+            <div className="divide-y divide-line">
+              {machinery.production.rows.map((row) => {
+                const Icon = productionIcons[row.name] || Factory;
+                return (
+                  <Reveal
+                    key={row.name}
+                    className="group py-6 transition-colors duration-300 first:pt-5 hover:bg-soft/50"
+                  >
+                    <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+                      <div className="flex items-center gap-3.5">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-light/70 text-mid/70 transition-colors duration-300 group-hover:bg-brand/10 group-hover:text-brand">
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <h4 className="font-display text-lg font-medium text-ink transition-colors duration-300 group-hover:text-brand">
+                          {row.name}
+                        </h4>
+                      </div>
+
+                      <div className="pl-[46px] sm:pl-0 sm:text-right">
+                        <span className="font-display text-xl font-semibold text-brand">
+                          {row.capacity}
+                        </span>
+                      </div>
+                    </div>
+
                     {row.note && (
-                      <span className="mt-1 block text-[13px] leading-relaxed text-white/85">
+                      <p className="mt-2 pl-[46px] text-[13.5px] leading-relaxed text-mid">
                         {row.note}
-                      </span>
+                      </p>
                     )}
-                  </dt>
-                  <dd className="tabular text-[15px] font-semibold text-brand sm:text-right">
-                    {row.capacity}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+                  </Reveal>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Auxiliaries */}
+          {/* Plant Auxiliaries — Clean Editorial Spec Column */}
           <div className="lg:col-span-5">
-            <div className="flex items-baseline justify-between gap-4 border-b border-white/15 pb-3">
-              <h3 className="font-display text-[18px] font-semibold text-white">
+            <div className="border-b-2 border-ink pb-3">
+              <h3 className="font-display text-xl font-semibold tracking-tight text-ink">
                 {machinery.auxiliaries.title}
               </h3>
-              <span className="text-[11px] uppercase tracking-[0.16em] text-white/70">
-                {String(machinery.auxiliaries.rows.length).padStart(2, "0")} units
-              </span>
             </div>
 
-            <ul className="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-1">
-              {machinery.auxiliaries.rows.map((row, index) => (
-                <li
-                  key={row.name}
-                  className="flex items-baseline justify-between gap-4 border-b border-white/12 py-4"
-                  data-reveal
-                  data-reveal-delay={String(index * 0.05)}
-                >
-                  <span className="text-[14px] text-white/85">{row.name}</span>
-                  <span className="tabular text-[13px] font-semibold text-white">{row.capacity}</span>
-                </li>
-              ))}
-            </ul>
+            <div className="divide-y divide-line">
+              {machinery.auxiliaries.rows.map((row) => {
+                const Icon = auxiliaryIcons[row.name] || Droplets;
+                return (
+                  <Reveal
+                    key={row.name}
+                    className="group flex items-center justify-between py-3.5 text-[14px] transition-colors duration-300 first:pt-5 hover:bg-soft/50"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-light/70 text-mid/70 transition-colors duration-300 group-hover:bg-brand/10 group-hover:text-brand">
+                        <Icon className="h-3.5 w-3.5" />
+                      </span>
+                      <span className="font-medium text-ink transition-colors duration-300 group-hover:text-brand">
+                        {row.name}
+                      </span>
+                    </div>
+                    <span className="font-mono text-[13.5px] font-semibold text-ink">
+                      {row.capacity}
+                    </span>
+                  </Reveal>
+                );
+              })}
+            </div>
+
+            <p className="mt-8 border-t border-line pt-4 text-[12.5px] leading-relaxed text-mid">
+              Continuous preventive calibration across all secondary units to ensure 100% operational uptime.
+            </p>
           </div>
         </div>
       </div>
-    </Reveal>
+    </section>
   );
 }
+

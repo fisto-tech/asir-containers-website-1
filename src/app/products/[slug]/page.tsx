@@ -5,9 +5,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Info } from "lucide-react";
 import { ProductMedia } from "@/components/products/ProductMedia";
 import { ProductCard } from "@/components/products/ProductCard";
+import { ProductApplicationsShowcase } from "@/components/products/ProductApplicationsShowcase";
 import { InspectionSection } from "@/components/product/InspectionSection";
-import { ProcessSection } from "@/components/product/ProcessSection";
-import { MachinerySection } from "@/components/product/MachinerySection";
 import { Reveal } from "@/components/motion/Reveal";
 import { AnimatedIcon, applicationIcons, type IconMotion } from "@/components/ui/AnimatedIcon";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -20,7 +19,6 @@ import {
   getRelatedProducts,
   lidsFor,
   products,
-  typeName,
 } from "@/data/products";
 import { site } from "@/data/site";
 import { swatches } from "@/lib/colors";
@@ -80,10 +78,9 @@ export default async function ProductPage({ params }: PageProps) {
     { label: "Capacity", value: capacityDisplay(product) },
     { label: "Brimful volume", value: product.specs.brimful },
     { label: "Product height", value: product.specs.height },
+    { label: "Product weight", value: product.specs.weight ?? "Available on enquiry" },
     { label: "GSL / OFC", value: product.specs.gslOfc },
     { label: "Application", value: applicationNames.join(" · ") },
-    { label: "Product family", value: typeName(product.type) },
-    { label: "Product codes", value: codesFor(product).join(" · ") },
     {
       label: "Lid options",
       value: lids.length === 2 ? "Flat Lid · Tind Lid (Tin/Sp.)" : "Flat Lid only",
@@ -92,7 +89,6 @@ export default async function ProductPage({ params }: PageProps) {
       label: "Lock type",
       value: product.locks.length > 0 ? product.locks.join(" · ") : "Not applicable",
     },
-   
   ];
 
   const structuredData = {
@@ -113,6 +109,9 @@ export default async function ProductPage({ params }: PageProps) {
       { "@type": "PropertyValue", name: "Brimful volume", value: product.specs.brimful },
       { "@type": "PropertyValue", name: "Product height", value: product.specs.height },
       { "@type": "PropertyValue", name: "GSL / OFC", value: product.specs.gslOfc },
+      ...(product.specs.weight
+        ? [{ "@type": "PropertyValue", name: "Product weight", value: product.specs.weight }]
+        : []),
       ...(product.codes.tin
         ? [{ "@type": "PropertyValue", name: "Tinned code", value: product.codes.tin }]
         : []),
@@ -138,11 +137,11 @@ export default async function ProductPage({ params }: PageProps) {
 
   return (
     <>
-      <div className="border-b border-line bg-white pt-28 lg:pt-36">
+      <div className="border-b border-line bg-white pt-20 lg:pt-24">
         <div className="shell">
           <nav
             aria-label="Breadcrumb"
-            className="flex flex-wrap items-center gap-2.5 text-[15px] font-medium text-mid sm:text-[15.5px]"
+            className="flex flex-wrap items-center gap-2 text-[14px] font-medium text-mid sm:text-[14.5px]"
           >
             <Link href="/" className="transition-colors hover:text-ink">
               Home
@@ -159,9 +158,9 @@ export default async function ProductPage({ params }: PageProps) {
             <span className="font-semibold text-ink">{product.codes.plain}</span>
           </nav>
 
-          <div className="mt-8 grid gap-10 pb-14 lg:grid-cols-12 lg:gap-14 lg:pb-20">
-            <div className="lg:col-span-6">
-              <div className="lg:sticky lg:top-28">
+          <div className="mt-5 grid items-stretch gap-8 pb-10 lg:grid-cols-12 lg:gap-10 lg:pb-12">
+            <div className="flex flex-col lg:col-span-5">
+              <div className="flex flex-1 flex-col lg:sticky lg:top-24">
                 <ProductMedia
                   src={product.image}
                   alt={product.imageAlt}
@@ -171,185 +170,114 @@ export default async function ProductPage({ params }: PageProps) {
               </div>
             </div>
 
-            <Reveal className="lg:col-span-6">          
+            <Reveal className="lg:col-span-7">          
+              <div>
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                  <h1 className="sheen-ink font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl md:text-5xl lg:text-[46px] lg:leading-[1.12]">
+                    {product.name}
+                  </h1>
 
-              <h1 className="display-lg sheen-ink text-ink" data-reveal="letters">
-                {product.name}
-              </h1>
+                  {/* Product codes badge — clean single card without outer wrapper */}
+                  <div className="flex shrink-0 items-center gap-2.5 self-start sm:mt-1">
+                    <div className="rounded-xl border border-line bg-white px-3.5 py-1.5 text-center shadow-2xs">
+                      <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-mid">
+                        Plain Code
+                      </span>
+                      <span className="flex items-center justify-center gap-1.5 font-mono text-[18px] font-extrabold tracking-tight text-ink sm:text-[20px]">
+                        {product.codes.plain}
+                        <AnimatedIcon name="pack" motion="float" className="h-4 w-4 text-brand" />
+                      </span>
+                    </div>
 
-              <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-mid" data-reveal>
-                {product.summary}
-              </p>
-
-              {/* Product codes — set as type, not tiles */}
-              <div className="mt-9 grid gap-8 border-t border-line pt-7 sm:grid-cols-2" data-reveal>
-                <div>
-                  <p className="text-[14px] text-mid">
-                    Plain code
-                  </p>
-                  <p className="mt-1.5 flex items-baseline gap-2 font-display text-[28px] font-semibold tabular leading-none text-ink">
-                    {product.codes.plain}
-                    <AnimatedIcon name="pack" motion="float" className="h-3.5 w-3.5 text-brand" />
-                  </p>
-                  <p className="mt-1.5 text-[13px] text-mid">Flat lid</p>
-                </div>
-                <div>
-                  <p className="text-[14px] text-mid">
-                    Tin/Sp. code
-                  </p>
-                  {product.codes.tin ? (
-                    <>
-                      <p className="mt-1.5 flex items-baseline gap-2 font-display text-[28px] font-semibold tabular leading-none text-ink">
-                        {product.codes.tin}
-                        <AnimatedIcon name="finish" motion="swing" className="h-3.5 w-3.5 text-brand" />
-                      </p>
-                      <p className="mt-1.5 text-[13px] text-mid">Tind lid</p>
-                    </>
-                  ) : (
-                    <>
-                      <p className="mt-1.5 font-display text-2xl font-semibold text-mid">—</p>
-                      <p className="mt-1.5 text-[13px] text-mid">Plain only for this container</p>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Specification table */}
-              <dl className="mt-8 border-t border-line" data-reveal>
-                {specRows.map((row) => (
-                  <div
-                    key={row.label}
-                    className="flex flex-col gap-1 border-b border-line py-3.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
-                  >
-                    <dt className="text-[14px] text-mid">
-                      {row.label}
-                    </dt>
-                    <dd className="text-[15px] text-ink sm:max-w-[60%] sm:text-right">{row.value}</dd>
+                    {product.codes.tin && (
+                      <div className="rounded-xl border border-brand/25 bg-white px-3.5 py-1.5 text-center shadow-2xs">
+                        <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-brand">
+                          Tin/Sp. Code
+                        </span>
+                        <span className="flex items-center justify-center gap-1.5 font-mono text-[18px] font-extrabold tracking-tight text-brand sm:text-[20px]">
+                          {product.codes.tin}
+                          <AnimatedIcon name="finish" motion="swing" className="h-4 w-4 text-brand" />
+                        </span>
+                      </div>
+                    )}
                   </div>
-                ))}
-              </dl>
+                </div>
 
-              {/* Colours */}
-              <div className="mt-8" data-reveal>
-                <p className="text-[14px] text-mid">
-                  Colour availability
+                <p className="mt-3.5 max-w-xl text-[15px] leading-relaxed text-mid sm:text-[15.5px]" data-reveal>
+                  {product.summary}
                 </p>
-                <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
-                  {colors.map((color) => (
-                    <li key={color} className="inline-flex items-center gap-2 text-[14px] text-ink">
-                      <span
-                        aria-hidden
-                        className={`h-3.5 w-3.5 rounded-full border ${swatches[color].ring}`}
-                        style={{ backgroundColor: swatches[color].hex }}
-                      />
-                      {color}
-                    </li>
+
+                {/* Specification table — enhanced readability & typography */}
+                <dl className="mt-7 border-t border-line" data-reveal>
+                  {specRows.map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex flex-col gap-1 border-b border-line py-3.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+                    >
+                      <dt className="text-[14.5px] font-medium text-mid sm:text-[15px]">
+                        {row.label}
+                      </dt>
+                      <dd className="text-[15px] font-semibold text-ink sm:max-w-[65%] sm:text-right sm:text-[15.5px]">
+                        {row.value}
+                      </dd>
+                    </div>
                   ))}
-                </ul>
-                
+                </dl>
+
+                {/* Colours */}
+                <div className="mt-5" data-reveal>
+                  <p className="text-[13px] text-mid">
+                    Colour availability
+                  </p>
+                  <ul className="mt-2.5 flex flex-wrap gap-x-5 gap-y-1.5">
+                    {colors.map((color) => (
+                      <li key={color} className="inline-flex items-center gap-2 text-[13.5px] text-ink">
+                        <span
+                          aria-hidden
+                          className={`h-3 w-3 rounded-full border ${swatches[color].ring}`}
+                          style={{ backgroundColor: swatches[color].hex }}
+                        />
+                        {color}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* CTAs */}
+                <div className="mt-6 flex flex-wrap items-center gap-3" data-reveal>
+                  <Link
+                    href={`/contact?product=${product.slug}`}
+                    className="group inline-flex h-11 items-center gap-2 bg-brand px-5 text-sm font-medium text-white transition-colors hover:bg-brand-dark"
+                  >
+                    Enquire about {product.codes.plain}
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                  <Link
+                    href="/products"
+                    className="inline-flex h-11 items-center gap-2 border border-ink/20 px-5 text-sm font-medium text-ink transition-colors hover:border-ink"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to products
+                  </Link>
+                </div>
               </div>
 
-              {/* CTAs */}
-              <div className="mt-9 flex flex-wrap items-center gap-3" data-reveal>
-                <Link
-                  href={`/contact?product=${product.slug}`}
-                  className="group inline-flex h-13 items-center gap-2 bg-brand px-6 text-sm font-medium text-white transition-colors hover:bg-brand-dark"
-                >
-                  Enquire about {product.codes.plain}
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-                <Link
-                  href="/products"
-                  className="inline-flex h-13 items-center gap-2 border border-ink/20 px-6 text-sm font-medium text-ink transition-colors hover:border-ink"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to products
-                </Link>
-              </div>
-
-              
             </Reveal>
           </div>
         </div>
       </div>
 
-      {/* Applications + detail editorial */}
-      <Reveal className="bg-soft py-16 lg:py-20">
-        <div className="shell grid gap-10 lg:grid-cols-12 lg:gap-14">
-          <div className="lg:col-span-4">
-            <h2 className="display-md text-ink" data-reveal="letters">
-              Where this
-              <br />
-              container is used.
-            </h2>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-mid" data-reveal>
-              {productApplications.length} application
-              {productApplications.length === 1 ? "" : "s"} on record for this container.
-            </p>
-          </div>
-
-          <div className="lg:col-span-8">
-            <ul className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
-              {productApplications.map((application) => (
-                <li key={application.slug} className="border-t border-line pt-4" data-reveal>
-                  <p className="flex items-center gap-2 text-[15px] font-semibold text-ink">
-                    <AnimatedIcon
-                      name={applicationIcons[application.slug]}
-                      motion={motionByApplication[application.slug]}
-                      className="h-5 w-5 text-brand"
-                    />
-                    {application.name}
-                  </p>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-mid">
-                    {application.blurb}
-                  </p>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
-              <div className="border-t border-line pt-4">
-                <p className="text-[14px] text-mid">
-                  Capacity system
-                </p>
-                <p className="mt-2 text-sm text-ink">
-                  Recorded in{" "}
-                  {product.capacity.unit === "ml"
-                    ? "millilitres"
-                    : product.capacity.unit === "L"
-                      ? "litres"
-                      : "kilograms"}
-                </p>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-mid">
-                  ml, L and KG stay separate — never converted.
-                </p>
-              </div>
-              <div className="border-t border-line pt-4">
-                <p className="text-[14px] text-mid">
-                  Closure
-                </p>
-                <p className="mt-2 text-sm text-ink">
-                  {product.locks.length > 0 ? product.locks.join(" · ") : "Flat lid"}
-                </p>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-mid">
-                  {product.locks.length > 0
-                    ? "A distinct container from other configurations at this capacity."
-                    : "Plain carries the flat lid; Tin/Sp. adds the tinned lid."}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Applications (auto-updating & interactive hover image showcase) */}
+      <Reveal>
+        <ProductApplicationsShowcase
+          applications={productApplications}
+          productName={product.name}
+        />
       </Reveal>
 
       {/* Quality statement + inspection gates */}
       <InspectionSection />
 
-      {/* In-process activities: moulding + the three printing routes */}
-      <ProcessSection productSlug={product.slug} />
-
-      {/* Machine ledger */}
-      <MachinerySection />
 
       {/* Related */}
       <section className="bg-white py-16 lg:py-20">
@@ -371,7 +299,7 @@ export default async function ProductPage({ params }: PageProps) {
           <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item, relatedIndex) => (
               <li key={item.slug}>
-                <ProductCard product={item} index={relatedIndex} />
+                <ProductCard product={item} index={relatedIndex} aspect="compact" />
               </li>
             ))}
           </ul>
