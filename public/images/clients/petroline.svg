@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" role="img" aria-label="Petroline">
+  <g fill="none">
+    <path d="M28 14 C20 24 16 30 16 36 a12 12 0 0 0 24 0 C40 30 36 24 28 14 Z" stroke="#2563eb" stroke-width="2.6" fill="#2563eb" fill-opacity="0.12" />
+    <path d="M24 37 a4 4 0 0 0 8 0" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" />
+  </g>
+  <text x="56" y="36" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="800" letter-spacing="1.4" fill="#1d4ed8">PETRO<tspan fill="#f59e0b">LINE</tspan></text>
+</svg>

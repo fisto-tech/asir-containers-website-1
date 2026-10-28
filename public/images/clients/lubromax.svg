@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" role="img" aria-label="LubroMax">
+  <g fill="none">
+    <rect x="16" y="16" width="24" height="24" rx="6" stroke="#d97706" stroke-width="2.6" fill="#fef3c7" />
+    <path d="M22 28 h12 M28 22 v12" stroke="#b45309" stroke-width="2.6" stroke-linecap="round" />
+  </g>
+  <text x="56" y="36" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="800" letter-spacing="1.4" fill="#b45309">LUBRO<tspan fill="#d97706">MAX</tspan></text>
+</svg>

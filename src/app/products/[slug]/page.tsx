@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Info } from "lucide-react";
@@ -345,7 +346,7 @@ export default async function ProductPage({ params }: PageProps) {
       <InspectionSection />
 
       {/* In-process activities: moulding + the three printing routes */}
-      <ProcessSection />
+      <ProcessSection productSlug={product.slug} />
 
       {/* Machine ledger */}
       <MachinerySection />
@@ -404,25 +405,51 @@ export default async function ProductPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Enquiry band */}
-      <section className="relative overflow-hidden bg-charcoal py-16 text-white">
-        <div className="shell grid gap-8 lg:grid-cols-12 lg:items-center">
-          <div className="lg:col-span-8">
-            <p className="text-[13px] font-medium text-white/85">Next step</p>
-            <h2 className="display-md mt-4">Need this container in a specific colour or closure?</h2>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/85">
-              Send us the code ({codesFor(product).join(" or ")}), the colour and the quantity you
-              need and we’ll confirm availability and lead time.
-            </p>
-          </div>
-          <div className="lg:col-span-4 lg:text-right">
-            <Link
-              href={`/contact?product=${product.slug}`}
-              className="group inline-flex h-13 items-center gap-2 bg-brand px-6 text-sm font-medium text-white transition-colors hover:bg-brand-dark"
-            >
-              Start an enquiry
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
+      {/* Enquiry band — matches homepage ContactCTA design */}
+      <section className="bg-white pt-2 pb-14 lg:pb-18">
+        <div className="shell">
+          <div className="relative overflow-hidden rounded-[24px] bg-charcoal shadow-xl">
+            {/* Backdrop with plant photograph */}
+            <div className="absolute inset-0">
+              <Image
+                src="/images/facility/dispatch.jpg"
+                alt="Dispatch bay and factory floor packaging line"
+                fill
+                sizes="100vw"
+                className="object-cover opacity-60"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/80 to-charcoal/40" />
+            </div>
+
+            <div className="relative z-10 flex flex-col justify-between gap-6 px-7 py-8 sm:px-10 sm:py-10 lg:flex-row lg:items-center lg:px-12 lg:py-11">
+              <div className="max-w-xl">
+                <SectionLabel index="08" tone="light">
+                  Next Step
+                </SectionLabel>
+
+                <h2 className="display-md mt-2.5 font-display font-semibold text-white">
+                  Need this container in a specific colour or closure?
+                </h2>
+
+                <p className="mt-2.5 max-w-lg text-[14.5px] leading-relaxed text-white/80">
+                  Send us the code ({codesFor(product).join(" or ")}), required colours and batch volume. We will confirm lead times and mould allocation directly.
+                </p>
+              </div>
+
+              {/* Clean Enquiry Action */}
+              <div className="shrink-0">
+                <Link
+                  href={`/contact?product=${product.slug}`}
+                  className="group inline-flex h-12 items-center justify-center gap-2.5 rounded-full bg-brand px-7 text-[14.5px] font-semibold text-white shadow-lg shadow-brand/25 transition-all duration-300 hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/35 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Start an enquiry
+                  <ArrowRight
+                    aria-hidden
+                    className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>

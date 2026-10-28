@@ -49,6 +49,44 @@ export const inspectionStages: InspectionStage[] = [
   },
 ];
 
+export type ClientLogo = {
+  name: string;
+  logo: string;
+  alt: string;
+};
+
+export const clientLogos: Record<string, ClientLogo[]> = {
+  screenPrinting: [
+    { name: "Nordlac", logo: "/images/clients/nordlac.svg", alt: "Client logo — Nordlac Paints" },
+    { name: "Apex Paints", logo: "/images/clients/apex-paints.svg", alt: "Client logo — Apex Paints" },
+    { name: "ColorCraft", logo: "/images/clients/colorcraft.svg", alt: "Client logo — ColorCraft" },
+  ],
+  htl: [
+    { name: "Agrovista", logo: "/images/clients/agrovista.svg", alt: "Client logo — Agrovista" },
+    { name: "CropGuard", logo: "/images/clients/cropguard.svg", alt: "Client logo — CropGuard" },
+    { name: "KisanAgro", logo: "/images/clients/kisanagro.svg", alt: "Client logo — KisanAgro" },
+  ],
+  iml: [
+    { name: "Fernline", logo: "/images/clients/fernline.svg", alt: "Client logo — Fernline Food" },
+    { name: "PureHarvest", logo: "/images/clients/pureharvest.svg", alt: "Client logo — PureHarvest" },
+    { name: "Petroline", logo: "/images/clients/petroline.svg", alt: "Client logo — Petroline" },
+    { name: "LubroMax", logo: "/images/clients/lubromax.svg", alt: "Client logo — LubroMax" },
+  ],
+};
+
+export const allHomeClients: ClientLogo[] = [
+  { name: "Nordlac", logo: "/images/clients/nordlac.svg", alt: "Nordlac Paints" },
+  { name: "Agrovista", logo: "/images/clients/agrovista.svg", alt: "Agrovista Agro" },
+  { name: "Fernline", logo: "/images/clients/fernline.svg", alt: "Fernline Food" },
+  { name: "Apex Paints", logo: "/images/clients/apex-paints.svg", alt: "Apex Paints" },
+  { name: "CropGuard", logo: "/images/clients/cropguard.svg", alt: "CropGuard Chemical" },
+  { name: "PureHarvest", logo: "/images/clients/pureharvest.svg", alt: "PureHarvest Foods" },
+  { name: "Petroline", logo: "/images/clients/petroline.svg", alt: "Petroline Lubricants" },
+  { name: "LubroMax", logo: "/images/clients/lubromax.svg", alt: "LubroMax Industrial" },
+  { name: "KisanAgro", logo: "/images/clients/kisanagro.svg", alt: "KisanAgro Crop Care" },
+  { name: "ColorCraft", logo: "/images/clients/colorcraft.svg", alt: "ColorCraft Coatings" },
+];
+
 export const inProcess = {
   eyebrow: "In-process activities",
   intro:
@@ -63,25 +101,25 @@ export const inProcess = {
     detail: "Three decoration routes are run in-house, each with its own tooling and inspection gate.",
     routes: [
       {
+        id: "screenPrinting",
         name: "Screen Printing",
         code: "01",
         detail: "Up to six colours, applied direct to the container wall.",
-        logo: "/images/clients/nordlac.svg",
-        logoAlt: "Placeholder client logo — Nordlac",
+        logos: clientLogos.screenPrinting,
       },
       {
+        id: "htl",
         name: "HTL",
         code: "02",
         detail: "Heat-transfer labelling for photographic and fine-detail artwork.",
-        logo: "/images/clients/agrovista.svg",
-        logoAlt: "Placeholder client logo — Agrovista",
+        logos: clientLogos.htl,
       },
       {
+        id: "iml",
         name: "Inmould labeling (IML)",
         code: "03",
         detail: "Label moulded into the wall, so the print cannot lift or peel.",
-        logo: "/images/clients/fernline.svg",
-        logoAlt: "Placeholder client logo — Fernline",
+        logos: clientLogos.iml,
       },
     ],
   },

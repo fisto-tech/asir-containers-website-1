@@ -6,6 +6,7 @@ import { ApplicationShowcase } from "@/components/home/ApplicationShowcase";
 import { AdvantagesSection } from "@/components/home/AdvantagesSection";
 import { ManufacturingSection } from "@/components/home/ManufacturingSection";
 import { QualitySection } from "@/components/home/QualitySection";
+import { ClientsSection } from "@/components/home/ClientsSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { ContactCTA } from "@/components/home/ContactCTA";
 import { site } from "@/data/site";
@@ -55,6 +56,7 @@ export default function HomePage() {
       <AdvantagesSection />
       <ManufacturingSection />
       <QualitySection />
+      <ClientsSection />
       <TestimonialsSection />
       <ContactCTA />
 

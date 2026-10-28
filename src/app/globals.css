@@ -727,3 +727,25 @@ select:focus-visible {
     overflow: visible;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Infinite Client Marquee
+   -------------------------------------------------------------------------- */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 32s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}

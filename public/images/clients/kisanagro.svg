@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" role="img" aria-label="KisanAgro">
+  <g fill="none">
+    <path d="M16 38 Q28 14 40 38" stroke="#15803d" stroke-width="2.6" />
+    <path d="M28 16 v22" stroke="#eab308" stroke-width="2.2" stroke-linecap="round" />
+    <path d="M21 28 Q28 22 35 28" stroke="#15803d" stroke-width="2.2" />
+  </g>
+  <text x="56" y="36" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="800" letter-spacing="1.4" fill="#15803d">KISAN<tspan fill="#eab308">AGRO</tspan></text>
+</svg>

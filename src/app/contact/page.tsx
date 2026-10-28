@@ -34,46 +34,53 @@ export default function ContactPage() {
         />
       </Reveal>
 
-      <section className="bg-white py-10 lg:py-14">
-        <div className="shell grid gap-12 lg:grid-cols-12 lg:gap-14">
+      <section className="bg-white py-10 lg:py-16">
+        <div className="shell grid gap-12 lg:grid-cols-12 lg:gap-14 lg:items-stretch">
           {/* Enquiry form */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 flex flex-col justify-between">
             <ContactForm />
           </div>
 
           {/* Contact details + map */}
-          <aside className="lg:col-span-5">
-            <h2 className="text-[13px] font-semibold uppercase tracking-wider text-mid">Contact details</h2>
-            <ul className="mt-4 border-t border-line">
-              <ContactRow
-                icon={<Phone aria-hidden className="h-5 w-5" />}
-                label="Mobile"
-                value={contact.phone}
-                href={contact.phone ? `tel:${contact.phone.replace(/\s/g, "")}` : undefined}
-              />
-              <ContactRow
-                icon={<Mail aria-hidden className="h-5 w-5" />}
-                label="Email"
-                value={contact.email}
-                href={contact.email ? `mailto:${contact.email}` : undefined}
-              />
-              <ContactRow
-                icon={<MapPin aria-hidden className="h-5 w-5" />}
-                label="Location"
-                value={address}
-              />
-              <ContactRow
-                icon={<Clock aria-hidden className="h-5 w-5" />}
-                label="Business hours"
-                value={
-                  contact.businessHours.length > 0 ? contact.businessHours.join(" · ") : null
-                }
-              />
-            </ul>
+          <aside className="lg:col-span-5 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-line pt-8 lg:pt-0 lg:pl-10">
+            <div>
+              <div className="border-b border-ink pb-5">
+                <h2 className="font-display text-[26px] font-semibold leading-tight text-ink">
+                  Contact details
+                </h2>
+              </div>
+
+              <ul className="mt-2">
+                <ContactRow
+                  icon={<Phone aria-hidden className="h-5 w-5" />}
+                  label="Mobile"
+                  value={contact.phone}
+                  href={contact.phone ? `tel:${contact.phone.replace(/\s/g, "")}` : undefined}
+                />
+                <ContactRow
+                  icon={<Mail aria-hidden className="h-5 w-5" />}
+                  label="Email"
+                  value={contact.email}
+                  href={contact.email ? `mailto:${contact.email}` : undefined}
+                />
+                <ContactRow
+                  icon={<MapPin aria-hidden className="h-5 w-5" />}
+                  label="Location"
+                  value={address}
+                />
+                <ContactRow
+                  icon={<Clock aria-hidden className="h-5 w-5" />}
+                  label="Business hours"
+                  value={
+                    contact.businessHours.length > 0 ? contact.businessHours.join(" · ") : null
+                  }
+                />
+              </ul>
+            </div>
 
             {/* Map */}
-            <div className="mt-8">
-              <h2 className="text-[13px] font-semibold uppercase tracking-wider text-mid">Find us</h2>
+            <div className="mt-8 pt-4 flex-1 flex flex-col justify-end">
+              <h3 className="text-[12px] font-semibold uppercase tracking-wider text-mid">Find us</h3>
               {contact.mapEmbedUrl ? (
                 <iframe
                   src={contact.mapEmbedUrl}
@@ -81,14 +88,14 @@ export default function ContactPage() {
                   loading="lazy"
                   allowFullScreen
                   referrerPolicy="strict-origin-when-cross-origin"
-                  className="mt-3 aspect-4/3 w-full rounded-[16px] border border-line shadow-xs"
+                  className="mt-3 h-[240px] w-full rounded-[16px] border border-line shadow-xs"
                 />
               ) : (
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group mt-4 flex aspect-4/3 w-full flex-col justify-end rounded-[18px] bg-[linear-gradient(140deg,#151515_0%,#242424_100%)] p-6 text-white transition-transform duration-500 hover:-translate-y-1"
+                  className="group mt-3 flex h-[240px] w-full flex-col justify-end rounded-[18px] bg-[linear-gradient(140deg,#151515_0%,#242424_100%)] p-6 text-white transition-transform duration-500 hover:-translate-y-1"
                 >
                   <span
                     aria-hidden

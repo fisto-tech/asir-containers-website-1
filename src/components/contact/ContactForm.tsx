@@ -127,14 +127,11 @@ export function ContactForm() {
       noValidate
       className="w-full"
     >
-      <div className="flex items-start justify-between gap-4 border-b border-ink pb-6">
+      <div className="flex items-start justify-between gap-4 border-b border-ink pb-5">
         <div>
           <h2 className="font-display text-[26px] font-semibold leading-tight text-ink">
             Enquiry form
           </h2>
-          <p className="mt-2 text-[14px] text-mid">
-            Fields marked <span className="text-brand">*</span> are required.
-          </p>
         </div>
       </div>
 

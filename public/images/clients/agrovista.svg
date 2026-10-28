@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" role="img" aria-label="Placeholder client logo — Agrovista">
-  <g fill="none" stroke="#111111" stroke-width="2.4">
-    <circle cx="28" cy="28" r="15" />
-    <path d="M28 42c0-9 5-15 13-17-1 9-6 15-13 17z" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" role="img" aria-label="Agrovista">
+  <g fill="none">
+    <circle cx="28" cy="28" r="15" stroke="#16a34a" stroke-width="2.6" fill="#16a34a" fill-opacity="0.1" />
+    <path d="M28 41c0-8 5-14 12-16-1 8-5 14-12 16z" fill="#15803d" />
+    <circle cx="28" cy="20" r="3" fill="#ca8a04" />
   </g>
-  <text x="56" y="36" font-family="Helvetica, Arial, sans-serif" font-size="21" font-weight="700" letter-spacing="1.6" fill="#111111">AGROVISTA</text>
+  <text x="56" y="36" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="800" letter-spacing="1.5" fill="#15803d">AGRO<tspan fill="#ca8a04">VISTA</tspan></text>
 </svg>
