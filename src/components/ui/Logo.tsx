@@ -6,6 +6,7 @@ type LogoProps = {
   /** "dark" renders for light backgrounds, "light" for dark backgrounds. */
   tone?: "dark" | "light";
   className?: string;
+  imageClassName?: string;
   /** Hide the wordmark (icon only) — used in tight spaces. */
   compact?: boolean;
 };
@@ -13,7 +14,7 @@ type LogoProps = {
 /**
  * Official ASIR Containers brand logo.
  */
-export function Logo({ tone = "dark", className = "", compact = false }: LogoProps) {
+export function Logo({ tone = "dark", className = "", imageClassName = "", compact = false }: LogoProps) {
   const isLight = tone === "light";
 
   return (
@@ -38,7 +39,7 @@ export function Logo({ tone = "dark", className = "", compact = false }: LogoPro
           width={232}
           height={90}
           priority
-          className="h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+          className={`h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02] ${imageClassName}`}
         />
       </div>
     </Link>
