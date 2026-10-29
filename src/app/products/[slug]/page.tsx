@@ -224,8 +224,6 @@ export default async function ProductPage({ params }: PageProps) {
                   ))}
                 </dl>
 
-               
-
                 {/* CTAs */}
                 <div className="mt-6 flex flex-wrap items-center gap-3" data-reveal>
                   <Link
