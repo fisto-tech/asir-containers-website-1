@@ -19,7 +19,7 @@ export function InspectionSection() {
       <div className="shell grid gap-10 lg:grid-cols-12 lg:gap-14 items-center">
         {/* Left Column: Full Untrimmed Slogan with Modern Industrial Accent */}
         <div className="lg:col-span-5">
-          <SectionLabel index="03">{qualityStatement.eyebrow}</SectionLabel>
+          <SectionLabel>{qualityStatement.eyebrow}</SectionLabel>
 
           <figure className="mt-5 border-l-3 border-brand pl-5 lg:pl-6">
             <blockquote
