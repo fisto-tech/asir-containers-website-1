@@ -5,11 +5,9 @@ import {
   applicationsFor,
   productDisplayName,
   codesFor,
-  colorsFor,
   lidsFor,
   type Product,
 } from "@/data/products";
-import { swatches } from "@/lib/colors";
 
 type ProductCardProps = {
   product: Product;
@@ -29,7 +27,6 @@ export function ProductCard({
   aspect = "square",
 }: ProductCardProps) {
   const productApplications = applicationsFor(product);
-  const colors = colorsFor(product);
   const lids = lidsFor(product);
 
   const aspectClass =
@@ -74,23 +71,12 @@ export function ProductCard({
           />
         </div>
 
-        <div className="mt-2.5 flex items-center justify-between gap-3 border-t border-line/80 pt-2.5">
-          <p className="min-w-0 truncate text-[13.5px] font-normal leading-relaxed text-mid">
+        <div className="mt-2.5 border-t border-line/80 pt-2.5">
+          <p className="truncate text-[13.5px] font-normal leading-relaxed text-mid">
             {lids.length === 2 ? "Plain & Tin/Sp." : "Plain"}
             {product.locks.length > 0 ? ` · ${product.locks.join(", ")}` : ""}
             {" · "}
             {productApplications.map((application) => application.name).join(" · ")}
-          </p>
-
-          <p className="flex shrink-0 items-center gap-1.5" aria-label={`Colours: ${colors.join(", ")}`}>
-            {colors.map((color) => (
-              <span
-                key={color}
-                title={swatches[color].label}
-                className={`h-3 w-3 rounded-full border ${swatches[color].ring}`}
-                style={{ backgroundColor: swatches[color].hex }}
-              />
-            ))}
           </p>
         </div>
       </div>

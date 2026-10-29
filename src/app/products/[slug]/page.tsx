@@ -224,24 +224,7 @@ export default async function ProductPage({ params }: PageProps) {
                   ))}
                 </dl>
 
-                {/* Colours */}
-                <div className="mt-5" data-reveal>
-                  <p className="text-[13px] text-mid">
-                    Colour availability
-                  </p>
-                  <ul className="mt-2.5 flex flex-wrap gap-x-5 gap-y-1.5">
-                    {colors.map((color) => (
-                      <li key={color} className="inline-flex items-center gap-2 text-[13.5px] text-ink">
-                        <span
-                          aria-hidden
-                          className={`h-3 w-3 rounded-full border ${swatches[color].ring}`}
-                          style={{ backgroundColor: swatches[color].hex }}
-                        />
-                        {color}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+               
 
                 {/* CTAs */}
                 <div className="mt-6 flex flex-wrap items-center gap-3" data-reveal>

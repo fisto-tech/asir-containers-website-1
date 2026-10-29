@@ -11,45 +11,35 @@ import { gsap, ScrollTrigger, useGSAP, reduceMotion } from "@/lib/animations";
 import {
   applications,
   codesFor,
-  colorsFor,
   filterOptions,
   lidsFor,
   products,
   type ApplicationSlug,
-  type CapacityUnit,
-  type ColorName,
   type LidType,
   type LockType,
   type Product,
   type ProductTypeSlug,
 } from "@/data/products";
-import { swatches } from "@/lib/colors";
 
-type FilterKey = "applications" | "types" | "capacities" | "names" | "lids" | "locks" | "colors";
+type FilterKey = "applications" | "types" | "names" | "lids" | "locks";
 
 type Filters = {
   applications: ApplicationSlug[];
   types: ProductTypeSlug[];
-  capacities: string[];
   names: string[];
   lids: LidType[];
   locks: LockType[];
-  colors: ColorName[];
   query: string;
 };
 
 const EMPTY_FILTERS: Filters = {
   applications: [],
   types: [],
-  capacities: [],
   names: [],
   lids: [],
   locks: [],
-  colors: [],
   query: "",
 };
-
-const capacityKey = (product: Product) => `${product.capacity.value}-${product.capacity.unit}`;
 
 const readList = <T extends string>(params: URLSearchParams, key: string, allowed: readonly T[]): T[] =>
   (params.get(key) ?? "")
@@ -70,11 +60,6 @@ const parseFilters = (search: string): Filters => {
       ? readList(params, "application", allowedApplications)
       : fromLegacy,
     types: readList(params, "type", filterOptions.types.map((option) => option.value)),
-    capacities: readList(
-      params,
-      "capacity",
-      filterOptions.capacities.map((option) => `${option.value}-${option.unit}`),
-    ),
     names: readList(
       params,
       "name",
@@ -82,7 +67,6 @@ const parseFilters = (search: string): Filters => {
     ),
     lids: readList(params, "lid", filterOptions.lids.map((option) => option.value)),
     locks: readList(params, "lock", filterOptions.locks.map((option) => option.value)),
-    colors: readList(params, "color", filterOptions.colors.map((option) => option.value)),
     query: params.get("q") ?? "",
   };
 };
@@ -91,11 +75,9 @@ const toQueryString = (filters: Filters) => {
   const params = new URLSearchParams();
   if (filters.applications.length) params.set("application", filters.applications.join(","));
   if (filters.types.length) params.set("type", filters.types.join(","));
-  if (filters.capacities.length) params.set("capacity", filters.capacities.join(","));
   if (filters.names.length) params.set("name", filters.names.join(","));
   if (filters.lids.length) params.set("lid", filters.lids.join(","));
   if (filters.locks.length) params.set("lock", filters.locks.join(","));
-  if (filters.colors.length) params.set("color", filters.colors.join(","));
   if (filters.query.trim()) params.set("q", filters.query.trim());
   const query = params.toString();
   return query ? `?${query}` : "";
@@ -119,24 +101,18 @@ const matchesFilters = (product: Product, filters: Filters) => {
     return false;
   }
   if (filters.types.length && !filters.types.includes(product.type)) return false;
-  if (filters.capacities.length && !filters.capacities.includes(capacityKey(product))) return false;
   if (filters.names.length && !filters.names.includes(product.name)) return false;
   if (filters.lids.length && !filters.lids.some((lid) => lidsFor(product).includes(lid))) return false;
   if (filters.locks.length && !filters.locks.some((lock) => product.locks.includes(lock))) return false;
-  if (filters.colors.length && !filters.colors.some((color) => colorsFor(product).includes(color))) {
-    return false;
-  }
   return matchesQuery(product, filters.query);
 };
 
 const activeCount = (filters: Filters) =>
   filters.applications.length +
   filters.types.length +
-  filters.capacities.length +
   filters.names.length +
   filters.lids.length +
   filters.locks.length +
-  filters.colors.length +
   (filters.query.trim() ? 1 : 0);
 
 /* -------------------------------------------------------------------------- */
@@ -236,13 +212,6 @@ export function ProductsBrowser() {
       label: filterOptions.types.find((option) => option.value === value)?.label ?? value,
       remove: () => toggle("types", value),
     })),
-    ...filters.capacities.map((value) => ({
-      key: `capacity-${value}`,
-      label:
-        filterOptions.capacities.find((option) => `${option.value}-${option.unit}` === value)?.label ??
-        value.replace("-", " "),
-      remove: () => toggle("capacities", value),
-    })),
     ...filters.names.map((value) => ({
       key: `name-${value}`,
       label: value,
@@ -257,11 +226,6 @@ export function ProductsBrowser() {
       key: `lock-${value}`,
       label: value,
       remove: () => toggle("locks", value),
-    })),
-    ...filters.colors.map((value) => ({
-      key: `color-${value}`,
-      label: value,
-      remove: () => toggle("colors", value),
     })),
     ...(filters.query.trim()
       ? [
@@ -522,27 +486,18 @@ function CheckRow({
   onChange,
   label,
   count,
-  swatch,
   icon,
 }: {
   checked: boolean;
   onChange: () => void;
   label: string;
   count?: number;
-  swatch?: string;
   icon?: React.ReactNode;
 }) {
   return (
     <label className="group flex cursor-pointer items-center gap-3 py-1 text-[15px] font-medium text-ink transition-colors hover:text-brand">
       <input type="checkbox" checked={checked} onChange={onChange} className="h-4.5 w-4.5 shrink-0 accent-brand rounded" />
       {icon}
-      {swatch && (
-        <span
-          aria-hidden
-          className="h-3.5 w-3.5 rounded-full border border-mid/40"
-          style={{ backgroundColor: swatch }}
-        />
-      )}
       <span className="flex-1 leading-snug">{label}</span>
       {typeof count === "number" && <span className="tabular text-[13px] font-normal text-mid group-hover:text-brand">{count}</span>}
     </label>
@@ -601,21 +556,6 @@ function FilterPanel({
         </FilterGroup>
       )}
 
-      <FilterGroup legend="Capacity">
-        {filterOptions.capacities.map((option) => {
-          const key = `${option.value}-${option.unit}`;
-          return (
-            <CheckRow
-              key={key}
-              checked={filters.capacities.includes(key)}
-              onChange={() => toggle("capacities", key)}
-              label={option.label}
-              count={option.count}
-            />
-          );
-        })}
-      </FilterGroup>
-
       <FilterGroup legend="Lock type">
         {filterOptions.locks.map((option) => (
           <CheckRow
@@ -624,19 +564,6 @@ function FilterPanel({
             onChange={() => toggle("locks", option.value)}
             label={option.label}
             count={option.count}
-          />
-        ))}
-      </FilterGroup>
-
-      <FilterGroup legend="Available colour">
-        {filterOptions.colors.map((option) => (
-          <CheckRow
-            key={option.value}
-            checked={filters.colors.includes(option.value)}
-            onChange={() => toggle("colors", option.value)}
-            label={option.label}
-            count={option.count}
-            swatch={swatches[option.value].hex}
           />
         ))}
       </FilterGroup>
