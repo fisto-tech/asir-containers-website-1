@@ -100,7 +100,7 @@ export function Auxiliaries() {
                       key={row.name}
                       data-reveal
                       data-reveal-delay={String((columnIndex * 3 + index) * 0.05)}
-                      className="flex items-center gap-4 border-b border-line py-4 last:border-b-0"
+                      className="group -mx-3 flex items-center gap-4 rounded-[12px] border-b border-line px-3 py-4 transition-colors duration-300 last:border-b-0 hover:bg-[#f7f8fa]"
                     >
                       <span
                         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${accent.tile}`}
@@ -119,7 +119,7 @@ export function Auxiliaries() {
                       <span className="ml-auto flex shrink-0 items-baseline gap-1.5">
                         <Counter
                           value={countOf(row.capacity)}
-                          className={`font-display text-[24px] font-semibold leading-none ${accent.value}`}
+                          className={`font-display text-[26px] font-semibold leading-none tabular-nums ${accent.value}`}
                         />
                         <span className="text-[11px] uppercase tracking-[0.1em] text-mid/70">
                           {unitOf(row.capacity)}
