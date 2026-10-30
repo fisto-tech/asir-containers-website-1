@@ -54,7 +54,10 @@ Notes
   shown in the UI any more; to swap in real plant photography, edit the `src` values in
   `components/process/ProcessHero.tsx`, `components/process/InProcessStages.tsx`,
   `components/process/QualityStatement.tsx`, `components/technologies/TechHero.tsx` and the
-  two page files.
+  two page files. The contact band uses its own derived asset,
+  `public/images/contact/contact-hero.jpg` (a 2:1 re-frame of
+  `detail/stacked-pails.jpg` with mirrored edges); replace that file when real
+  studio photography lands.
 
 ---
 

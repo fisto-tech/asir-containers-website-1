@@ -102,12 +102,12 @@ export function ContactHero({ title, intro }: { title: string; intro: string }) 
             className="fade-left relative h-[150px] w-full sm:h-[165px] lg:h-full lg:min-h-[165px]"
           >
             <Image
-              src="/images/detail/stacked-pails.jpg"
-              alt="Stacked ASIR Containers pails with red lids"
+              src="/images/contact/contact-hero.jpg"
+              alt="Stacked ASIR Containers pails with red lids on a warm studio ground"
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 44vw"
-              className="ambient-media-slow object-cover object-[62%_45%]"
+              className="ambient-media-slow object-cover object-[center_55%]"
             />
           </div>
         </div>
