@@ -1,220 +1,285 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { ArrowUpRight, MapPin, Phone, Mail } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
-import { AnimatedIcon, applicationIcons } from "@/components/ui/AnimatedIcon";
-import { SectionLabel } from "@/components/ui/SectionLabel";
-import { site, navigation } from "@/data/site";
-import { applications, applicationCount, rangeStats } from "@/data/products";
+import { site } from "@/data/site";
 
 const year = new Date().getFullYear();
 
-/** Authentic filled brand icons (LinkedIn, Instagram, Facebook, YouTube) */
-function LinkedinIcon({ className }: { className?: string }) {
+/** Social icons with rounded circular border */
+function LinkedinIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
       <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.67 1.67 0 1 0 0-3.34 1.67 1.67 0 0 0 0 3.34m1.39 9.74v-8.37H5.07v8.37h2.78Z" />
     </svg>
   );
 }
 
-function InstagramIcon({ className }: { className?: string }) {
+function InstagramIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
     </svg>
   );
 }
 
-function FacebookIcon({ className }: { className?: string }) {
+function FacebookIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
     </svg>
   );
 }
 
-function YoutubeIcon({ className }: { className?: string }) {
+function YoutubeIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
       <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
     </svg>
   );
 }
 
-const socialIcons: Record<string, React.ComponentType<{ className?: string }>> = {
-  linkedin: LinkedinIcon,
-  instagram: InstagramIcon,
-  facebook: FacebookIcon,
-  youtube: YoutubeIcon,
-};
+/** Clean outline application icons */
+function PaintBrushIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m19 11-8-8-8.6 8.6a2 2 0 0 0 0 2.8l5.2 5.2c.8.8 2 .8 2.8 0L19 11Z" />
+      <path d="m5 2 5 5" />
+      <path d="M2 13h15" />
+      <path d="M22 20a2 2 0 1 1-4 0c0-1.6 1.7-2.6 2-4 .3 1.4 2 2.4 2 4Z" />
+    </svg>
+  );
+}
+
+function SeedlingIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22v-9" />
+      <path d="M9 13a4.5 4.5 0 0 1 3-4.24 4.5 4.5 0 0 1 8 2.24c0 3-4 4-8 4" />
+      <path d="M12 17c-4 0-8-1-8-4 0-2.5 3-4 5.5-3.5" />
+    </svg>
+  );
+}
+
+function CutleryIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 2v20" />
+      <path d="M18 2a4 4 0 0 1 4 4v4h-4" />
+      <path d="M6 2v7a3 3 0 0 0 6 0V2" />
+      <path d="M9 12v10" />
+    </svg>
+  );
+}
+
+function DropIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-6-1.5-1.6-3-3.9-4-7-1 3.1-2.5 5.4-4 7-2 2.1-3 4-3 6a7 7 0 0 0 7 7Z" />
+    </svg>
+  );
+}
+
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "Products", href: "/products" },
+  { label: "Process", href: "/process" },
+  { label: "Technologies", href: "/technologies" },
+  { label: "Contact", href: "/contact" },
+];
+
+const applicationsList = [
+  { label: "Paint", count: "12", href: "/products?application=paint", icon: PaintBrushIcon },
+  { label: "Agro", count: "10", href: "/products?application=agro", icon: SeedlingIcon },
+  { label: "Food", count: "10", href: "/products?application=food", icon: CutleryIcon },
+  { label: "Lube", count: "04", href: "/products?application=lube", icon: DropIcon },
+];
 
 export function Footer() {
-  const { contact } = site;
-
   return (
-    <footer className="relative bg-charcoal text-white">
-      <div className="h-1 w-full bg-brand" />
+    <footer className="relative bg-[#07090e] text-white overflow-hidden">
+      {/* Background Graphic Image (public/images/footer-bg.png) - spans full height through copyright */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <Image
+          src="/images/footer-bg.png"
+          alt="ASIR Industrial Packaging"
+          fill
+          priority={false}
+          className="object-contain object-right"
+        />
+      </div>
 
-      <div className="shell py-12 lg:py-14">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10 xl:gap-12">
-          {/* Col 1: Brand & Bio */}
-          <div className="flex flex-col">
-            <div className="flex items-center pb-3 border-b border-white/10 lg:border-transparent lg:pb-0">
-              <Logo tone="light" imageClassName="!h-14 sm:!h-16" />
-            </div>
-            <p className="mt-5 text-[13.5px] leading-relaxed text-white/70 max-w-sm">
-              {site.description}
-            </p>
-          </div>
+      {/* Main Footer Content — fluid responsive vw scaling on desktop to scale proportionally with the background image */}
+      <div className="relative z-10 w-full pt-14 pb-10 lg:pt-[4.5vw] lg:pb-[3.5vw] px-6 sm:px-10 lg:pl-[4.5vw] lg:pr-[2vw] lg:max-w-[70vw]">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-[2.5vw] items-stretch">
+          
+          {/* Column 1: Brand & About (3.8 cols) */}
+          <div className="lg:col-span-4 pr-0 lg:pr-[0.5vw] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center -mt-1 lg:-mt-[0.25vw]">
+                <Logo tone="light" imageClassName="!h-11 sm:!h-12 lg:!h-[2.6vw]" />
+              </div>
 
-          {/* Col 2: Contact Details + Socials */}
-          <div className="flex flex-col">
-            <div className="border-b border-white/15 pb-2">
-              <h3 className="font-display text-[15.5px] font-semibold tracking-tight text-white">
-                Contact
-              </h3>
+              <p className="mt-4 lg:mt-[1.1vw] text-[13.5px] lg:text-[0.82vw] leading-relaxed text-[#94a3b8] max-w-sm lg:max-w-[21vw] font-normal">
+                ASIR Containers manufactures rigid plastic pails and containers for the paint, agro, food and lubricant industries — in round and square formats, with multiple closure options and industry-specific colour availability.
+              </p>
             </div>
-            <div className="mt-4 space-y-3 text-[13.5px]">
+
+            {/* Social Icons aligned towards bottom */}
+            <div className="mt-6 lg:mt-[1.6vw] flex items-center gap-3 lg:gap-[0.65vw]">
               <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                  [contact.addressLines.join(", "), contact.country].filter(Boolean).join(", ")
-                )}`}
+                href={site.social.find((s) => s.icon === "linkedin")?.href || "https://linkedin.com"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group/addr flex items-start gap-2.5 text-white/65 transition-colors hover:text-white"
+                aria-label="LinkedIn"
+                className="flex h-9 w-9 lg:h-[2vw] lg:w-[2vw] items-center justify-center rounded-full border border-white/20 text-slate-300 transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white"
               >
-                <AnimatedIcon
-                  name="pin"
-                  motion="pulse"
-                  className="mt-0.5 h-4 w-4 shrink-0 text-brand"
-                />
-                <span className="leading-relaxed">
-                  {contact.addressLines.length > 0 ? (
-                    contact.addressLines.map((line) => (
-                      <span key={line} className="block group-hover/addr:underline decoration-white/30 underline-offset-2">
-                        {line}
-                      </span>
-                    ))
-                  ) : (
-                    <span>Registered address to be supplied</span>
-                  )}
-                </span>
+                <LinkedinIcon className="h-4 w-4 lg:h-[0.9vw] lg:w-[0.9vw]" />
               </a>
-
-              {contact.phone && (
-                <a
-                  href={`tel:${contact.phone.replace(/\s/g, "")}`}
-                  className="group/phone flex items-center gap-2.5 text-white/65 transition-colors hover:text-white"
-                >
-                  <AnimatedIcon name="phone" motion="swing" className="h-4 w-4 shrink-0 text-brand" />
-                  <span className="group-hover/phone:underline decoration-white/30 underline-offset-2 tabular">
-                    {contact.phone}
-                  </span>
-                </a>
-              )}
-
-              {contact.email && (
-                <a
-                  href={`mailto:${contact.email}`}
-                  className="group/mail flex items-center gap-2.5 text-white/65 transition-colors hover:text-white"
-                >
-                  <AnimatedIcon name="mail" motion="float" className="h-4 w-4 shrink-0 text-brand" />
-                  <span className="group-hover/mail:underline decoration-white/30 underline-offset-2">
-                    {contact.email}
-                  </span>
-                </a>
-              )}
+              <a
+                href={site.social.find((s) => s.icon === "instagram")?.href || "https://instagram.com"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="flex h-9 w-9 lg:h-[2vw] lg:w-[2vw] items-center justify-center rounded-full border border-white/20 text-slate-300 transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white"
+              >
+                <InstagramIcon className="h-4 w-4 lg:h-[0.9vw] lg:w-[0.9vw]" />
+              </a>
+              <a
+                href={site.social.find((s) => s.icon === "facebook")?.href || "https://facebook.com"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="flex h-9 w-9 lg:h-[2vw] lg:w-[2vw] items-center justify-center rounded-full border border-white/20 text-slate-300 transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white"
+              >
+                <FacebookIcon className="h-4 w-4 lg:h-[0.9vw] lg:w-[0.9vw]" />
+              </a>
+              <a
+                href={site.social.find((s) => s.icon === "youtube")?.href || "https://youtube.com"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                className="flex h-9 w-9 lg:h-[2vw] lg:w-[2vw] items-center justify-center rounded-full border border-white/20 text-slate-300 transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white"
+              >
+                <YoutubeIcon className="h-4 w-4 lg:h-[0.9vw] lg:w-[0.9vw]" />
+              </a>
             </div>
-
-            {/* Social media below contact */}
-            {site.social.length > 0 && (
-              <div className="mt-5 flex flex-wrap items-center gap-2.5">
-                {site.social.map((link) => {
-                  const Icon = socialIcons[link.icon];
-                  if (!Icon) return null;
-                  return (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      aria-label={`${site.name} on ${link.label}`}
-                      title={link.label}
-                      className="group flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/[0.05] text-white/80 shadow-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:bg-brand hover:text-white hover:shadow-[0_6px_16px_rgba(229,24,39,0.45)]"
-                    >
-                      <Icon
-                        aria-hidden
-                        className="h-4 w-4 transition-transform duration-300 group-hover:scale-110"
-                      />
-                    </a>
-                  );
-                })}
-              </div>
-            )}
           </div>
 
-          {/* Col 3: Navigation links */}
-          <nav aria-label="Footer" className="flex flex-col">
-            <div className="border-b border-white/15 pb-2">
-              <h3 className="font-display text-[15.5px] font-semibold tracking-tight text-white">
-                Navigate
-              </h3>
+          {/* Column 2: Contact (2.8 cols) */}
+          <div className="lg:col-span-3 lg:border-l lg:border-white/10 lg:pl-[2.2vw]">
+            <h3 className="font-display text-[15.5px] lg:text-[0.98vw] font-bold text-white tracking-wide">
+              Contact
+            </h3>
+            <div className="mt-2.5 lg:mt-[0.55vw] flex h-[2px] w-full max-w-[120px] lg:max-w-[12vw]">
+              <div className="h-full w-8 lg:w-[2.5vw] bg-brand shrink-0" />
+              <div className="h-full w-full bg-white/15" />
             </div>
-            <ul className="mt-4 space-y-2.5">
-              {navigation.map((item) => (
-                <li key={item.href}>
+
+            <div className="mt-6 lg:mt-[1.3vw] space-y-4 lg:space-y-[0.85vw] text-[13.5px] lg:text-[0.82vw]">
+              {/* Address */}
+              <div className="flex items-start gap-3 lg:gap-[0.55vw]">
+                <MapPin className="h-4.5 w-4.5 lg:h-[1vw] lg:w-[1vw] text-brand shrink-0 mt-0.5" />
+                <p className="text-[#94a3b8] leading-relaxed text-[13px] lg:text-[0.8vw]">
+                  1734-c1, Pallapatti Rd,<br />
+                  near Central Excise Office<br />
+                  Thiruthangal, Sivakasi,<br />
+                  Tamil Nadu 626130
+                </p>
+              </div>
+
+              {/* Phone */}
+              <div className="flex items-center gap-3 lg:gap-[0.55vw] pt-1 lg:pt-[0.2vw]">
+                <Phone className="h-4.5 w-4.5 lg:h-[1vw] lg:w-[1vw] text-brand shrink-0" />
+                <a
+                  href="tel:+919876543210"
+                  className="text-[#94a3b8] hover:text-white transition-colors text-[13px] lg:text-[0.8vw]"
+                >
+                  +91 98765 43210
+                </a>
+              </div>
+
+              {/* Email */}
+              <div className="flex items-center gap-3 lg:gap-[0.55vw] pt-1 lg:pt-[0.2vw]">
+                <Mail className="h-4.5 w-4.5 lg:h-[1vw] lg:w-[1vw] text-brand shrink-0" />
+                <a
+                  href="mailto:sales@asircontainers.com"
+                  className="text-[#94a3b8] hover:text-white transition-colors text-[13px] lg:text-[0.8vw]"
+                >
+                  sales@asircontainers.com
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Column 3: Navigate (2.2 cols) */}
+          <div className="lg:col-span-2 lg:border-l lg:border-white/10 lg:pl-[2.2vw]">
+            <h3 className="font-display text-[15.5px] lg:text-[0.98vw] font-bold text-white tracking-wide">
+              Navigate
+            </h3>
+            <div className="mt-2.5 lg:mt-[0.55vw] flex h-[2px] w-full max-w-[120px] lg:max-w-[10vw]">
+              <div className="h-full w-8 lg:w-[2.5vw] bg-brand shrink-0" />
+              <div className="h-full w-full bg-white/15" />
+            </div>
+
+            <ul className="mt-6 lg:mt-[1.3vw] space-y-3.5 lg:space-y-[0.8vw]">
+              {navLinks.map((link) => (
+                <li key={link.href}>
                   <Link
-                    href={item.href}
-                    className="inline-block text-[13.5px] text-white/65 transition-all duration-200 hover:translate-x-1 hover:text-white"
+                    href={link.href}
+                    className="block text-[13.5px] lg:text-[0.82vw] text-[#94a3b8] transition-colors hover:text-white"
                   >
-                    {item.label}
+                    {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </nav>
+          </div>
 
-          {/* Col 4: Applications */}
-          <div className="flex flex-col">
-            <div className="border-b border-white/15 pb-2">
-              <h3 className="font-display text-[15.5px] font-semibold tracking-tight text-white">
-                Applications
-              </h3>
+          {/* Column 4: Applications (3 cols) */}
+          <div className="lg:col-span-3 lg:border-l lg:border-white/10 lg:pl-[2.2vw]">
+            <h3 className="font-display text-[15.5px] lg:text-[0.98vw] font-bold text-white tracking-wide">
+              Applications
+            </h3>
+            <div className="mt-2.5 lg:mt-[0.55vw] flex h-[2px] w-full max-w-[120px] lg:max-w-[14vw]">
+              <div className="h-full w-8 lg:w-[2.5vw] bg-brand shrink-0" />
+              <div className="h-full w-full bg-white/15" />
             </div>
-            <ul className="mt-4 space-y-2.5">
-              {applications.map((application) => (
-                <li key={application.slug}>
-                  <Link
-                    href={`/products?application=${application.slug}`}
-                    className="group flex items-center justify-between text-[13.5px] text-white/65 transition-colors hover:text-white"
-                  >
-                    <span className="flex items-center gap-2.5">
-                      <AnimatedIcon
-                        name={applicationIcons[application.slug]}
-                        motion="none"
-                        className="h-3.5 w-3.5 text-white/50 transition-colors group-hover:text-brand"
-                      />
-                      {application.name}
-                    </span>
-                    <span className="flex items-center gap-2">
-                      <span className="tabular text-[12px] text-white/45 group-hover:text-white">
-                        {String(applicationCount(application.slug)).padStart(2, "0")}
+
+            <ul className="mt-6 lg:mt-[1.3vw] space-y-4 lg:space-y-[0.85vw]">
+              {applicationsList.map((app) => {
+                const Icon = app.icon;
+                return (
+                  <li key={app.label}>
+                    <Link
+                      href={app.href}
+                      className="group flex items-center justify-between text-[13.5px] lg:text-[0.82vw] text-[#94a3b8] transition-colors hover:text-white max-w-[170px] lg:max-w-[14vw]"
+                    >
+                      <span className="flex items-center gap-2.5 lg:gap-[0.55vw]">
+                        <Icon className="h-4 w-4 lg:h-[0.95vw] lg:w-[0.95vw] text-slate-400 transition-colors group-hover:text-white shrink-0" />
+                        <span>{app.label}</span>
                       </span>
-                      <ArrowUpRight
-                        aria-hidden
-                        className="h-3.5 w-3.5 text-white/35 transition-colors group-hover:text-brand"
-                      />
-                    </span>
-                  </Link>
-                </li>
-              ))}
+                      <span className="flex items-center gap-1.5 lg:gap-[0.3vw] tabular text-[12.5px] lg:text-[0.78vw] text-slate-400 group-hover:text-white">
+                        <span>{app.count}</span>
+                        <ArrowUpRight className="h-3.5 w-3.5 lg:h-[0.82vw] lg:w-[0.82vw] text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white" />
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
+      </div>
 
-        {/* Bottom bar — centered */}
-        <div className="mt-12 border-t border-white/10 pt-6 text-center text-[12.5px] text-white/60">
-          <p>© {year} {site.name}. All rights reserved.</p>
+      {/* Bottom Copyright Bar — transparent so the right side image expands down completely */}
+      <div className="relative z-10 border-t border-white/10 py-5 lg:py-[1.2vw]">
+        <div className="text-center">
+          <p className="text-[13px] lg:text-[0.82vw] text-slate-400 font-normal">
+            © {year} {site.name}. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

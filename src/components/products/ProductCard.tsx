@@ -73,7 +73,7 @@ export function ProductCard({
 
         <div className="mt-2.5 border-t border-line/80 pt-2.5">
           <p className="truncate text-[13.5px] font-normal leading-relaxed text-mid">
-            {lids.length === 2 ? "Plain & Tin/Sp." : "Plain"}
+            {lids.join(", ")}
             {product.locks.length > 0 ? ` · ${product.locks.join(", ")}` : ""}
             {" · "}
             {productApplications.map((application) => application.name).join(" · ")}

@@ -75,7 +75,7 @@ export default async function ProductPage({ params }: PageProps) {
   const next = products[(index + 1) % products.length];
 
   const specRows: { label: string; value: string }[] = [
-    { label: "Material", value: "Polypropylene (PP)" },
+    { label: "Material", value: product.material || "Polypropylene (PP)" },
     { label: "Capacity", value: capacityDisplay(product) },
     { label: "Brimful volume", value: product.specs.brimful },
     { label: "Product height", value: product.specs.height },
@@ -84,7 +84,7 @@ export default async function ProductPage({ params }: PageProps) {
     { label: "Application", value: applicationNames.join(" · ") },
     {
       label: "Lid options",
-      value: lids.length === 2 ? "Flat Lid · Tind Lid (Tin/Sp.)" : "Flat Lid only",
+      value: lids.length > 0 ? lids.join(" · ") : "Not applicable",
     },
     {
       label: "Lock type",

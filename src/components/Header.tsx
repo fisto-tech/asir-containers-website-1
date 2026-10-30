@@ -1,13 +1,35 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { navigation, site } from "@/data/site";
-import { products, capacityDisplay, rangeStats } from "@/data/products";
+import { products } from "@/data/products";
+
+// Product display configuration with medium font and consistent product codes
+const navProductItems = [
+  { slug: "500ml-paint-pail-p2", title: "500 ml", code: "P/2", img: "/images/products/nav/500ml-paint-pail-p2.png" },
+  { slug: "1l-paint-pail-p1a", title: "1 Litre", code: "P1a", img: "/images/products/nav/1l-paint-pail-p1a.png" },
+  { slug: "1l-paint-pail-p1b", title: "1 Litre", code: "P1b", img: "/images/products/nav/1l-paint-pail-p1b.png" },
+  { slug: "4l-paint-pail-p4", title: "4 Litre", code: "P4", img: "/images/products/nav/4l-paint-pail-p4.png" },
+  { slug: "10l-paint-pail-p10", title: "10 Litre", code: "P10p", img: "/images/products/nav/10l-paint-pail-p10.png" },
+  { slug: "20l-paint-pail-p20a", title: "20 Litre", code: "P20ap", img: "/images/products/nav/20l-paint-pail-p20a.png" },
+  { slug: "20l-paint-pail-p20b", title: "20 Litre", code: "P20bp", img: "/images/products/nav/20l-paint-pail-p20b.png" },
+  { slug: "1kg-storage-pail-k1", title: "1 Kg", code: "K1", img: "/images/products/nav/1kg-storage-pail-k1.png" },
+  { slug: "2kg-storage-pail-k2", title: "2 Kg", code: "K2", img: "/images/products/nav/2kg-storage-pail-k2.png" },
+  { slug: "5kg-storage-pail-k5", title: "5 Kg", code: "K5", img: "/images/products/nav/5kg-storage-pail-k5.png" },
+  { slug: "10kg-storage-pail-k10", title: "10 Kg", code: "K10p", img: "/images/products/nav/10kg-storage-pail-k10.png" },
+  { slug: "20kg-storage-pail-k20", title: "20 Kg", code: "K20p", img: "/images/products/nav/20kg-storage-pail-k20.png" },
+  { slug: "5l-round-pail-a5", title: "5 litre round", code: "A5", img: "/images/products/nav/5l-round-pail-a5.png" },
+  { slug: "15l-square-interlock-pail-f15", title: "15 Litre Interlock", code: "F15p", img: "/images/products/nav/15l-square-pail-interlock-f15.png" },
+  { slug: "17l-square-interlock-pail-f17i", title: "17 Litre square interlock", code: "F17ip", img: "/images/products/nav/17l-square-pail-interlock-f17a.png" },
+  { slug: "17l-square-outer-lock-pail-f17o", title: "17 Litre square outer lock", code: "F17op", img: "/images/products/nav/17l-square-pail-outer-lock-f17b.png" },
+  { slug: "5l-square-interlock-pail-f5", title: "5 litre square interlock", code: "F5p", img: "/images/products/nav/5l-square-pail-interlock-f5.png" },
+];
 
 export function Header() {
   const pathname = usePathname();
@@ -146,67 +168,60 @@ export function Header() {
                     </button>
                   </div>
 
-                  {/* Open panel — Premium Modern Spec-Card Grid (No categories, pure format index) */}
+                  {/* Open panel — Custom Dropdown matching the UI design */}
                   <div
                     id="products-menu"
                     aria-hidden={!productsOpen}
-                    className={`absolute -left-64 top-full w-[980px] rounded-2xl border border-line bg-white p-5 shadow-[0_30px_70px_-15px_rgba(17,17,17,0.25)] transition-[opacity,transform,visibility] duration-300 ${
+                    className={`absolute -left-72 top-full w-[960px] rounded-3xl border border-line/60 bg-white p-6 shadow-[0_24px_50px_-12px_rgba(0,0,0,0.18)] transition-[opacity,transform,visibility] duration-300 ${
                       productsOpen ? "visible translate-y-2 opacity-100" : "invisible -translate-y-1 opacity-0"
                     }`}
                   >
                     {/* Header bar */}
-                    <div className="flex items-center justify-between border-b border-line pb-3">
+                    <div className="flex items-center justify-between pb-4">
                       <div className="flex items-center gap-3">
-                        <span className="font-display text-[15px] font-bold tracking-tight text-ink">
-                          Container Lineup
+                        <span className="font-display text-[17px] font-bold tracking-tight text-ink">
+                          All Products <span className="font-semibold text-mid/80">(17)</span>
                         </span>
-                        <span className="rounded-full bg-soft px-2.5 py-0.5 text-[11px] font-semibold text-mid">
-                          17 Unique Toolings
+                        <span className="text-[13px] font-medium text-mid/70">
+                          Explore our complete range of plastic containers
                         </span>
                       </div>
                       <Link
                         href="/products"
                         tabIndex={productsOpen ? 0 : -1}
                         onClick={() => setProductsOpen(false)}
-                        className="group inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-brand transition-colors hover:text-brand/80"
+                        className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand transition-colors hover:text-brand/80"
                       >
-                        <span>View complete catalogue</span>
-                        <ArrowUpRight aria-hidden className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        <span>View product catalogue</span>
+                        <ArrowUpRight aria-hidden className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </Link>
                     </div>
 
-                    {/* 4-column balanced grid of 17 individual cards + 1 quick-inquiry tile */}
-                    <div className="mt-3.5 grid grid-cols-4 gap-2.5">
-                      {products.map((item) => (
+                    {/* 4-column balanced grid of 17 product cards */}
+                    <div className="grid grid-cols-4 gap-3">
+                      {navProductItems.map((item) => (
                         <Link
                           key={item.slug}
                           href={`/products/${item.slug}`}
                           tabIndex={productsOpen ? 0 : -1}
                           onClick={() => setProductsOpen(false)}
-                          className="group relative flex items-center justify-between rounded-xl border border-line/70 bg-soft/40 px-3.5 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:bg-white hover:shadow-sm"
+                          className="group relative flex h-[58px] items-center gap-3 rounded-xl border border-line/50 bg-white px-3 transition-all duration-200 hover:border-brand/40 hover:shadow-sm"
                         >
-                          <span className="font-display text-[13.5px] font-bold leading-tight text-ink transition-colors group-hover:text-brand pr-2">
-                            {item.name}
-                          </span>
+                          <div className="relative flex h-10 w-12 shrink-0 items-center justify-center">
+                            <Image
+                              src={item.img}
+                              alt={item.title}
+                              width={48}
+                              height={38}
+                              className="max-h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+                            />
+                          </div>
 
-                          <span className="shrink-0 rounded-md border border-line/60 bg-white px-2 py-0.5 font-mono text-[11px] font-extrabold text-ink transition-colors group-hover:border-brand/30 group-hover:bg-brand/5 group-hover:text-brand">
-                            {item.codes.plain}
+                          <span className="font-display text-[13px] font-medium leading-snug text-ink transition-colors group-hover:text-brand">
+                            {item.title} <span className="font-normal text-mid/80 group-hover:text-brand/90">({item.code})</span>
                           </span>
                         </Link>
                       ))}
-
-                      {/* 18th Tile: Interactive technical consultation card */}
-                      <Link
-                        href="/contact"
-                        tabIndex={productsOpen ? 0 : -1}
-                        onClick={() => setProductsOpen(false)}
-                        className="group flex items-center justify-between rounded-xl border border-dashed border-brand/40 bg-gradient-to-br from-brand/5 via-brand/0 to-transparent px-3.5 py-3 transition-all duration-200 hover:border-brand hover:bg-brand/10 hover:shadow-xs"
-                      >
-                        <span className="font-display text-[12.5px] font-bold leading-tight text-ink">
-                          Custom Mould / Run
-                        </span>
-                        <ArrowUpRight className="h-4 w-4 shrink-0 text-brand transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                      </Link>
                     </div>
                   </div>
                 </div>

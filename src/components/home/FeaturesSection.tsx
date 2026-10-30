@@ -1,138 +1,118 @@
-import {
-  ShieldCheck,
-  Target,
-  Sparkles,
-  Zap,
-  Lock,
-  Layers,
-  ArrowRight,
-  TrendingUp,
-  type LucideIcon,
-} from "lucide-react";
-import Link from "next/link";
+"use client";
+
+import { useEffect, useState } from "react";
+import { Icon } from "@iconify/react";
 import { Reveal } from "@/components/motion/Reveal";
-import { SectionLabel } from "@/components/ui/SectionLabel";
 
 type FeatureItem = {
-  icon: LucideIcon;
   title: string;
-  category: string;
-  description: string;
-  highlight: string;
-  colorScheme: {
-    bg: string;
-    border: string;
-    iconBg: string;
-    iconColor: string;
-    accent: string;
-    pillBg: string;
-    tagColor: string;
-    gradient: string;
+  subtitle: string;
+  theme: {
+    accentColor: string;
+    iconBgFilled: string;
+    iconColorFilled: string;
+    iconColorOutline: string;
+    borderColor: string;
   };
+  icon: string;
 };
 
-const keyFeatures: FeatureItem[] = [
+const featuresList: FeatureItem[] = [
   {
-    icon: Lock,
-    title: "Triple Seal & Tamper Lock",
-    category: "Closure Engineering",
-    description: "Tear-tab lids, interlock and outer lock rim profiles that provide hermetic sealing against transport leaks and contamination.",
-    highlight: "100% Spillage-Free",
-    colorScheme: {
-      bg: "bg-white",
-      border: "border-sky-200/80 hover:border-sky-400",
-      iconBg: "bg-sky-50 text-sky-600 group-hover:bg-sky-600 group-hover:text-white",
-      iconColor: "text-sky-600",
-      accent: "bg-sky-500",
-      pillBg: "bg-sky-50/70 text-sky-700",
-      tagColor: "text-sky-600",
-      gradient: "from-sky-500/10 via-transparent to-transparent",
+    title: "Oven Safe",
+    subtitle: "Microwave Friendly",
+    theme: {
+      accentColor: "#f43f5e",
+      iconBgFilled: "bg-[#ffe5ea]",
+      iconColorFilled: "text-[#f43f5e]",
+      iconColorOutline: "text-[#f43f5e]",
+      borderColor: "border-[#f43f5e]",
     },
+    icon: "tabler:microwave",
   },
   {
-    icon: Layers,
-    title: "High Stacking Load Stability",
-    category: "Structural Strength",
-    description: "Reinforced load-bearing ribs and precision bottom-to-lid nesting geometries engineered for multi-tier warehouse palletizing.",
-    highlight: "Optimized Palletizing",
-    colorScheme: {
-      bg: "bg-white",
-      border: "border-indigo-200/80 hover:border-indigo-400",
-      iconBg: "bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white",
-      iconColor: "text-indigo-600",
-      accent: "bg-indigo-500",
-      pillBg: "bg-indigo-50/70 text-indigo-700",
-      tagColor: "text-indigo-600",
-      gradient: "from-indigo-500/10 via-transparent to-transparent",
+    title: "Hygienic",
+    subtitle: "Untouched by Hand",
+    theme: {
+      accentColor: "#10b981",
+      iconBgFilled: "bg-[#dcfce7]",
+      iconColorFilled: "text-[#10b981]",
+      iconColorOutline: "text-[#10b981]",
+      borderColor: "border-[#10b981]",
     },
+    icon: "lucide:shield-check",
   },
   {
-    icon: Sparkles,
-    title: "In-House Multi-Route Printing",
-    category: "Branding & Finish",
-    description: "Up to 6-color direct screen printing, photorealistic Heat Transfer Labelling (HTL), and scratch-proof In-Mould Labelling (IML).",
-    highlight: "Screen · HTL · IML",
-    colorScheme: {
-      bg: "bg-white",
-      border: "border-rose-200/80 hover:border-rose-400",
-      iconBg: "bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white",
-      iconColor: "text-rose-600",
-      accent: "bg-rose-500",
-      pillBg: "bg-rose-50/70 text-rose-700",
-      tagColor: "text-rose-600",
-      gradient: "from-rose-500/10 via-transparent to-transparent",
+    title: "Stackable",
+    subtitle: "Compact Storage",
+    theme: {
+      accentColor: "#2563eb",
+      iconBgFilled: "bg-[#dbeafe]",
+      iconColorFilled: "text-[#2563eb]",
+      iconColorOutline: "text-[#2563eb]",
+      borderColor: "border-[#2563eb]",
     },
+    icon: "fluent:stack-24-regular",
   },
   {
-    icon: ShieldCheck,
-    title: "100% Virgin Food-Grade Polymers",
-    category: "Material Purity",
-    description: "Formulated using certified prime virgin polypropylene, compliant with strict food contact and heavy chemical packaging mandates.",
-    highlight: "Non-Toxic & Durable",
-    colorScheme: {
-      bg: "bg-white",
-      border: "border-emerald-200/80 hover:border-emerald-400",
-      iconBg: "bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white",
-      iconColor: "text-emerald-600",
-      accent: "bg-emerald-500",
-      pillBg: "bg-emerald-50/70 text-emerald-700",
-      tagColor: "text-emerald-600",
-      gradient: "from-emerald-500/10 via-transparent to-transparent",
+    title: "BPA Free",
+    subtitle: "100% Non-Toxic",
+    theme: {
+      accentColor: "#f97316",
+      iconBgFilled: "bg-[#ffedd5]",
+      iconColorFilled: "text-[#f97316]",
+      iconColorOutline: "text-[#f97316]",
+      borderColor: "border-[#f97316]",
     },
+    icon: "tabler:leaf",
   },
   {
-    icon: Target,
-    title: "Application-Tailored Colorways",
-    category: "Application Ready",
-    description: "Dedicated color lines: classic white, vivid red, and safety green for paint & lubricants, deep green for agro, and hygienic white/black for food.",
-    highlight: "Paint · Agro · Food · Lube",
-    colorScheme: {
-      bg: "bg-white",
-      border: "border-amber-200/80 hover:border-amber-400",
-      iconBg: "bg-amber-50 text-amber-600 group-hover:bg-amber-600 group-hover:text-white",
-      iconColor: "text-amber-600",
-      accent: "bg-amber-500",
-      pillBg: "bg-amber-50/70 text-amber-700",
-      tagColor: "text-amber-600",
-      gradient: "from-amber-500/10 via-transparent to-transparent",
+    title: "Food Safe",
+    subtitle: "Food Grade Certified",
+    theme: {
+      accentColor: "#9333ea",
+      iconBgFilled: "bg-[#f3e8ff]",
+      iconColorFilled: "text-[#9333ea]",
+      iconColorOutline: "text-[#9333ea]",
+      borderColor: "border-[#9333ea]",
     },
+    icon: "tabler:tools-kitchen-2",
   },
   {
-    icon: Zap,
-    title: "Code-Quoted Exact Specification",
-    category: "Catalog Precision",
-    description: "Every format holds a dedicated product code (Plain or Tin/Sp.). Capacity, wall gauge, and handle configuration strictly preserved.",
-    highlight: "17 Packs · 26 Codes",
-    colorScheme: {
-      bg: "bg-white",
-      border: "border-violet-200/80 hover:border-violet-400",
-      iconBg: "bg-violet-50 text-violet-600 group-hover:bg-violet-600 group-hover:text-white",
-      iconColor: "text-violet-600",
-      accent: "bg-violet-500",
-      pillBg: "bg-violet-50/70 text-violet-700",
-      tagColor: "text-violet-600",
-      gradient: "from-violet-500/10 via-transparent to-transparent",
+    title: "Freezer Safe",
+    subtitle: "Freezer Proof",
+    theme: {
+      accentColor: "#0284c7",
+      iconBgFilled: "bg-[#e0f2fe]",
+      iconColorFilled: "text-[#0284c7]",
+      iconColorOutline: "text-[#0284c7]",
+      borderColor: "border-[#0284c7]",
     },
+    icon: "tabler:snowflake",
+  },
+  {
+    title: "Recyclable",
+    subtitle: "Eco & Sustainable",
+    theme: {
+      accentColor: "#059669",
+      iconBgFilled: "bg-[#d1fae5]",
+      iconColorFilled: "text-[#059669]",
+      iconColorOutline: "text-[#059669]",
+      borderColor: "border-[#059669]",
+    },
+    icon: "tabler:recycle",
+  },
+  {
+    title: "Printable",
+    subtitle: "Custom Branding",
+    theme: {
+      accentColor: "#d97706",
+      iconBgFilled: "bg-[#fef3c7]",
+      iconColorFilled: "text-[#d97706]",
+      iconColorOutline: "text-[#d97706]",
+      borderColor: "border-[#d97706]",
+    },
+    icon: "tabler:box",
   },
 ];
 
@@ -141,93 +121,137 @@ type Props = {
 };
 
 export function FeaturesSection({ index = "02" }: Props) {
-  return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-slate-50/80 via-white to-sky-50/30 py-20 lg:py-28">
-      {/* Dynamic ambient color glows in background */}
-      <div className="pointer-events-none absolute -top-40 -left-40 h-96 w-96 rounded-full bg-blue-200/30 blur-3xl" />
-      <div className="pointer-events-none absolute top-1/2 -right-40 h-96 w-96 rounded-full bg-emerald-200/25 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-rose-200/25 blur-3xl" />
+  const [activeIdx, setActiveIdx] = useState<number>(0);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
+  // Auto-cycle through cards every 2.4 seconds, pausing when user hovers
+  useEffect(() => {
+    if (hoveredIdx !== null) return;
+    const timer = setInterval(() => {
+      setActiveIdx((prev) => (prev + 1) % featuresList.length);
+    }, 2400);
+
+    return () => clearInterval(timer);
+  }, [hoveredIdx]);
+
+  return (
+    <section className="relative bg-white py-16 lg:py-24">
       <div className="shell relative z-10">
+        {/* Header */}
         <Reveal>
-          <div className="flex flex-col justify-between gap-6 border-b border-line pb-8 lg:flex-row lg:items-end">
-            <div>
-              <SectionLabel index={index}>Features &amp; Highlights</SectionLabel>
-              <h2 className="display-lg sheen-ink mt-5 max-w-2xl text-ink">
-                Engineered for peak performance on modern filling lines.
-              </h2>
+          <div className="mx-auto mb-14 max-w-2xl text-center">
+            {/* Top pill label */}
+            <div className="inline-flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+              <span className="h-[1px] w-6 bg-slate-300" />
+              <span className="font-mono font-bold text-brand">{index}</span>
+              <span>FEATURES</span>
+              <span className="h-[1px] w-6 bg-slate-300" />
             </div>
-            <p className="max-w-md text-[14.5px] leading-relaxed text-mid">
-              Explore key functional features built into every ASIR pail — from tamper-evident closure systems to high-impact decoration.
+
+            <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+              Container Specifications
+            </h2>
+            <p className="mt-2.5 text-[15px] text-slate-500">
+              Thoughtfully designed for safer, cleaner and more convenient storage.
             </p>
           </div>
         </Reveal>
 
-        {/* Feature Grid with Modern Colorful Industrial Cards */}
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {keyFeatures.map((feature, idx) => {
-            const Icon = feature.icon;
-            const cs = feature.colorScheme;
+        {/* 4x2 Horizontal Pill Card Grid */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+          {featuresList.map((item, idx) => {
+            const t = item.theme;
+            const isHighlighted = hoveredIdx !== null ? hoveredIdx === idx : activeIdx === idx;
+
             return (
-              <Reveal
-                key={feature.title}
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-[24px] border ${cs.border} ${cs.bg} p-7 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5`}
-              >
-                {/* Subtle colorful top corner wash */}
-                <div className={`pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-gradient-to-br ${cs.gradient} blur-xl transition-all duration-500 group-hover:scale-150 group-hover:opacity-100`} />
-
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between">
-                    <span className={`flex h-13 w-13 items-center justify-center rounded-2xl ${cs.iconBg} shadow-xs transition-all duration-300 group-hover:scale-110`}>
-                      <Icon className="h-6 w-6 transition-transform duration-300" />
-                    </span>
-                    <span className="font-mono text-[12px] font-bold tracking-wider text-slate-400">
-                      0{idx + 1}
-                    </span>
+              <Reveal key={item.title}>
+                <div
+                  onMouseEnter={() => setHoveredIdx(idx)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                  className={`group relative flex items-center overflow-hidden rounded-[28px] bg-white p-6 transition-all duration-300 ${
+                    isHighlighted
+                      ? "border-2 -translate-y-1"
+                      : "border hover:border-2"
+                  }`}
+                  style={{
+                    borderColor: isHighlighted ? t.accentColor : `${t.accentColor}40`,
+                  }}
+                >
+                  {/* Clean Sweeping Organic Wave in bottom-right corner - VISIBLE ONLY WHEN ACTIVE/HOVERED */}
+                  <div
+                    className={`pointer-events-none absolute -bottom-0.5 -right-0.5 h-36 w-44 overflow-hidden transition-all duration-500 ${
+                      isHighlighted
+                        ? "opacity-100 scale-100"
+                        : "opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"
+                    }`}
+                  >
+                    <svg
+                      viewBox="0 0 180 150"
+                      className="h-full w-full"
+                      fill="none"
+                    >
+                      {/* Outer clean pastel wave */}
+                      <path
+                        d="M0 150 C 40 130, 80 110, 105 75 C 130 40, 145 15, 180 0 L 180 150 Z"
+                        fill={t.accentColor}
+                        fillOpacity="0.16"
+                      />
+                      {/* Inner clean accent wave crest */}
+                      <path
+                        d="M45 150 C 75 135, 105 118, 125 90 C 145 62, 155 35, 180 10 L 180 150 Z"
+                        fill={t.accentColor}
+                        fillOpacity="0.24"
+                      />
+                    </svg>
                   </div>
 
-                  <div className="mt-6">
-                    <span className={`text-[11.5px] font-bold uppercase tracking-[0.16em] ${cs.tagColor}`}>
-                      {feature.category}
-                    </span>
-                    <h3 className="font-display text-[20px] font-semibold text-ink transition-colors group-hover:text-ink">
-                      {feature.title}
-                    </h3>
-                    <p className="mt-3 text-[14px] leading-relaxed text-slate-600">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
+                  {/* Content: Circle Icon Pod + Text */}
+                  <div className="relative z-10 flex items-center gap-4.5">
+                    {/* Circle Icon Badge */}
+                    <div
+                      className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
+                        isHighlighted
+                          ? `${t.iconBgFilled} ${t.iconColorFilled} border-transparent scale-105`
+                          : `bg-transparent ${t.iconColorOutline} border-current/25 group-hover:${t.iconBgFilled} group-hover:${t.iconColorFilled} group-hover:border-transparent group-hover:scale-105`
+                      }`}
+                    >
+                      <Icon icon={item.icon} className="h-7 w-7 transition-colors duration-300" />
+                    </div>
 
-                <div className="relative z-10 mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
-                  <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold ${cs.pillBg}`}>
-                    <TrendingUp className="h-3.5 w-3.5" />
-                    {feature.highlight}
-                  </span>
-                  <span className={`h-2 w-2 rounded-full ${cs.accent} opacity-0 transition-all duration-300 group-hover:scale-125 group-hover:opacity-100`} />
+
+                    {/* Text block */}
+                    <div className="text-left">
+                      <h3
+                        className={`font-display text-[17.5px] font-bold tracking-tight leading-snug transition-colors duration-300 ${
+                          isHighlighted ? "text-slate-900" : "text-slate-800 group-hover:text-slate-900"
+                        }`}
+                      >
+                        {item.title}
+                      </h3>
+                      <p
+                        className={`mt-1 text-[13.5px] font-medium transition-colors duration-300 ${
+                          isHighlighted ? "text-slate-600" : "text-slate-400 group-hover:text-slate-600"
+                        }`}
+                      >
+                        {item.subtitle}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </Reveal>
             );
           })}
         </div>
-
-        {/* Bottom CTA row with colorful border & accent */}
-        <Reveal className="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-sky-100 bg-gradient-to-r from-sky-50/60 via-white to-indigo-50/50 px-6 py-4.5 shadow-2xs">
-          <div className="flex items-center gap-3">
-            <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <p className="text-[14px] font-medium text-slate-700">
-              Need custom drop-impact test ratings or specific neck diameter specifications?
-            </p>
-          </div>
-          <Link
-            href="/products"
-            className="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-brand hover:shadow-md"
-          >
-            Explore all 17 container models
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </Reveal>
       </div>
     </section>
   );
 }
+
+
+
+
+
+
+
+
+

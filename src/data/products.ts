@@ -33,9 +33,9 @@ export type ApplicationSlug = "paint" | "agro" | "food" | "lube";
 
 export type ColorName = "White" | "Green" | "Red" | "Black";
 
-export type LidType = "Flat Lid" | "Tind Lid";
+export type LidType = "Flat Lid" | "Screw Lid" | "Spout Lid";
 
-export type LockType = "Interlock" | "Outer Lock";
+export type LockType = "Outer Lock" | "Inner Lock";
 
 export type ProductTypeSlug = "paint-pail" | "storage-pail" | "round-pail" | "square-pail";
 
@@ -59,6 +59,8 @@ export interface Product {
   /** Product codes exactly as supplied. */
   codes: { plain: string; tin?: string };
   locks: LockType[];
+  lids: LidType[];
+  material: string;
   /** Optional per-container colour confirmation; overrides the category rule. */
   colorsOverride?: ColorName[];
   image: string;
@@ -139,8 +141,8 @@ const COLORS_BY_APPLICATION: Record<ApplicationSlug, ColorName[]> = {
   food: ["White", "Black"],
 };
 
-export const lidOptions: LidType[] = ["Flat Lid", "Tind Lid"];
-export const lockOptions: LockType[] = ["Interlock", "Outer Lock"];
+export const lidOptions: LidType[] = ["Flat Lid", "Screw Lid", "Spout Lid"];
+export const lockOptions: LockType[] = ["Outer Lock", "Inner Lock"];
 
 export const productTypes: { slug: ProductTypeSlug; name: string; note: string }[] = [
   { slug: "paint-pail", name: "Paint Pail", note: "P-series round pails, 500 ml – 20 L" },
@@ -162,7 +164,9 @@ export const products: Product[] = [
     specs: { height: "110 mm", brimful: "0.56 L", gslOfc: "GSL 70 mm / OFC 78 mm" },
     applications: ["paint", "agro", "food"],
     codes: { plain: "P/2" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/paint.jpg",
     imageAlt: "Placeholder packshot — white 500 ml round plastic pail container",
     summary:
@@ -179,7 +183,9 @@ export const products: Product[] = [
     specs: { height: "150 mm", brimful: "1.10 L", gslOfc: "GSL 82 mm / OFC 90 mm" },
     applications: ["paint", "agro"],
     codes: { plain: "P1a" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/paint.jpg",
     imageAlt: "Placeholder packshot — white 1 litre round plastic pail container",
     summary:
@@ -195,7 +201,9 @@ export const products: Product[] = [
     specs: { height: "148 mm", brimful: "1.08 L", gslOfc: "GSL 80 mm / OFC 88 mm" },
     applications: ["paint", "agro"],
     codes: { plain: "P1b" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/paint.jpg",
     imageAlt: "Placeholder packshot — white 1 litre round plastic pail container, second tool",
     summary:
@@ -211,7 +219,9 @@ export const products: Product[] = [
     specs: { height: "235 mm", brimful: "4.40 L", gslOfc: "GSL 108 mm / OFC 118 mm" },
     applications: ["paint", "agro"],
     codes: { plain: "P4" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/paint.jpg",
     imageAlt: "Placeholder packshot — white 4 litre round plastic pail container",
     summary:
@@ -227,7 +237,9 @@ export const products: Product[] = [
     specs: { height: "300 mm", brimful: "11.20 L", gslOfc: "GSL 128 mm / OFC 140 mm" },
     applications: ["paint", "agro", "food"],
     codes: { plain: "P10p", tin: "P10t" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid","Screw Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/paint.jpg",
     imageAlt: "Placeholder packshot — white 10 litre round plastic pail container",
     summary:
@@ -244,7 +256,9 @@ export const products: Product[] = [
     specs: { height: "390 mm", brimful: "21.50 L", gslOfc: "GSL 152 mm / OFC 166 mm" },
     applications: ["paint", "agro", "food"],
     codes: { plain: "P20ap", tin: "P20at" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid","Screw Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/paint.jpg",
     imageAlt: "Placeholder packshot — white 20 litre round plastic pail container",
     summary:
@@ -261,7 +275,9 @@ export const products: Product[] = [
     specs: { height: "386 mm", brimful: "21.30 L", gslOfc: "GSL 150 mm / OFC 164 mm" },
     applications: ["paint", "agro"],
     codes: { plain: "P20bp", tin: "P20bt" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid","Screw Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/paint.jpg",
     imageAlt: "Placeholder packshot — white 20 litre round plastic pail container, second tool",
     summary:
@@ -277,7 +293,9 @@ export const products: Product[] = [
     specs: { height: "145 mm", brimful: "1.10 L", gslOfc: "GSL 78 mm / OFC 86 mm" },
     applications: ["paint", "food"],
     codes: { plain: "K1" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/food.jpg",
     imageAlt: "Placeholder packshot — white 1 kilogram plastic pail container",
     summary:
@@ -293,7 +311,9 @@ export const products: Product[] = [
     specs: { height: "195 mm", brimful: "2.20 L", gslOfc: "GSL 92 mm / OFC 100 mm" },
     applications: ["paint", "food", "lube"],
     codes: { plain: "K2" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/lube.jpg",
     imageAlt: "Placeholder packshot — red 2 kilogram plastic pail container",
     summary:
@@ -310,7 +330,9 @@ export const products: Product[] = [
     specs: { height: "265 mm", brimful: "5.60 L", gslOfc: "GSL 112 mm / OFC 122 mm" },
     applications: ["paint", "food", "lube"],
     codes: { plain: "K5" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/lube.jpg",
     imageAlt: "Placeholder packshot — red 5 kilogram plastic pail container",
     summary:
@@ -326,7 +348,9 @@ export const products: Product[] = [
     specs: { height: "305 mm", brimful: "11.40 L", gslOfc: "GSL 130 mm / OFC 142 mm" },
     applications: ["paint", "agro"],
     codes: { plain: "K10p", tin: "K10t" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid","Screw Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/paint.jpg",
     imageAlt: "Placeholder packshot — white 10 kilogram plastic pail container",
     summary:
@@ -342,7 +366,9 @@ export const products: Product[] = [
     specs: { height: "395 mm", brimful: "21.80 L", gslOfc: "GSL 154 mm / OFC 168 mm" },
     applications: ["paint", "agro", "lube"],
     codes: { plain: "K20p", tin: "K20t" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid","Screw Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/lube.jpg",
     imageAlt: "Placeholder packshot — red 20 kilogram plastic pail container",
     summary:
@@ -359,7 +385,9 @@ export const products: Product[] = [
     specs: { height: "245 mm", brimful: "5.40 L", gslOfc: "GSL 110 mm / OFC 120 mm" },
     applications: ["agro", "lube"],
     codes: { plain: "A5" },
-    locks: [],
+    locks: ["Outer Lock"],
+    lids: ["Flat Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/agro.jpg",
     imageAlt: "Placeholder packshot — green 5 litre round plastic pail container",
     summary:
@@ -376,7 +404,9 @@ export const products: Product[] = [
     specs: { height: "340 mm", brimful: "16.20 L", gslOfc: "GSL 145 mm / OFC 158 mm" },
     applications: ["food"],
     codes: { plain: "F15p", tin: "F15s" },
-    locks: ["Interlock"],
+    locks: ["Inner Lock"],
+    lids: ["Flat Lid","Spout Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/food.jpg",
     imageAlt:
       "Placeholder packshot — white 15 litre square plastic pail container with interlock lid",
@@ -393,7 +423,9 @@ export const products: Product[] = [
     specs: { height: "355 mm", brimful: "18.00 L", gslOfc: "GSL 150 mm / OFC 164 mm" },
     applications: ["food"],
     codes: { plain: "F17ip", tin: "F17is" },
-    locks: ["Interlock"],
+    locks: ["Inner Lock"],
+    lids: ["Flat Lid","Spout Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/food.jpg",
     imageAlt:
       "Placeholder packshot — white 17 litre square plastic pail container with interlock lid",
@@ -412,6 +444,8 @@ export const products: Product[] = [
     applications: ["food"],
     codes: { plain: "F17op", tin: "F17os" },
     locks: ["Outer Lock"],
+    lids: ["Flat Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/agro.jpg",
     imageAlt:
       "Placeholder packshot — white 17 litre square plastic pail container with outer lock lid",
@@ -428,7 +462,9 @@ export const products: Product[] = [
     specs: { height: "250 mm", brimful: "5.40 L", gslOfc: "GSL 118 mm / OFC 128 mm" },
     applications: ["food"],
     codes: { plain: "F5p", tin: "F5s" },
-    locks: ["Interlock"],
+    locks: ["Inner Lock"],
+    lids: ["Flat Lid","Spout Lid"],
+    material: "Polypropylene (PP)",
     image: "/images/categories/food.jpg",
     imageAlt:
       "Placeholder packshot — white 5 litre square plastic pail container with interlock lid",
@@ -448,9 +484,7 @@ export const getApplication = (slug: ApplicationSlug) =>
 
 /** Lid options derived from the codes supplied for the container. */
 export const lidsFor = (product: Product): LidType[] => {
-  const lids: LidType[] = ["Flat Lid"];
-  if (product.codes.tin) lids.push("Tind Lid");
-  return lids;
+  return product.lids;
 };
 
 /** All product codes for a container, e.g. ["P20ap", "P20at"]. */
@@ -603,7 +637,7 @@ export const rangeStats = {
   capacities: capacityOptions.length,
   /** Containers that exist in both plain and tinned finishes. */
   dualFinish: products.filter((product) => Boolean(product.codes.tin)).length,
-  interlock: products.filter((product) => product.locks.includes("Interlock")).length,
+  interlock: products.filter((product) => product.locks.includes("Inner Lock")).length,
 };
 
 /** Every code in the range — used by the code search. */

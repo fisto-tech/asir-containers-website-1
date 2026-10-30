@@ -373,15 +373,21 @@ input[type="search"]::-webkit-search-cancel-button {
     animation: drift 14s ease-in-out infinite alternate;
   }
 
-  @keyframes drift {
-    from {
-      transform: translate3d(0, 0, 0);
+  /* --- Gentle continuous card floating ----------------------------------- */
+  @keyframes card-float {
+    0%, 100% {
+      transform: translateY(0px);
     }
-    to {
-      transform: translate3d(0, -14px, 0);
+    50% {
+      transform: translateY(-6px);
     }
   }
+
+  .animate-card-float {
+    animation: card-float 5s ease-in-out infinite;
+  }
 }
+
 
 /* Hover lift used on interactive cards */
 .lift {

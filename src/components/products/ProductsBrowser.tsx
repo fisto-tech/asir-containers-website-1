@@ -556,6 +556,18 @@ function FilterPanel({
         </FilterGroup>
       )}
 
+      <FilterGroup legend="Lid options">
+        {filterOptions.lids.map((option) => (
+          <CheckRow
+            key={option.value}
+            checked={filters.lids.includes(option.value)}
+            onChange={() => toggle("lids", option.value)}
+            label={option.label}
+            count={option.count}
+          />
+        ))}
+      </FilterGroup>
+
       <FilterGroup legend="Lock type">
         {filterOptions.locks.map((option) => (
           <CheckRow
