@@ -62,22 +62,22 @@ export function ContactHero({ title, intro }: { title: string; intro: string }) 
       {/* Faint brand rings behind the product */}
       <span
         aria-hidden
-        className="pointer-events-none absolute -right-24 top-1/2 hidden h-[620px] w-[620px] -translate-y-1/2 rounded-full border border-brand/[0.12] lg:block"
+        className="pointer-events-none absolute -right-16 top-1/2 hidden h-[420px] w-[420px] -translate-y-1/2 rounded-full border border-brand/[0.12] lg:block"
       />
       <span
         aria-hidden
-        className="pointer-events-none absolute -right-4 top-1/2 hidden h-[460px] w-[460px] -translate-y-1/2 rounded-full border border-brand/[0.08] lg:block"
+        className="pointer-events-none absolute right-6 top-1/2 hidden h-[280px] w-[280px] -translate-y-1/2 rounded-full border border-brand/[0.08] lg:block"
       />
       <span
         aria-hidden
-        className="drift pointer-events-none absolute -left-32 -top-32 h-[460px] w-[460px] rounded-full bg-brand/[0.06] blur-3xl"
+        className="drift pointer-events-none absolute -left-32 -top-32 h-[380px] w-[380px] rounded-full bg-brand/[0.06] blur-3xl"
       />
 
-      <div className="shell relative grid items-end gap-2 pt-28 lg:grid-cols-12 lg:gap-10 lg:pt-32">
-        <div className="pb-8 lg:col-span-6 lg:pb-24">
+      <div className="shell relative grid items-stretch gap-6 pb-7 pt-24 lg:grid-cols-12 lg:gap-10 lg:pb-9 lg:pt-28">
+        <div className="flex flex-col justify-center lg:col-span-7">
           <h1
             data-contact-heading
-            className="font-display text-[clamp(2.7rem,5.4vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-ink"
+            className="font-display text-[clamp(2.1rem,3.4vw,2.9rem)] font-semibold leading-[1.06] tracking-[-0.03em] text-ink"
           >
             {title === "Contact Us" ? (
               <>
@@ -89,25 +89,25 @@ export function ContactHero({ title, intro }: { title: string; intro: string }) 
           </h1>
 
           <p
-            className="mt-5 max-w-sm text-[15px] leading-relaxed text-mid"
+            className="mt-3 max-w-md text-[14.5px] leading-relaxed text-mid"
             data-contact-fade
           >
             {intro}
           </p>
         </div>
 
-        <div className="relative lg:col-span-6">
+        <div className="relative lg:col-span-5">
           <div
             data-contact-image
-            className="fade-left relative h-[280px] w-full sm:h-[360px] lg:h-[520px]"
+            className="fade-left relative h-[150px] w-full sm:h-[165px] lg:h-full lg:min-h-[165px]"
           >
             <Image
               src="/images/detail/stacked-pails.jpg"
               alt="Stacked ASIR Containers pails with red lids"
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 52vw"
-              className="ambient-media-slow object-cover object-[62%_center]"
+              sizes="(max-width: 1024px) 100vw, 44vw"
+              className="ambient-media-slow object-cover object-[62%_45%]"
             />
           </div>
         </div>
