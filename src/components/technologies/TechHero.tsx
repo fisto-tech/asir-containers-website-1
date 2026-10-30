@@ -2,15 +2,14 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { gsap, useGSAP, revealLines, parallax, reduceMotion, EASE } from "@/lib/animations";
+import { gsap, useGSAP, revealLines, reduceMotion, EASE } from "@/lib/animations";
 import { machinery } from "@/data/manufacturing";
 
 /**
- * Technologies masthead — a two-plate composition over an engineering grid.
- * The press plate wipes open, a second detail plate floats over it with its own
- * slower parallax, and the headline rises letter by letter.
+ * Technologies masthead — light and colour-washed, with the plant photograph
+ * given the room. No overlays sit on the image; the copy lives beside it.
  */
 export function TechHero() {
   const root = useRef<HTMLElement | null>(null);
@@ -20,53 +19,47 @@ export function TechHero() {
       const scope = root.current;
       if (!scope) return;
 
-      /* Wait for the variable face before splitting, so line masks measure the
-         real letterforms rather than the fallback. */
-      const heading = scope.querySelector<HTMLElement>("[data-tech-heading]");
       let cancelled = false;
+      const heading = scope.querySelector<HTMLElement>("[data-tech-heading]");
       const splitHeading = () => {
         if (cancelled || !heading) return;
-        revealLines(heading, { delay: 0.35, scrollTrigger: false });
+        revealLines(heading, { mode: "words", delay: 0.2, scrollTrigger: false });
       };
       if (heading) {
         if (document.fonts?.status === "loaded") splitHeading();
         else void document.fonts?.ready.then(splitHeading);
       }
 
-      const mainPlate = scope.querySelector<HTMLElement>("[data-tech-plate]");
-      const insetPlate = scope.querySelector<HTMLElement>("[data-tech-inset]");
+      const plate = scope.querySelector<HTMLElement>("[data-tech-plate]");
+      const inset = scope.querySelector<HTMLElement>("[data-tech-inset]");
 
       if (reduceMotion()) {
-        gsap.set([mainPlate, insetPlate].filter(Boolean), { clipPath: "none", autoAlpha: 1 });
+        gsap.set([plate, inset].filter(Boolean), { clipPath: "none", autoAlpha: 1 });
       } else {
-        if (mainPlate) {
+        if (plate) {
           gsap.fromTo(
-            mainPlate,
+            plate,
             { clipPath: "inset(0% 0% 100% 0%)" },
-            { clipPath: "inset(0% 0% 0% 0%)", duration: 1.5, delay: 0.15, ease: "expo.out" },
+            { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.out" },
           );
         }
-        if (insetPlate) {
+        if (inset) {
           gsap.fromTo(
-            insetPlate,
-            { clipPath: "inset(100% 0% 0% 0%)", y: 30, autoAlpha: 0 },
-            { clipPath: "inset(0% 0% 0% 0%)", y: 0, autoAlpha: 1, duration: 1.3, delay: 0.5, ease: "expo.out" },
+            inset,
+            { y: 26, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 1, delay: 0.45, ease: EASE.out },
           );
-          parallax(insetPlate, 70);
         }
 
         gsap.from(scope.querySelectorAll("[data-tech-fade]"), {
-          y: 24,
+          y: 20,
           autoAlpha: 0,
-          duration: 1.1,
-          delay: 0.6,
-          stagger: 0.09,
+          duration: 0.9,
+          delay: 0.35,
+          stagger: 0.08,
           ease: EASE.out,
         });
       }
-
-      const plateImage = scope.querySelector<HTMLElement>("[data-tech-plate-image]");
-      if (plateImage && !reduceMotion()) parallax(plateImage, 40);
 
       return () => {
         cancelled = true;
@@ -76,143 +69,96 @@ export function TechHero() {
   );
 
   return (
-    <section
-      ref={root}
-      className="relative isolate overflow-hidden bg-[#080a0e] text-white"
-      aria-labelledby="tech-hero-title"
-    >
-      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
-        <div className="tech-grid edge-fade-y absolute inset-0 opacity-70" />
-        <div className="tech-glow absolute inset-0 opacity-80" />
-      </div>
-
-      <span
+    <section ref={root} className="relative overflow-hidden bg-white">
+      <div
         aria-hidden
-        className="ghost-numeral pointer-events-none absolute -bottom-16 left-2 hidden select-none font-display text-[20vw] font-semibold leading-none lg:block"
-      >
-        01
-      </span>
+        className="pointer-events-none absolute -left-32 -top-40 h-[520px] w-[520px] rounded-full bg-ocean/10 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-40 bottom-0 h-[440px] w-[440px] rounded-full bg-amber-accent/10 blur-3xl"
+      />
 
-      <div className="shell relative pb-12 pt-28 lg:pb-16 lg:pt-36">
-        <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
-          {/* Copy */}
-          <div className="lg:col-span-6">
-            <p
-              data-tech-fade
-              className="flex items-baseline gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-white"
-            >
-              <span className="readout text-brand">01</span>
-              Technologies
-            </p>
+      <div className="shell relative grid items-center gap-12 pb-16 pt-28 lg:grid-cols-12 lg:gap-16 lg:pb-24 lg:pt-36">
+        <div className="lg:col-span-6">
+          <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-ocean">
+            Technologies
+          </p>
 
-            <h1
-              id="tech-hero-title"
-              data-tech-heading
-              className="mt-6 max-w-[13ch] font-display text-[clamp(2.6rem,6vw,5.2rem)] font-semibold leading-[0.92] tracking-[-0.035em] text-white"
-            >
-              Technologies &amp; Machinery
-            </h1>
+          <h1
+            data-tech-heading
+            className="mt-5 max-w-[14ch] font-display text-[clamp(2.4rem,5vw,4.15rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-ink"
+          >
+            Technologies &amp; Machinery
+          </h1>
 
-            <p
-              data-tech-fade
-              className="mt-7 max-w-md text-[15px] leading-relaxed text-white/85"
-            >
-              State-of-the-art production floor equipped with microprocessor-controlled injection
-              moulding presses, high-speed automated decoration lines, and closed-loop auxiliary
-              systems.
-            </p>
+          <p className="mt-6 max-w-lg text-[15.5px] leading-relaxed text-mid">
+            State-of-the-art production floor equipped with microprocessor-controlled injection
+            moulding presses, high-speed automated decoration lines, and closed-loop auxiliary
+            systems.
+          </p>
 
-            <div data-tech-fade className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
-              <Link
-                href="/contact"
-                className="group inline-flex items-center gap-2.5 border-b border-white/30 pb-1.5 text-[14px] font-medium text-white transition-colors duration-300 hover:border-brand hover:text-white"
+          <ul className="mt-8 flex flex-wrap gap-x-7 gap-y-3">
+            {machinery.production.rows.map((row) => (
+              <li
+                key={row.name}
+                className="flex items-center gap-2.5 text-[13.5px] text-ink/80"
               >
-                Inquire capacity
-                <ArrowUpRight
-                  aria-hidden
-                  className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
-              </Link>
-              <p className="font-mono text-[10.5px] uppercase tracking-[0.24em] text-white/60">
-                {machinery.production.rows.length} production machineries · {machinery.auxiliaries.rows.length} auxiliaries
-              </p>
+                <span className="h-1.5 w-1.5 rounded-full bg-ocean" />
+                {row.name}
+              </li>
+            ))}
+          </ul>
+
+          <Link
+            href="/contact"
+            className="group mt-9 inline-flex h-12 items-center gap-2.5 rounded-[10px] bg-brand px-6 text-[14px] font-semibold text-white transition-colors duration-300 hover:bg-brand-dark"
+          >
+            Inquire capacity
+            <ArrowRight
+              aria-hidden
+              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </Link>
+        </div>
+
+        <div className="relative lg:col-span-6">
+          <div
+            data-tech-plate
+            className="group overflow-hidden rounded-[26px] bg-light shadow-[0_36px_70px_-45px_rgba(17,17,17,0.5)]"
+          >
+            <div className="relative aspect-4/3 w-full">
+              <Image
+                src="/images/facility/machinery-01.jpg"
+                alt="Injection moulding machines running in the plant"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 48vw"
+                className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+              />
             </div>
           </div>
 
-          {/* Plates */}
-          <div className="relative lg:col-span-6">
-            <div
-              data-tech-plate
-              className="corner-ticks relative aspect-4/3 w-full overflow-hidden rounded-[26px] bg-[#11151c] shadow-[0_40px_90px_-45px_rgba(0,0,0,0.9)] sm:aspect-5/4 lg:aspect-auto lg:h-[600px]"
-            >
-              <div data-tech-plate-image className="absolute inset-[-8%]">
-                <Image
-                  src="/images/facility/machinery-01.jpg"
-                  alt="Injection moulding machines running in the ASIR Containers plant"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 48vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#080a0e] via-[#080a0e]/25 to-transparent" />
-
-              <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-4 p-6 sm:p-8">
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-white/60">
-                    Production floor
-                  </p>
-                  <p className="mt-2 font-display text-[19px] font-semibold leading-snug text-white drop-shadow-sm">
-                    {machinery.production.rows[0]?.name}
-                  </p>
-                </div>
-                <span className="readout border border-white/25 bg-[#080a0e]/40 px-2.5 py-1 text-[11px] text-white/85 backdrop-blur-sm">
-                  80–650 T
-                </span>
-              </div>
-            </div>
-
-            {/* Floating detail plate */}
-            <div
-              data-tech-inset
-              className="absolute -bottom-8 -left-4 hidden w-[38%] overflow-hidden rounded-[18px] border-[6px] border-[#080a0e] sm:block lg:-left-10"
-            >
-              <div className="relative aspect-square w-full bg-[#11151c]">
-                <Image
-                  src="/images/hero/hero-03.jpg"
-                  alt="Close detail of a moulding machine under operation"
-                  fill
-                  sizes="220px"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-[#080a0e]/20" />
-                <p className="absolute bottom-2.5 left-3 font-mono text-[9.5px] uppercase tracking-[0.22em] text-white/85">
-                  Mould detail
-                </p>
-              </div>
+          <div
+            data-tech-inset
+            className="absolute -bottom-10 -right-6 hidden w-[40%] overflow-hidden rounded-[18px] shadow-[0_24px_50px_-30px_rgba(17,17,17,0.55)] ring-8 ring-white sm:block lg:-right-8"
+          >
+            <div className="relative aspect-square w-full bg-light">
+              <Image
+                src="/images/hero/hero-03.jpg"
+                alt="Moulding machine detail"
+                fill
+                sizes="(max-width: 1024px) 40vw, 220px"
+                className="object-cover"
+              />
             </div>
           </div>
         </div>
-
-        {/* Spec strip */}
-        <dl
-          data-tech-fade
-          className="mt-16 grid gap-px border-t border-white/12 pt-5 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4"
-        >
-          {machinery.production.rows.map((row, index) => (
-            <div
-              key={row.name}
-              className="group flex items-baseline justify-between gap-4 border-white/8 py-3 sm:border-l sm:pl-5 sm:first:border-l-0 sm:first:pl-0 lg:py-1"
-            >
-              <dt className="flex items-baseline gap-2.5 text-[12.5px] text-white/78 transition-colors group-hover:text-white">
-                <span className="readout text-[10px] text-brand">0{index + 1}</span>
-                {row.name}
-              </dt>
-              <dd className="readout text-[13px] font-semibold text-white">{row.capacity}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
+
+      <p className="shell relative pb-10 text-[12px] text-mid/80">
+        Representative photography — plant imagery to be supplied.
+      </p>
     </section>
   );
 }

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { TechHero } from "@/components/technologies/TechHero";
-import { TonnageGauge } from "@/components/technologies/TonnageGauge";
-import { MachineLedger } from "@/components/technologies/MachineLedger";
+import { CapabilityPanel } from "@/components/technologies/CapabilityPanel";
+import { MachineCards } from "@/components/technologies/MachineCards";
 import { Auxiliaries } from "@/components/technologies/Auxiliaries";
-import { DarkCTA } from "@/components/sections/DarkCTA";
+import { ColorCTA } from "@/components/sections/ColorCTA";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -23,10 +23,10 @@ export default function TechnologiesPage() {
   return (
     <>
       <TechHero />
-      <TonnageGauge />
-      <MachineLedger />
+      <CapabilityPanel />
+      <MachineCards />
       <Auxiliaries />
-      <DarkCTA
+      <ColorCTA
         eyebrow="Production Capacity"
         heading="Have volume requirements or specific machine tooling?"
         body="Inquire about machine availability, tonnage allocation, cycle times, and automated in-mould labelling capabilities."

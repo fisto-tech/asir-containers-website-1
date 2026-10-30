@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { ProcessHero } from "@/components/process/ProcessHero";
 import { QualityGates } from "@/components/process/QualityGates";
 import { InProcessStages } from "@/components/process/InProcessStages";
-import { FlowRail } from "@/components/process/FlowRail";
-import { DarkCTA } from "@/components/sections/DarkCTA";
+import { FlowStrip } from "@/components/process/FlowStrip";
+import { ColorCTA } from "@/components/sections/ColorCTA";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -25,14 +25,14 @@ export default function ProcessPage() {
       <ProcessHero />
       <QualityGates />
       <InProcessStages />
-      <FlowRail />
-      <DarkCTA
+      <FlowStrip />
+      <ColorCTA
         eyebrow="Quality Assurance & Custom Runs"
         heading="Looking for process validation or custom batches?"
         body="Review batch inspection criteria, in-process quality checklists, and decorative finishes with our technical engineers."
         ctaLabel="Contact engineering"
         image="/images/facility/dispatch.jpg"
-        imageAlt="Pallets of finished containers waiting at the dispatch bay"
+        imageAlt="Pallets of finished containers at the dispatch bay"
       />
     </>
   );

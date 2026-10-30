@@ -100,9 +100,9 @@ src/
 ├── components/
 │   ├── Header.tsx  Footer.tsx
 │   ├── home/                   # Hero, about, counters, applications, advantages…
-│   ├── process/                # /process — hero, quality gates, stage switcher, flow rail
-│   ├── technologies/           # /technologies — hero, tonnage gauge, ledger, auxiliaries
-│   ├── sections/DarkCTA.tsx    # Closing band shared by /process and /technologies
+│   ├── process/                # /process — hero, quality gates, stage switcher, flow strip
+│   ├── technologies/           # /technologies — hero, capability panel, machine cards, auxiliaries
+│   ├── sections/ColorCTA.tsx   # Closing brand panel shared by /process and /technologies
 │   ├── products/               # Catalogue, filters, product card, product media
 │   ├── motion/SmoothScroll.tsx # Lenis + ScrollTrigger wiring
 │   ├── contact/ContactForm.tsx
@@ -133,26 +133,25 @@ sitemap entry with no component changes.
 
 ## Process & Technologies pages
 
-Both pages are built as one editorial "drawing office" system: a measured grid
-(`.tech-grid` / `.tech-grid-light`), ghost numerals (`.ghost-numeral`), corner
-registration ticks (`.corner-ticks`), mono spec labels and a single red survey line per
-block. Photography is always a plate with a caption, never a decorative background wash.
+Both pages are light, colour-led and deliberately quiet: white and warm-cream grounds,
+large uncropped photography with soft shadows, one accent colour per section (brand red,
+ocean blue, emerald, amber) and a single coloured element per card. No dark sections, no
+overlays on photography, no numbered eyebrows, no chips or badges.
 
 | Block | Page | Behaviour |
 |---|---|---|
-| Masthead | both | Full-bleed dark plate, SplitText letter rise, clip-path plate wipes, scrub parallax |
-| Quality gates | `/process` | Pull quote plus a three-gate accordion that advances itself every 6 s and opens each gate's detail |
-| In-process stage switcher | `/process` | One large plate, four stages (moulding + three printing routes); auto-advances every 6.5 s, crossfades the plate, and reveals bullets or client marks per stage |
-| Process-flow rail | `/process` | Four stages on one rail; the red rule draws itself with scroll (horizontal on desktop, vertical on mobile) and each node lights as the draw reaches it |
-| Tonnage instrument | `/technologies` | A ruled 0–700 T scale with the 80–650 T working band; the marker and its readout travel the band on scroll |
-| Machinery ledger | `/technologies` | Four production routes over the plant plate; each row carries a segmented set-up readout, hover draws the red survey line |
-| Auxiliaries register | `/technologies` | Six hairline cells, counts animate in, icons carry the CSS ambient loops |
+| Masthead | both | Cream-to-white ground with soft colour washes, a large plant plate plus a smaller inset plate, heading rises line by line |
+| Inspection gates | `/process` | Statement quote beside three gate cards, each with its own accent colour |
+| In-process stage switcher | `/process` | One large plate beside a plain list; the open stage reveals its detail, bullets or client marks and the plate crossfades (auto-advances every 6.5 s, pauses on hover) |
+| Process-flow strip | `/process` | Four tinted cards — emerald, ocean, amber, brand — reading left to right with wide chevrons between them |
+| Capability panel | `/technologies` | Soft ocean panel, 80–650 T set large with an animated colour bar underneath |
+| Machinery cards | `/technologies` | Four production routes on cream, capacity set in brand red as the card's loudest element |
+| Auxiliaries | `/technologies` | Six white tiles on grey, coloured icon discs and counts that run up |
+| Closing band | both | Solid brand panel with the plant photograph held beside the copy — no overlay on the image |
 
-All content is read from `src/data/manufacturing.ts` (verbatim) — the pages add layout and
-photography only. The closing band is shared (`sections/DarkCTA.tsx`).
-
-Note: `/process` and `/technologies` open on a dark hero, so the fixed header renders
-transparent until the first scroll (see `darkHeroPages` in `components/Header.tsx`).
+All content is read from `src/data/manufacturing.ts` and `src/data/process.ts` (verbatim).
+`/process` and `/technologies` open on a light hero, so the fixed header renders transparent
+with ink type until the first scroll (see `overLightHero` in `components/Header.tsx`).
 
 ---
 

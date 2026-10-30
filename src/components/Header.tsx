@@ -72,10 +72,12 @@ export function Header() {
     closeTimer.current = window.setTimeout(() => setProductsOpen(false), 200);
   };
 
-  /* Pages that open on a dark, full-bleed plate get a transparent header until
-     the user scrolls. */
-  const darkHeroPages = ["/", "/process", "/technologies"];
-  const overHero = darkHeroPages.includes(pathname) && !scrolled && !open;
+  /* "/" opens on a dark hero → transparent header with light type.
+     "/process" and "/technologies" open on a light hero → transparent header
+     with ink type, so the page runs to the top edge without a white bar. */
+  const overHero = pathname === "/" && !scrolled && !open;
+  const overLightHero =
+    (pathname === "/process" || pathname === "/technologies") && !scrolled && !open;
   const onProductsPage = pathname.startsWith("/products");
 
   const isActive = (href: string) => {
@@ -85,7 +87,9 @@ export function Header() {
 
   const linkTone = overHero
     ? "text-white/80 hover:text-white"
-    : "text-mid/90 hover:text-ink";
+    : overLightHero
+      ? "text-mid hover:text-ink"
+      : "text-mid/90 hover:text-ink";
 
   return (
     <>
@@ -100,9 +104,11 @@ export function Header() {
         className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,height,box-shadow] duration-500 ${
           overHero
             ? "border-b border-white/15 bg-transparent"
-            : scrolled
-              ? "border-b border-line/80 bg-white/95 backdrop-blur-md shadow-xs"
-              : "border-b border-line bg-white"
+            : overLightHero
+              ? "border-b border-transparent bg-transparent"
+              : scrolled
+                ? "border-b border-line/80 bg-white/95 backdrop-blur-md shadow-xs"
+                : "border-b border-line bg-white"
         }`}
       >
         <div

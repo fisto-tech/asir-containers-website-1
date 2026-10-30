@@ -2,15 +2,19 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { gsap, useGSAP, revealLines, parallax, reduceMotion, EASE } from "@/lib/animations";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { gsap, useGSAP, revealLines, reduceMotion, EASE } from "@/lib/animations";
 import { inspectionStages, inProcess } from "@/data/manufacturing";
 
+const stageColors = ["bg-emerald-accent", "bg-ocean", "bg-amber-accent"];
+
 /**
- * Process masthead — a drawing-office hero.
+ * Process masthead — light, warm, and photographic.
  *
- * The factory plate sits behind a measured grid, the headline rises letter by
- * letter, and the three inspection gates are issued as a spec strip along the
- * bottom rule. Everything is derived from `src/data/manufacturing.ts`.
+ * One big plant plate with a smaller detail plate tucked behind it, the
+ * headline rising line by line, and the three inspection gates written out
+ * as plain text beneath the copy.
  */
 export function ProcessHero() {
   const root = useRef<HTMLElement | null>(null);
@@ -20,13 +24,11 @@ export function ProcessHero() {
       const scope = root.current;
       if (!scope) return;
 
-      /* Wait for the variable face before splitting, so line masks measure the
-         real letterforms rather than the fallback. */
-      const heading = scope.querySelector<HTMLElement>("[data-hero-heading]");
       let cancelled = false;
+      const heading = scope.querySelector<HTMLElement>("[data-hero-heading]");
       const splitHeading = () => {
         if (cancelled || !heading) return;
-        revealLines(heading, { delay: 0.35, scrollTrigger: false });
+        revealLines(heading, { mode: "words", delay: 0.2, scrollTrigger: false });
       };
       if (heading) {
         if (document.fonts?.status === "loaded") splitHeading();
@@ -34,44 +36,35 @@ export function ProcessHero() {
       }
 
       const plate = scope.querySelector<HTMLElement>("[data-hero-plate]");
-      if (plate) {
-        if (!reduceMotion()) {
+      const inset = scope.querySelector<HTMLElement>("[data-hero-inset]");
+
+      if (reduceMotion()) {
+        gsap.set([plate, inset].filter(Boolean), { clipPath: "none", autoAlpha: 1 });
+      } else {
+        if (plate) {
           gsap.fromTo(
             plate,
-            { scale: 1.16, autoAlpha: 0.35 },
-            { scale: 1, autoAlpha: 1, duration: 2.4, ease: "expo.out" },
+            { clipPath: "inset(0% 0% 100% 0%)" },
+            { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.out" },
           );
-          parallax(plate, 58);
-        } else {
-          gsap.set(plate, { autoAlpha: 1 });
         }
-      }
+        if (inset) {
+          gsap.fromTo(
+            inset,
+            { y: 26, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 1, delay: 0.45, ease: EASE.out },
+          );
+        }
 
-      if (reduceMotion()) return () => {
-        cancelled = true;
-      };
-
-      gsap.from(scope.querySelectorAll("[data-hero-fade]"), {
-        y: 26,
-        autoAlpha: 0,
-        duration: 1.15,
-        delay: 0.7,
-        stagger: 0.1,
-        ease: EASE.out,
-      });
-
-      gsap.fromTo(
-        scope.querySelectorAll("[data-hero-rule]"),
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          duration: 1.7,
+        gsap.from(scope.querySelectorAll("[data-hero-fade]"), {
+          y: 20,
+          autoAlpha: 0,
+          duration: 0.9,
           delay: 0.35,
-          stagger: 0.14,
-          ease: "expo.out",
-          transformOrigin: "left center",
-        },
-      );
+          stagger: 0.08,
+          ease: EASE.out,
+        });
+      }
 
       return () => {
         cancelled = true;
@@ -81,130 +74,98 @@ export function ProcessHero() {
   );
 
   return (
-    <section
-      ref={root}
-      className="relative isolate overflow-hidden bg-[#080a0e] text-white"
-      aria-labelledby="process-hero-title"
-    >
-      {/* Photographic ground */}
-      <div className="pointer-events-none absolute inset-0 -z-20 overflow-hidden" aria-hidden>
-        <div data-hero-plate className="absolute inset-[-9%]">
-          <Image
-            src="/images/hero/hero-01.jpg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-45"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080a0e]/72 via-[#080a0e]/58 to-[#080a0e]" />
-        <div className="tech-grid edge-fade-y absolute inset-0 opacity-70" />
-        <div className="tech-glow absolute inset-0 opacity-90" />
-      </div>
-
-      <span
+    <section ref={root} className="relative overflow-hidden bg-white">
+      {/* Soft brand wash — colour, not a dark overlay */}
+      <div
         aria-hidden
-        className="ghost-numeral pointer-events-none absolute right-6 top-[22vh] hidden select-none font-display text-[19vw] font-semibold leading-none lg:block"
-      >
-        01
-      </span>
+        className="pointer-events-none absolute -right-32 -top-40 h-[520px] w-[520px] rounded-full bg-brand/8 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-40 bottom-0 h-[420px] w-[420px] rounded-full bg-ocean/10 blur-3xl"
+      />
 
-      <div className="shell relative flex min-h-[100svh] flex-col justify-between pb-8 pt-28 lg:pb-10 lg:pt-32">
-        {/* Meta rule */}
-        <div className="flex items-end justify-between gap-6">
-          <p
-            data-hero-fade
-            className="flex items-baseline gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-white"
-          >
-            <span className="readout text-brand">01</span>
+      <div className="shell relative grid items-center gap-12 pb-16 pt-28 lg:grid-cols-12 lg:gap-16 lg:pb-24 lg:pt-36">
+        <div className="lg:col-span-6">
+          <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-brand">
             Process
           </p>
-          <p
-            data-hero-fade
-            className="hidden text-right font-mono text-[10.5px] uppercase tracking-[0.28em] text-white/60 sm:block"
-          >
-            Moulding · Printing · Inspection
-          </p>
-        </div>
-        <span data-hero-rule aria-hidden className="mt-4 block h-px w-full bg-white/20" />
 
-        {/* Title block */}
-        <div className="relative mt-12 lg:mt-16">
           <h1
-            id="process-hero-title"
             data-hero-heading
-            className="max-w-[15ch] font-display text-[clamp(2.6rem,6.4vw,5.75rem)] font-semibold leading-[0.92] tracking-[-0.035em] text-white"
+            className="mt-5 max-w-[16ch] font-display text-[clamp(2.4rem,5vw,4.15rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-ink"
           >
             Manufacturing &amp; Process Flow
           </h1>
 
-          <div className="mt-9 grid gap-8 lg:grid-cols-12 lg:gap-10">
-            <p
-              data-hero-fade
-              className="max-w-md text-[15px] leading-relaxed text-white/85 lg:col-span-5"
-            >
-              Fully integrated in-house manufacturing process: precision injection moulding
-              cycles, versatile multi-color container printing, and rigorous multi-stage quality
-              control under one roof.
-            </p>
+          <p className="mt-6 max-w-lg text-[15.5px] leading-relaxed text-mid">
+            Fully integrated in-house manufacturing process: precision injection moulding
+            cycles, versatile multi-color container printing, and rigorous multi-stage quality
+            control under one roof.
+          </p>
 
-            <div className="lg:col-span-5 lg:col-start-8">
-              <p
-                data-hero-fade
-                className="text-[10.5px] font-semibold uppercase tracking-[0.26em] text-white/60"
+          <ul className="mt-8 flex flex-wrap gap-x-7 gap-y-3">
+            {inspectionStages.map((stage, index) => (
+              <li
+                key={stage.index}
+                className="flex items-center gap-2.5 text-[13.5px] text-ink/80"
               >
-                {inProcess.eyebrow}
-              </p>
-              <ul className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2">
-                {[inProcess.moulding.title, ...inProcess.printing.routes.map((route) => route.name)].map(
-                  (label, index) => (
-                    <li
-                      key={label}
-                      data-hero-fade
-                      className="group flex items-baseline gap-2 text-[13px] text-white/85 transition-colors duration-300 hover:text-white"
-                    >
-                      <span className="readout text-[10px] text-brand">0{index + 1}</span>
-                      {label}
-                    </li>
-                  ),
-                )}
-              </ul>
+                <span className={`h-1.5 w-1.5 rounded-full ${stageColors[index]}`} />
+                {stage.title}
+              </li>
+            ))}
+          </ul>
+
+          <Link
+            href="/contact"
+            className="group mt-9 inline-flex h-12 items-center gap-2.5 rounded-[10px] bg-brand px-6 text-[14px] font-semibold text-white transition-colors duration-300 hover:bg-brand-dark"
+          >
+            Contact engineering
+            <ArrowRight
+              aria-hidden
+              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </Link>
+        </div>
+
+        {/* Photography */}
+        <div className="relative lg:col-span-6">
+          <div
+            data-hero-plate
+            className="group overflow-hidden rounded-[26px] bg-light shadow-[0_36px_70px_-45px_rgba(17,17,17,0.5)]"
+          >
+            <div className="relative aspect-4/3 w-full">
+              <Image
+                src="/images/hero/hero-01.jpg"
+                alt="Containers stacked on the ASIR plant floor"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 48vw"
+                className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+              />
+            </div>
+          </div>
+
+          <div
+            data-hero-inset
+            className="absolute -bottom-10 -left-6 hidden w-[42%] overflow-hidden rounded-[18px] shadow-[0_24px_50px_-30px_rgba(17,17,17,0.55)] ring-8 ring-white sm:block lg:-left-10"
+          >
+            <div className="relative aspect-square w-full bg-light">
+              <Image
+                src="/images/hero/hero-03.jpg"
+                alt="Moulding machine detail"
+                fill
+                sizes="(max-width: 1024px) 40vw, 220px"
+                className="object-cover"
+              />
             </div>
           </div>
         </div>
-
-        {/* Inspection gate strip */}
-        <div className="mt-14 lg:mt-20">
-          <span data-hero-rule aria-hidden className="block h-px w-full bg-white/20" />
-          <ol className="grid gap-px sm:grid-cols-3">
-            {inspectionStages.map((stage) => (
-              <li
-                key={stage.index}
-                data-hero-fade
-                className="group relative border-t border-white/10 py-4 sm:border-t-0 sm:border-l sm:py-5 sm:pl-6 sm:first:border-l-0 sm:first:pl-0"
-              >
-                <span
-                  aria-hidden
-                  className="absolute left-0 top-0 h-px w-0 bg-brand transition-[width] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-full sm:first:left-0"
-                />
-                <span className="readout text-[11px] font-semibold text-brand">{stage.index}</span>
-                <p className="mt-1.5 font-display text-[16px] font-medium leading-snug text-white">
-                  {stage.title}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </div>
       </div>
 
-      {/* Scroll cue */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-8 right-5 hidden h-24 w-px bg-white/15 lg:block"
-      >
-        <span className="cue-run block h-full w-full" />
-      </div>
+      <p className="shell relative pb-10 text-[12px] text-mid/80">
+        Representative photography — plant imagery to be supplied.
+      </p>
     </section>
   );
 }

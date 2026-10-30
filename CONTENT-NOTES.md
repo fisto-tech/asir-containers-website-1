@@ -46,12 +46,12 @@ Notes
   the real imagery.
 - `/process` and `/technologies` reuse the existing hero and plant plates rather than new
   files: `hero-01.jpg` (process masthead), `hero-03.jpg` (moulding stage + technology
-  masthead detail), `facility/machinery-01.jpg` (IML stage, technology masthead, machinery
-  ledger ground), `facility/labelling.jpg` (screen-printing stage, technology CTA),
+  masthead detail), `facility/machinery-01.jpg` (IML stage, technology masthead),
+  `facility/labelling.jpg` (screen-printing stage, technology CTA),
   `facility/dispatch.jpg` (process CTA) and `detail/stacked-pails.jpg` (HTL stage). Each is
   captioned "Representative photography" in the UI. To swap in real plant photography,
   edit `src/data/process.ts` (stage imagery) and the `src` values in
-  `components/technologies/TechHero.tsx`, `components/technologies/MachineLedger.tsx` and
+  `components/technologies/TechHero.tsx`, `components/technologies/MachineCards.tsx` and
   the two page files, then delete the caption under the stage plate.
 
 ---
