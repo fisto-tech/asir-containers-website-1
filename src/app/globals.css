@@ -848,3 +848,16 @@ select:focus-visible {
     clip-path: polygon(13% 0, 100% 0, 100% 100%, 0 100%);
   }
 }
+
+/* Soft left fade so a photograph sits in the page instead of in a frame */
+.fade-left {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 24%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 24%);
+}
+
+@media (max-width: 63.99rem) {
+  .fade-left {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 18%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 18%);
+  }
+}
