@@ -776,3 +776,75 @@ select:focus-visible {
 .animate-progress {
   animation: progress-bar linear forwards;
 }
+
+/* --------------------------------------------------------------------------
+   Ambient, always-running motion
+   Used by the process / technologies pages: slow colour washes behind a hero,
+   a very slow zoom on photography, and a dashed run that keeps travelling.
+   All of it is neutralised when the reader asks for reduced motion.
+   -------------------------------------------------------------------------- */
+@keyframes drift-slow {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2.5rem, 1.75rem, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.drift {
+  animation: drift-slow 22s ease-in-out infinite;
+}
+
+@keyframes ambient-zoom {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.07) translate3d(-1%, -1.2%, 0);
+  }
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+.ambient-media {
+  animation: ambient-zoom 26s ease-in-out infinite;
+}
+
+.ambient-media-slow {
+  animation: ambient-zoom 38s ease-in-out infinite;
+}
+
+@keyframes dash-run {
+  to {
+    background-position: 28px 0;
+  }
+}
+
+.animate-dash {
+  animation: dash-run 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift,
+  .ambient-media,
+  .ambient-media-slow,
+  .animate-dash {
+    animation: none !important;
+  }
+}
+
+/* Diagonal cut where the closing banner's photograph meets the colour panel */
+.banner-slant {
+  clip-path: none;
+}
+
+@media (min-width: 64rem) {
+  .banner-slant {
+    clip-path: polygon(13% 0, 100% 0, 100% 100%, 0 100%);
+  }
+}

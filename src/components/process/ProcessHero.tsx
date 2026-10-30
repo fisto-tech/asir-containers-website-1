@@ -5,16 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { gsap, useGSAP, revealLines, reduceMotion, EASE } from "@/lib/animations";
-import { inspectionStages, inProcess } from "@/data/manufacturing";
+import { inspectionStages } from "@/data/manufacturing";
 
-const stageColors = ["bg-emerald-accent", "bg-ocean", "bg-amber-accent"];
+const gateColours = ["text-emerald-accent", "text-ocean", "text-amber-accent"];
+const gateDots = ["bg-emerald-accent", "bg-ocean", "bg-amber-accent"];
 
 /**
- * Process masthead — light, warm, and photographic.
+ * Process masthead.
  *
- * One big plant plate with a smaller detail plate tucked behind it, the
- * headline rising line by line, and the three inspection gates written out
- * as plain text beneath the copy.
+ * Copy on the left, two photographs of equal height on the right — one wide,
+ * one narrow — so the plate reads as a spread rather than a stack of cards.
  */
 export function ProcessHero() {
   const root = useRef<HTMLElement | null>(null);
@@ -35,36 +35,27 @@ export function ProcessHero() {
         else void document.fonts?.ready.then(splitHeading);
       }
 
-      const plate = scope.querySelector<HTMLElement>("[data-hero-plate]");
-      const inset = scope.querySelector<HTMLElement>("[data-hero-inset]");
+      if (reduceMotion()) return () => { cancelled = true; };
 
-      if (reduceMotion()) {
-        gsap.set([plate, inset].filter(Boolean), { clipPath: "none", autoAlpha: 1 });
-      } else {
-        if (plate) {
-          gsap.fromTo(
-            plate,
-            { clipPath: "inset(0% 0% 100% 0%)" },
-            { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.out" },
-          );
-        }
-        if (inset) {
-          gsap.fromTo(
-            inset,
-            { y: 26, autoAlpha: 0 },
-            { y: 0, autoAlpha: 1, duration: 1, delay: 0.45, ease: EASE.out },
-          );
-        }
+      gsap.fromTo(
+        scope.querySelectorAll("[data-hero-plate]"),
+        { clipPath: "inset(0% 0% 100% 0%)" },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          duration: 1.3,
+          stagger: 0.14,
+          ease: "expo.out",
+        },
+      );
 
-        gsap.from(scope.querySelectorAll("[data-hero-fade]"), {
-          y: 20,
-          autoAlpha: 0,
-          duration: 0.9,
-          delay: 0.35,
-          stagger: 0.08,
-          ease: EASE.out,
-        });
-      }
+      gsap.from(scope.querySelectorAll("[data-hero-fade]"), {
+        y: 20,
+        autoAlpha: 0,
+        duration: 0.9,
+        delay: 0.3,
+        stagger: 0.08,
+        ease: EASE.out,
+      });
 
       return () => {
         cancelled = true;
@@ -75,43 +66,46 @@ export function ProcessHero() {
 
   return (
     <section ref={root} className="relative overflow-hidden bg-white">
-      {/* Soft brand wash — colour, not a dark overlay */}
+      {/* Slow colour wash — always in motion, never in the way */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-32 -top-40 h-[520px] w-[520px] rounded-full bg-brand/8 blur-3xl"
+        className="drift pointer-events-none absolute -right-32 -top-40 h-[540px] w-[540px] rounded-full bg-brand/10 blur-3xl"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-40 bottom-0 h-[420px] w-[420px] rounded-full bg-ocean/10 blur-3xl"
+        className="drift pointer-events-none absolute -left-44 top-1/3 h-[420px] w-[420px] rounded-full bg-ocean/10 blur-3xl [animation-delay:-6s]"
       />
 
-      <div className="shell relative grid items-center gap-12 pb-16 pt-28 lg:grid-cols-12 lg:gap-16 lg:pb-24 lg:pt-36">
-        <div className="lg:col-span-6">
+      <div className="shell relative grid items-center gap-12 pb-16 pt-28 lg:grid-cols-12 lg:gap-14 lg:pb-24 lg:pt-36">
+        <div className="lg:col-span-5">
           <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-brand">
             Process
           </p>
 
           <h1
             data-hero-heading
-            className="mt-5 max-w-[16ch] font-display text-[clamp(2.4rem,5vw,4.15rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-ink"
+            className="mt-5 font-display text-[clamp(2.4rem,4.6vw,3.9rem)] font-semibold leading-[1.03] tracking-[-0.03em] text-ink"
           >
             Manufacturing &amp; Process Flow
           </h1>
 
-          <p className="mt-6 max-w-lg text-[15.5px] leading-relaxed text-mid">
+          <p className="mt-6 max-w-md text-[15.5px] leading-relaxed text-mid">
             Fully integrated in-house manufacturing process: precision injection moulding
             cycles, versatile multi-color container printing, and rigorous multi-stage quality
             control under one roof.
           </p>
 
-          <ul className="mt-8 flex flex-wrap gap-x-7 gap-y-3">
+          <ul className="mt-8 space-y-2.5">
             {inspectionStages.map((stage, index) => (
               <li
                 key={stage.index}
-                className="flex items-center gap-2.5 text-[13.5px] text-ink/80"
+                className="flex items-center gap-3 text-[14px] text-ink/80"
               >
-                <span className={`h-1.5 w-1.5 rounded-full ${stageColors[index]}`} />
+                <span className={`h-1.5 w-1.5 rounded-full ${gateDots[index]}`} />
                 {stage.title}
+                <span className={`text-[11px] font-semibold uppercase tracking-[0.12em] ${gateColours[index]}`}>
+                  Gate
+                </span>
               </li>
             ))}
           </ul>
@@ -128,44 +122,39 @@ export function ProcessHero() {
           </Link>
         </div>
 
-        {/* Photography */}
-        <div className="relative lg:col-span-6">
-          <div
-            data-hero-plate
-            className="group overflow-hidden rounded-[26px] bg-light shadow-[0_36px_70px_-45px_rgba(17,17,17,0.5)]"
-          >
-            <div className="relative aspect-4/3 w-full">
+        {/* Two plates, one height */}
+        <div className="lg:col-span-7">
+          <div className="grid h-[300px] grid-cols-5 gap-3 sm:h-[380px] sm:gap-4 lg:h-[520px]">
+            <div
+              data-hero-plate
+              className="relative col-span-3 overflow-hidden rounded-[24px] bg-light shadow-[0_40px_80px_-55px_rgba(17,17,17,0.6)]"
+            >
               <Image
                 src="/images/hero/hero-01.jpg"
-                alt="Containers stacked on the ASIR plant floor"
+                alt="Containers stacked on the plant floor"
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 48vw"
-                className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                sizes="(max-width: 1024px) 60vw, 36vw"
+                className="ambient-media-slow object-cover"
               />
             </div>
-          </div>
 
-          <div
-            data-hero-inset
-            className="absolute -bottom-10 -left-6 hidden w-[42%] overflow-hidden rounded-[18px] shadow-[0_24px_50px_-30px_rgba(17,17,17,0.55)] ring-8 ring-white sm:block lg:-left-10"
-          >
-            <div className="relative aspect-square w-full bg-light">
+            <div
+              data-hero-plate
+              className="relative col-span-2 overflow-hidden rounded-[24px] bg-light shadow-[0_40px_80px_-55px_rgba(17,17,17,0.6)]"
+            >
               <Image
-                src="/images/hero/hero-03.jpg"
-                alt="Moulding machine detail"
+                src="/images/facility/machinery-01.jpg"
+                alt="Injection moulding machines running in the plant"
                 fill
-                sizes="(max-width: 1024px) 40vw, 220px"
-                className="object-cover"
+                priority
+                sizes="(max-width: 1024px) 40vw, 24vw"
+                className="ambient-media object-cover"
               />
             </div>
           </div>
         </div>
       </div>
-
-      <p className="shell relative pb-10 text-[12px] text-mid/80">
-        Representative photography — plant imagery to be supplied.
-      </p>
     </section>
   );
 }

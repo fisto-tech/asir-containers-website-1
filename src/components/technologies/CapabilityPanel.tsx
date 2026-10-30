@@ -47,8 +47,12 @@ export function CapabilityPanel() {
   return (
     <section ref={root} className="bg-white py-16 lg:py-24" aria-labelledby="capability-heading">
       <div className="shell">
-        <div className="rounded-[30px] bg-ocean-light px-7 py-10 sm:px-12 lg:px-14 lg:py-14">
-          <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
+        <div className="relative overflow-hidden rounded-[30px] bg-ocean-light px-7 py-10 sm:px-12 lg:px-14 lg:py-14">
+          <span
+            aria-hidden
+            className="drift pointer-events-none absolute -right-16 -top-20 h-[280px] w-[280px] rounded-full bg-ocean/10 blur-3xl"
+          />
+          <div className="relative grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
             <div className="lg:col-span-5">
               <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-ocean" data-reveal>
                 Machinery
@@ -90,6 +94,7 @@ export function CapabilityPanel() {
               <p className="mt-7 max-w-xl text-[14px] leading-relaxed text-mid" data-reveal>
                 {machinery.intro}
               </p>
+
             </div>
           </div>
         </div>

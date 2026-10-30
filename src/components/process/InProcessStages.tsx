@@ -1,20 +1,57 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Check } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { reduceMotion, useScrollReveal } from "@/lib/animations";
 import { inProcess } from "@/data/manufacturing";
-import { capacityEnvelope, processStages } from "@/data/process";
+
+const routes = inProcess.printing.routes;
+
+type Stage = {
+  title: string;
+  detail: string;
+  image: string;
+  alt: string;
+  accentText: string;
+  accentBar: string;
+  surface: string;
+};
+
+const stages: Stage[] = [
+  {
+    title: routes[0].name,
+    detail: routes[0].detail,
+    image: "/images/facility/labelling.jpg",
+    alt: "Containers moving through an in-line printing station",
+    accentText: "text-emerald-accent",
+    accentBar: "bg-emerald-accent",
+    surface: "bg-emerald-light",
+  },
+  {
+    title: routes[1].name,
+    detail: routes[1].detail,
+    image: "/images/hero/hero-03.jpg",
+    alt: "Heat-transfer labelled containers on the line",
+    accentText: "text-ocean",
+    accentBar: "bg-ocean",
+    surface: "bg-ocean-light",
+  },
+  {
+    title: routes[2].name,
+    detail: routes[2].detail,
+    image: "/images/families/paint-pail.jpg",
+    alt: "Container whose label is moulded into the wall of the pail",
+    accentText: "text-amber-accent",
+    accentBar: "bg-amber-accent",
+    surface: "bg-amber-light",
+  },
+];
 
 const CYCLE = 6500;
 
-const dots = ["bg-brand", "bg-ocean", "bg-amber-accent", "bg-emerald-accent"];
-
 /**
- * Moulding and the three printing routes, shown as one photograph beside a
- * plain list. The open stage reveals its detail and, where it has them, its
- * client marks. Colour comes from the dot beside each stage name.
+ * In-process activities. One large plate changes with the selected route; the
+ * chosen route is filled with its own colour so the eye lands on it instantly.
  */
 export function InProcessStages() {
   const [active, setActive] = useState(0);
@@ -25,146 +62,99 @@ export function InProcessStages() {
   useEffect(() => {
     if (paused || reduceMotion()) return;
     const timer = window.setInterval(
-      () => setActive((current) => (current + 1) % processStages.length),
+      () => setActive((current) => (current + 1) % stages.length),
       CYCLE,
     );
     return () => window.clearInterval(timer);
   }, [paused]);
 
   return (
-    <section
-      ref={root}
-      className="bg-white py-20 lg:py-28"
-      aria-labelledby="inprocess-heading"
-    >
+    <section ref={root} className="bg-white py-20 lg:py-28" aria-labelledby="stages-heading">
       <div className="shell">
         <div className="max-w-2xl">
-          <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-ocean">
-            {inProcess.eyebrow}
-          </p>
           <h2
-            id="inprocess-heading"
-            className="mt-4 font-display text-[clamp(1.8rem,3.2vw,2.85rem)] font-semibold leading-[1.06] tracking-[-0.03em] text-ink"
+            id="stages-heading"
+            className="font-display text-[clamp(1.8rem,3.2vw,2.75rem)] font-semibold leading-[1.08] tracking-[-0.03em] text-ink"
             data-reveal="letters"
           >
-            Moulded, printed and packed on one floor.
+            {inProcess.eyebrow}
           </h2>
-          <p className="mt-4 text-[14.5px] leading-relaxed text-mid" data-reveal>
-            {inProcess.intro}
-          </p>
         </div>
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-14">
-          {/* Photograph */}
-          <div className="lg:col-span-7" data-reveal-mask>
-            <div
-              className="group relative aspect-4/3 w-full overflow-hidden rounded-[26px] bg-white shadow-[0_30px_60px_-45px_rgba(17,17,17,0.45)] sm:aspect-16/11"
-              onPointerEnter={() => setPaused(true)}
-              onPointerLeave={() => setPaused(false)}
-            >
-              {processStages.map((stage, index) => (
+        <div
+          className="mt-10 grid items-stretch gap-6 lg:grid-cols-12 lg:gap-10"
+          onPointerEnter={() => setPaused(true)}
+          onPointerLeave={() => setPaused(false)}
+          onFocusCapture={() => setPaused(true)}
+          onBlurCapture={() => setPaused(false)}
+        >
+          <div className="lg:col-span-7">
+            <div className="relative h-[300px] overflow-hidden rounded-[26px] bg-light shadow-[0_40px_80px_-55px_rgba(17,17,17,0.6)] sm:h-[400px] lg:h-full lg:min-h-[460px]">
+              {stages.map((stage, index) => (
                 <div
-                  key={stage.id}
-                  aria-hidden={index !== active}
-                  className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+                  key={stage.image + stage.title}
+                  className={`absolute inset-0 transition-opacity duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                     index === active ? "opacity-100" : "opacity-0"
                   }`}
+                  aria-hidden={index !== active}
                 >
                   <Image
                     src={stage.image}
-                    alt={index === active ? stage.imageAlt : ""}
+                    alt={stage.alt}
                     fill
                     sizes="(max-width: 1024px) 100vw, 58vw"
-                    className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                    className={`object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                      index === active ? "scale-100" : "scale-[1.05]"
+                    }`}
                   />
                 </div>
               ))}
             </div>
-            <p className="mt-3 text-[12px] leading-relaxed text-mid/80">
-              Representative photography — plant imagery to be supplied.
-            </p>
           </div>
 
-          {/* Stage list */}
           <div className="lg:col-span-5">
-            <ul>
-              {processStages.map((stage, index) => {
+            <ul className="flex h-full flex-col justify-center gap-3">
+              {stages.map((stage, index) => {
                 const open = index === active;
 
                 return (
-                  <li
-                    key={stage.id}
-                    className="border-b border-ink/10 first:border-t"
-                  >
+                  <li key={stage.title} data-reveal data-reveal-delay={String(index * 0.08)}>
                     <button
                       type="button"
                       onClick={() => setActive(index)}
-                      onPointerEnter={() => {
-                        setActive(index);
-                        setPaused(true);
-                      }}
-                      onPointerLeave={() => setPaused(false)}
-                      onFocus={() => setActive(index)}
+                      onMouseEnter={() => setActive(index)}
                       aria-pressed={open}
-                      className="w-full py-5 text-left"
+                      className={`group flex w-full items-start gap-4 rounded-[20px] px-5 py-5 text-left transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
+                        open
+                          ? `${stage.surface} shadow-[0_24px_46px_-38px_rgba(17,17,17,0.6)]`
+                          : "bg-transparent hover:bg-light"
+                      }`}
                     >
-                      <span className="flex items-center gap-3">
+                      <span
+                        aria-hidden
+                        className={`mt-1 w-[3px] shrink-0 rounded-full transition-all duration-700 ${stage.accentBar} ${
+                          open ? "h-9" : "h-4 opacity-40"
+                        }`}
+                      />
+                      <span className="min-w-0 flex-1">
                         <span
-                          className={`h-2.5 w-2.5 shrink-0 rounded-full transition-transform duration-300 ${
-                            dots[index] ?? dots[0]
-                          } ${open ? "scale-100" : "scale-75 opacity-50"}`}
-                        />
-                        <span
-                          className={`font-display text-[17.5px] font-semibold transition-colors duration-300 ${
+                          className={`block font-display text-[20px] font-semibold leading-snug tracking-[-0.015em] transition-colors duration-500 sm:text-[22px] ${
                             open ? "text-ink" : "text-ink/60"
                           }`}
                         >
-                          {stage.name}
+                          {stage.title}
                         </span>
-                      </span>
 
-                      <span
-                        className={`grid transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                          open ? "mt-2.5 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                        }`}
-                      >
-                        <span className="overflow-hidden">
-                          <span className="block pl-[22px] text-[13.5px] leading-relaxed text-mid">
-                            {stage.detail}
+                        <span
+                          className={`grid transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                            open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                          }`}
+                        >
+                          <span className="overflow-hidden">
+                            <span className="mt-2 block text-[14px] leading-relaxed text-mid">
+                              {stage.detail}
+                            </span>
                           </span>
-
-                          {stage.bullets && stage.bullets.length > 0 && (
-                            <span className="mt-3 grid gap-1.5 pl-[22px] sm:grid-cols-2">
-                              {stage.bullets.map((bullet) => (
-                                <span
-                                  key={bullet}
-                                  className="flex items-start gap-1.5 text-[12.5px] leading-snug text-ink/75"
-                                >
-                                  <Check
-                                    aria-hidden
-                                    className="mt-[3px] h-3 w-3 shrink-0 text-brand"
-                                    strokeWidth={2.6}
-                                  />
-                                  {bullet}
-                                </span>
-                              ))}
-                            </span>
-                          )}
-
-                          {stage.logos.length > 0 && (
-                            <span className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3 pl-[22px]">
-                              {stage.logos.map((client) => (
-                                <Image
-                                  key={client.name}
-                                  src={client.logo}
-                                  alt={client.alt}
-                                  width={130}
-                                  height={34}
-                                  className="h-6 w-auto max-w-[104px] object-contain opacity-75 transition-opacity duration-300 hover:opacity-100"
-                                />
-                              ))}
-                            </span>
-                          )}
                         </span>
                       </span>
                     </button>
@@ -172,10 +162,6 @@ export function InProcessStages() {
                 );
               })}
             </ul>
-
-            <p className="mt-6 text-[13px] leading-relaxed text-mid">
-              <span className="font-medium text-ink">Capacity envelope:</span> {capacityEnvelope}
-            </p>
           </div>
         </div>
       </div>

@@ -100,7 +100,7 @@ src/
 ├── components/
 │   ├── Header.tsx  Footer.tsx
 │   ├── home/                   # Hero, about, counters, applications, advantages…
-│   ├── process/                # /process — hero, quality gates, stage switcher, flow strip
+│   ├── process/                # /process — hero, flow strip, stage switcher, quality statement
 │   ├── technologies/           # /technologies — hero, capability panel, machine cards, auxiliaries
 │   ├── sections/ColorCTA.tsx   # Closing brand panel shared by /process and /technologies
 │   ├── products/               # Catalogue, filters, product card, product media
@@ -177,6 +177,8 @@ JavaScript, and every loop stops under `prefers-reduced-motion`:
 |---|---|
 | `.icon-spin` `.icon-float` `.icon-pulse` `.icon-swing` `.icon-travel` | Animated icons |
 | `.ambient-media` / `.ambient-media-slow` | Slow zoom drift on photography (hero, cards, family thumbnails, detail shots) |
+| `.drift` | Slow colour wash behind a hero or banner, offset per element with `[animation-delay:-6s]` |
+| `.animate-dash` | Travelling dashed run behind the process-flow cards |
 | `.ambient-progress` | Red progress rule that times the auto-advancing panels and rows |
 | `.ambient-ring` | Expanding ring on the testimonial play control |
 | `.ambient-sheen` | Soft light sweep across the reserved video plates |

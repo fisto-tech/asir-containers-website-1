@@ -45,14 +45,16 @@ Notes
   representative (`src/components/home/ManufacturingSection.tsx`) — remove that note with
   the real imagery.
 - `/process` and `/technologies` reuse the existing hero and plant plates rather than new
-  files: `hero-01.jpg` (process masthead), `hero-03.jpg` (moulding stage + technology
-  masthead detail), `facility/machinery-01.jpg` (IML stage, technology masthead),
-  `facility/labelling.jpg` (screen-printing stage, technology CTA),
-  `facility/dispatch.jpg` (process CTA) and `detail/stacked-pails.jpg` (HTL stage). Each is
-  captioned "Representative photography" in the UI. To swap in real plant photography,
-  edit `src/data/process.ts` (stage imagery) and the `src` values in
-  `components/technologies/TechHero.tsx`, `components/technologies/MachineCards.tsx` and
-  the two page files, then delete the caption under the stage plate.
+  files. `/process`: `hero/hero-01.jpg` + `facility/machinery-01.jpg` (masthead spread),
+  `facility/labelling.jpg`, `hero/hero-03.jpg` and `families/paint-pail.jpg` (the three
+  in-process routes), `detail/stacked-pails.jpg` (quality band) and
+  `facility/dispatch.jpg` (closing banner). `/technologies`:
+  `facility/machinery-01.jpg` + `facility/machinery-02.jpg` (masthead spread) and
+  `facility/labelling.jpg` (closing banner). No "representative photography" caption is
+  shown in the UI any more; to swap in real plant photography, edit the `src` values in
+  `components/process/ProcessHero.tsx`, `components/process/InProcessStages.tsx`,
+  `components/process/QualityStatement.tsx`, `components/technologies/TechHero.tsx` and the
+  two page files.
 
 ---
 
