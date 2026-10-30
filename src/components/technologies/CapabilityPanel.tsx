@@ -79,11 +79,18 @@ export function CapabilityPanel() {
             </div>
 
             <div className="lg:col-span-7">
-              <div className="h-3 w-full overflow-hidden rounded-full bg-white" data-reveal>
+              <div
+                className="relative h-3 w-full overflow-hidden rounded-full bg-white"
+                data-reveal
+              >
                 <div
                   data-cap-bar
                   className="h-full rounded-full bg-gradient-to-r from-ocean to-brand"
                   style={{ width: "0%" }}
+                />
+                <span
+                  aria-hidden
+                  className="ambient-sheen pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-transparent via-white/70 to-transparent"
                 />
               </div>
               <div className="mt-2.5 flex items-center justify-between text-[12.5px] text-mid">

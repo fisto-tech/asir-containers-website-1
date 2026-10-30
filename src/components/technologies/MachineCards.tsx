@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef } from "react";
 import { Bot, Factory, Flame, Printer, type LucideIcon } from "lucide-react";
 import { useScrollReveal } from "@/lib/animations";
@@ -13,26 +14,40 @@ const icons: Record<string, LucideIcon> = {
 };
 
 const accents = [
-  { tile: "bg-brand-light text-brand", value: "text-brand", rule: "bg-brand", wash: "bg-brand/10" },
-  { tile: "bg-ocean-light text-ocean", value: "text-ocean", rule: "bg-ocean", wash: "bg-ocean/10" },
+  {
+    tile: "bg-brand-light text-brand",
+    value: "text-brand",
+    rule: "bg-brand",
+    image: "/images/facility/machinery-02.jpg",
+    alt: "Injection moulding machine on the production floor",
+  },
+  {
+    tile: "bg-ocean-light text-ocean",
+    value: "text-ocean",
+    rule: "bg-ocean",
+    image: "/images/facility/labelling.jpg",
+    alt: "Containers moving through the in-line printing station",
+  },
   {
     tile: "bg-amber-light text-amber-accent",
     value: "text-amber-accent",
     rule: "bg-amber-accent",
-    wash: "bg-amber-accent/10",
+    image: "/images/hero/hero-03.jpg",
+    alt: "Heat-transfer labelling line in the plant",
   },
   {
     tile: "bg-emerald-light text-emerald-accent",
     value: "text-emerald-accent",
     rule: "bg-emerald-accent",
-    wash: "bg-emerald-accent/10",
+    image: "/images/families/paint-pail.jpg",
+    alt: "Container with its label moulded into the wall",
   },
 ];
 
 /**
- * The four production routes: name, working capacity and the set-up behind it.
- * Each card carries its own accent, and a soft tint drifts inside the corner so
- * the row keeps a little life without any hover.
+ * The four production routes, each opening on a photograph of the line it runs
+ * on. The photographs carry a slow ambient zoom and colour washes drift behind
+ * the row, so the block is alive before anyone hovers it.
  */
 export function MachineCards() {
   const root = useRef<HTMLElement | null>(null);
@@ -41,26 +56,33 @@ export function MachineCards() {
   return (
     <section
       ref={root}
-      className="bg-[#fbfaf7] pb-20 pt-16 lg:pb-28 lg:pt-20"
+      className="relative overflow-hidden bg-[#fbfaf7] pb-20 pt-16 lg:pb-28 lg:pt-20"
       aria-labelledby="machines-heading"
     >
-      <div className="shell">
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <p
-              className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-amber-accent"
-              data-reveal
-            >
-              Production
-            </p>
-            <h2
-              id="machines-heading"
-              className="mt-3 max-w-xl font-display text-[clamp(1.7rem,2.8vw,2.4rem)] font-semibold leading-[1.1] tracking-[-0.025em] text-ink"
-              data-reveal="letters"
-            >
-              {machinery.production.title}
-            </h2>
-          </div>
+      <span
+        aria-hidden
+        className="drift pointer-events-none absolute -left-32 top-24 h-[420px] w-[420px] rounded-full bg-ocean/[0.07] blur-3xl"
+      />
+      <span
+        aria-hidden
+        className="drift pointer-events-none absolute -right-28 bottom-0 h-[380px] w-[380px] rounded-full bg-amber-accent/[0.07] blur-3xl [animation-delay:-11s]"
+      />
+
+      <div className="shell relative">
+        <div className="max-w-xl">
+          <p
+            className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-amber-accent"
+            data-reveal
+          >
+            Production
+          </p>
+          <h2
+            id="machines-heading"
+            className="mt-3 font-display text-[clamp(1.7rem,2.8vw,2.4rem)] font-semibold leading-[1.1] tracking-[-0.025em] text-ink"
+            data-reveal="letters"
+          >
+            {machinery.production.title}
+          </h2>
         </div>
 
         <ul className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -73,39 +95,47 @@ export function MachineCards() {
                 key={row.name}
                 data-reveal
                 data-reveal-delay={String(index * 0.06)}
-                className="group relative flex flex-col overflow-hidden rounded-[22px] bg-white p-6 ring-1 ring-black/[0.05] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_26px_54px_-32px_rgba(17,17,17,0.42)]"
+                className="group flex flex-col overflow-hidden rounded-[22px] bg-white ring-1 ring-black/[0.05] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_26px_54px_-32px_rgba(17,17,17,0.42)]"
               >
-                <span
-                  aria-hidden
-                  className={`drift pointer-events-none absolute -right-10 -top-12 h-28 w-28 rounded-full blur-2xl ${accent.wash}`}
-                  style={{ animationDelay: `${index * -4.5}s` }}
-                />
+                <div className="relative h-[148px] overflow-hidden bg-light">
+                  <span className="absolute inset-0 block transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]">
+                    <Image
+                      src={accent.image}
+                      alt={accent.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="ambient-media object-cover"
+                    />
+                  </span>
+                </div>
 
-                <span
-                  className={`relative flex h-11 w-11 items-center justify-center rounded-[14px] transition-transform duration-500 group-hover:-translate-y-0.5 ${accent.tile}`}
-                >
-                  <Icon aria-hidden className="h-5 w-5" strokeWidth={1.7} />
-                </span>
-
-                <h3 className="relative mt-5 font-display text-[17px] font-semibold leading-snug text-ink">
-                  {row.name}
-                </h3>
-
-                <p
-                  className={`relative mt-2 font-display text-[25px] font-semibold leading-none tracking-[-0.02em] ${accent.value}`}
-                >
-                  {row.capacity}
-                </p>
-
-                {row.note && (
-                  <p className="relative mt-3 text-[13px] leading-relaxed text-mid">{row.note}</p>
-                )}
-
-                <div className="relative mt-auto pt-6">
+                <div className="flex flex-1 flex-col p-5">
                   <span
-                    aria-hidden
-                    className={`block h-[3px] w-8 rounded-full transition-all duration-500 group-hover:w-14 ${accent.rule}`}
-                  />
+                    className={`flex h-9 w-9 items-center justify-center rounded-[11px] ${accent.tile}`}
+                  >
+                    <Icon aria-hidden className="h-4 w-4" strokeWidth={1.8} />
+                  </span>
+
+                  <h3 className="mt-3 font-display text-[16.5px] font-semibold leading-snug text-ink">
+                    {row.name}
+                  </h3>
+
+                  <p
+                    className={`mt-1.5 font-display text-[23px] font-semibold leading-none tracking-[-0.02em] ${accent.value}`}
+                  >
+                    {row.capacity}
+                  </p>
+
+                  {row.note && (
+                    <p className="mt-2.5 text-[13px] leading-relaxed text-mid">{row.note}</p>
+                  )}
+
+                  <div className="mt-auto pt-5">
+                    <span
+                      aria-hidden
+                      className={`block h-[3px] w-8 rounded-full transition-all duration-500 group-hover:w-14 ${accent.rule}`}
+                    />
+                  </div>
                 </div>
               </li>
             );

@@ -1,8 +1,19 @@
 import Image from "next/image";
+import { ClipboardCheck, PackageCheck, ScanLine, type LucideIcon } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 import { inspectionStages, qualityStatement } from "@/data/manufacturing";
 
-const gateDots = ["bg-emerald-accent", "bg-ocean", "bg-amber-accent"];
+const gateIcons: Record<string, LucideIcon> = {
+  inbound: PackageCheck,
+  impression: ScanLine,
+  finished: ClipboardCheck,
+};
+
+const gateTiles = [
+  "bg-emerald-light text-emerald-accent",
+  "bg-ocean-light text-ocean",
+  "bg-amber-light text-amber-accent",
+];
 
 /**
  * Quality statement as a pull-quote band: the quote and its note on the left,
@@ -34,17 +45,25 @@ export function QualityStatement() {
               {qualityStatement.note}
             </p>
 
-            <ul className="mt-8 grid gap-x-6 gap-y-4 sm:grid-cols-3" data-reveal>
-              {inspectionStages.map((stage, index) => (
-                <li key={stage.index} className="border-t border-line pt-3">
-                  <span className="flex items-center gap-2.5">
-                    <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${gateDots[index]}`} />
-                    <span className="text-[13.5px] font-medium leading-snug text-ink">
+            <ul className="mt-9 grid gap-x-6 gap-y-6 sm:grid-cols-3" data-reveal>
+              {inspectionStages.map((stage, index) => {
+                const Icon = gateIcons[stage.icon] ?? PackageCheck;
+
+                return (
+                  <li key={stage.index} className="border-t border-line pt-4">
+                    <span
+                      className={`flex h-10 w-10 items-center justify-center rounded-[12px] ${
+                        gateTiles[index] ?? gateTiles[0]
+                      }`}
+                    >
+                      <Icon aria-hidden className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                    </span>
+                    <span className="mt-3 block text-[13.5px] font-semibold leading-snug text-ink">
                       {stage.title}
                     </span>
-                  </span>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
