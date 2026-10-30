@@ -10,6 +10,7 @@ auth or CMS.
 | Language | TypeScript (strict) |
 | Styling | Tailwind CSS v4 (CSS-first `@theme` tokens) |
 | Animation | GSAP 3 + ScrollTrigger + SplitText + `@gsap/react`, Lenis smooth scroll, CSS icon loops |
+| Fonts | Self-hosted variable faces via `@fontsource-variable/*` — no Google Fonts fetch at build or run time |
 | Icons | lucide-react |
 | Package manager | npm |
 | Rendering | Static (SSG) for `/`, `/products`, `/contact` and all 17 product pages |
@@ -48,6 +49,8 @@ Node 20+ is required (developed on Node 20.20).
 | `/products` | Static + client filtering | Filters hydrate from `?application=&type=&capacity=&lid=&lock=&color=&q=` |
 | Catalogue (nav) | External | Navbar button opens `https://www.example.com/` in a new tab — the only "Catalogue" label on the site |
 | `/products/[slug]` | SSG via `generateStaticParams` | 17 product pages, unique metadata each — specs, quality statement, in-process activities, machine ledger |
+| `/process` | Static | Dark engineering masthead, quality gates accordion, in-process stage switcher, scrubbed process-flow rail |
+| `/technologies` | Static | Two-plate masthead, tonnage instrument, production machinery ledger, auxiliaries register |
 | `/contact` | Static | Validated enquiry form with honest “not connected” state |
 | `/sitemap.xml`, `/robots.txt` | Static | Generated from the product dataset |
 | `/_not-found` | Static | Custom 404 |
@@ -97,6 +100,9 @@ src/
 ├── components/
 │   ├── Header.tsx  Footer.tsx
 │   ├── home/                   # Hero, about, counters, applications, advantages…
+│   ├── process/                # /process — hero, quality gates, stage switcher, flow rail
+│   ├── technologies/           # /technologies — hero, tonnage gauge, ledger, auxiliaries
+│   ├── sections/DarkCTA.tsx    # Closing band shared by /process and /technologies
 │   ├── products/               # Catalogue, filters, product card, product media
 │   ├── motion/SmoothScroll.tsx # Lenis + ScrollTrigger wiring
 │   ├── contact/ContactForm.tsx
@@ -105,6 +111,8 @@ src/
 ├── data/
 │   ├── products.ts             # Single source of truth for the range
 │   ├── site.ts                 # Company details, nav, certifications, testimonials
+│   ├── manufacturing.ts        # Quality statement, gates, printing routes, machine ledger
+│   ├── process.ts              # /process stage order + photography
 │   └── home.ts                 # Home page editorial copy
 └── lib/
     ├── animations.ts           # Shared GSAP helpers + plugin registration
@@ -120,6 +128,31 @@ docs/screenshots/               # Current production-build screenshots (desktop 
 options, counts, related products, static params, sitemap entries and JSON-LD are all
 **derived** from it. Adding a product record adds a page, a card, filter facets and a
 sitemap entry with no component changes.
+
+---
+
+## Process & Technologies pages
+
+Both pages are built as one editorial "drawing office" system: a measured grid
+(`.tech-grid` / `.tech-grid-light`), ghost numerals (`.ghost-numeral`), corner
+registration ticks (`.corner-ticks`), mono spec labels and a single red survey line per
+block. Photography is always a plate with a caption, never a decorative background wash.
+
+| Block | Page | Behaviour |
+|---|---|---|
+| Masthead | both | Full-bleed dark plate, SplitText letter rise, clip-path plate wipes, scrub parallax |
+| Quality gates | `/process` | Pull quote plus a three-gate accordion that advances itself every 6 s and opens each gate's detail |
+| In-process stage switcher | `/process` | One large plate, four stages (moulding + three printing routes); auto-advances every 6.5 s, crossfades the plate, and reveals bullets or client marks per stage |
+| Process-flow rail | `/process` | Four stages on one rail; the red rule draws itself with scroll (horizontal on desktop, vertical on mobile) and each node lights as the draw reaches it |
+| Tonnage instrument | `/technologies` | A ruled 0–700 T scale with the 80–650 T working band; the marker and its readout travel the band on scroll |
+| Machinery ledger | `/technologies` | Four production routes over the plant plate; each row carries a segmented set-up readout, hover draws the red survey line |
+| Auxiliaries register | `/technologies` | Six hairline cells, counts animate in, icons carry the CSS ambient loops |
+
+All content is read from `src/data/manufacturing.ts` (verbatim) — the pages add layout and
+photography only. The closing band is shared (`sections/DarkCTA.tsx`).
+
+Note: `/process` and `/technologies` open on a dark hero, so the fixed header renders
+transparent until the first scroll (see `darkHeroPages` in `components/Header.tsx`).
 
 ---
 

@@ -30,8 +30,9 @@
   --color-indigo-accent: #4f46e5;
   --color-indigo-light: #eef2ff;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-archivo), var(--font-inter), ui-sans-serif, sans-serif;
+  /* Self-hosted variable faces (fontsource) — no build-time network fetch. */
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Archivo Variable", "Inter Variable", ui-sans-serif, sans-serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -774,4 +775,179 @@ select:focus-visible {
 
 .animate-progress {
   animation: progress-bar linear forwards;
+}
+
+/* ==========================================================================
+   PROCESS & TECHNOLOGIES — technical plate system
+   A drawing-office layer: measured grids, ghost numerals, corner ticks and
+   hairline technical rules. Used only by /process and /technologies.
+   ========================================================================== */
+
+/* Fine engineering grid, dark ground */
+.tech-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 84px 84px;
+  background-position: center;
+}
+
+/* Fine engineering grid, light ground */
+.tech-grid-light {
+  background-image:
+    linear-gradient(to right, rgba(17, 17, 17, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.055) 1px, transparent 1px);
+  background-size: 84px 84px;
+  background-position: center;
+}
+
+/* Single red bloom used behind dark hero copy */
+.tech-glow {
+  background:
+    radial-gradient(52% 46% at 82% 8%, rgba(229, 24, 39, 0.24) 0%, transparent 72%),
+    radial-gradient(48% 42% at 8% 92%, rgba(2, 132, 199, 0.14) 0%, transparent 70%);
+}
+
+/* Fades a background pattern out at the top and bottom edges */
+.edge-fade-y {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+}
+
+/* Outlined numerals — drawing-reference type, never body copy */
+.ghost-numeral {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.12);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ghost-numeral-light {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(17, 17, 17, 0.1);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Corner registration ticks for media plates */
+.corner-ticks::before,
+.corner-ticks::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(255, 255, 255, 0.45);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.corner-ticks::before {
+  top: 14px;
+  left: 14px;
+  border-width: 1px 0 0 1px;
+}
+
+.corner-ticks::after {
+  bottom: 14px;
+  right: 14px;
+  border-width: 0 1px 1px 0;
+}
+
+/* Scroll cue: a hairline with a red segment running down it */
+@keyframes cue-run {
+  0% {
+    transform: translateY(-110%);
+  }
+  55%,
+  100% {
+    transform: translateY(240%);
+  }
+}
+
+.cue-run {
+  position: relative;
+  overflow: hidden;
+}
+
+.cue-run::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 40%;
+  background: var(--color-brand);
+  animation: cue-run 2.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* Slow sheen passing over a photo plate */
+@keyframes plate-sheen {
+  0% {
+    transform: translate3d(-130%, 0, 0);
+  }
+  60%,
+  100% {
+    transform: translate3d(130%, 0, 0);
+  }
+}
+
+.plate-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.16) 50%,
+    transparent 70%
+  );
+  transform: translate3d(-130%, 0, 0);
+  animation: plate-sheen 9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cue-run::after,
+  .plate-sheen::after {
+    animation: none;
+  }
+
+  .plate-sheen::after {
+    display: none;
+  }
+}
+
+/* Row that opens its detail on hover / focus / active state */
+.tech-row {
+  position: relative;
+  transition:
+    background-color 0.5s ease,
+    color 0.4s ease;
+}
+
+.tech-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-brand);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tech-row[data-open="true"]::before {
+  transform: scaleY(1);
+}
+
+/* Numerals that sit in a technical readout */
+.readout {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.03em;
 }

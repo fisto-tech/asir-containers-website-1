@@ -72,7 +72,10 @@ export function Header() {
     closeTimer.current = window.setTimeout(() => setProductsOpen(false), 200);
   };
 
-  const overHero = pathname === "/" && !scrolled && !open;
+  /* Pages that open on a dark, full-bleed plate get a transparent header until
+     the user scrolls. */
+  const darkHeroPages = ["/", "/process", "/technologies"];
+  const overHero = darkHeroPages.includes(pathname) && !scrolled && !open;
   const onProductsPage = pathname.startsWith("/products");
 
   const isActive = (href: string) => {
