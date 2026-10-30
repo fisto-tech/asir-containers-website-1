@@ -146,54 +146,67 @@ export function Header() {
                     </button>
                   </div>
 
-                  {/* Open panel — clean multi-column listing of all 17 containers */}
+                  {/* Open panel — Premium Modern Spec-Card Grid (No categories, pure format index) */}
                   <div
                     id="products-menu"
                     aria-hidden={!productsOpen}
-                    className={`absolute -left-12 top-full w-[640px] rounded-b-xl border-x border-b border-line bg-white p-6 shadow-[0_24px_50px_-20px_rgba(17,17,17,0.35)] transition-[opacity,transform,visibility] duration-300 ${
-                      productsOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"
+                    className={`absolute -left-64 top-full w-[980px] rounded-2xl border border-line bg-white p-5 shadow-[0_30px_70px_-15px_rgba(17,17,17,0.25)] transition-[opacity,transform,visibility] duration-300 ${
+                      productsOpen ? "visible translate-y-2 opacity-100" : "invisible -translate-y-1 opacity-0"
                     }`}
                   >
+                    {/* Header bar */}
                     <div className="flex items-center justify-between border-b border-line pb-3">
-                      <div>
-                        <span className="font-display text-[15px] font-semibold text-ink">
-                          Container Range
+                      <div className="flex items-center gap-3">
+                        <span className="font-display text-[15px] font-bold tracking-tight text-ink">
+                          Container Lineup
                         </span>
-                        <span className="ml-2 text-[12px] text-mid">
-                          ({products.length} models)
+                        <span className="rounded-full bg-soft px-2.5 py-0.5 text-[11px] font-semibold text-mid">
+                          17 Unique Toolings
                         </span>
                       </div>
                       <Link
                         href="/products"
                         tabIndex={productsOpen ? 0 : -1}
                         onClick={() => setProductsOpen(false)}
-                        className="group inline-flex items-center gap-1.5 text-[12.5px] font-medium text-brand hover:underline"
+                        className="group inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-brand transition-colors hover:text-brand/80"
                       >
-                        View all products
-                        <ArrowUpRight aria-hidden className="h-3.5 w-3.5" />
+                        <span>View complete catalogue</span>
+                        <ArrowUpRight aria-hidden className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </Link>
                     </div>
 
-                    <div
-                      data-lenis-prevent
-                      className="mt-4 grid max-h-[380px] grid-cols-2 gap-x-4 gap-y-1.5 overflow-y-auto overscroll-contain pr-2 [scrollbar-width:thin] [scrollbar-color:rgba(17,17,17,0.2)_transparent]"
-                    >
+                    {/* 4-column balanced grid of 17 individual cards + 1 quick-inquiry tile */}
+                    <div className="mt-3.5 grid grid-cols-4 gap-2.5">
                       {products.map((item) => (
                         <Link
                           key={item.slug}
                           href={`/products/${item.slug}`}
                           tabIndex={productsOpen ? 0 : -1}
                           onClick={() => setProductsOpen(false)}
-                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 transition-all hover:bg-soft"
+                          className="group relative flex items-center justify-between rounded-xl border border-line/70 bg-soft/40 px-3.5 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:bg-white hover:shadow-sm"
                         >
-                          <span className="truncate text-[15px] font-semibold text-ink transition-colors group-hover:text-brand">
-                            {item.name}{" "}
-                            <span className="font-mono text-[13px] font-medium text-mid/80 transition-colors group-hover:text-brand">
-                              ({item.codes.plain})
-                            </span>
+                          <span className="font-display text-[13.5px] font-bold leading-tight text-ink transition-colors group-hover:text-brand pr-2">
+                            {item.name}
+                          </span>
+
+                          <span className="shrink-0 rounded-md border border-line/60 bg-white px-2 py-0.5 font-mono text-[11px] font-extrabold text-ink transition-colors group-hover:border-brand/30 group-hover:bg-brand/5 group-hover:text-brand">
+                            {item.codes.plain}
                           </span>
                         </Link>
                       ))}
+
+                      {/* 18th Tile: Interactive technical consultation card */}
+                      <Link
+                        href="/contact"
+                        tabIndex={productsOpen ? 0 : -1}
+                        onClick={() => setProductsOpen(false)}
+                        className="group flex items-center justify-between rounded-xl border border-dashed border-brand/40 bg-gradient-to-br from-brand/5 via-brand/0 to-transparent px-3.5 py-3 transition-all duration-200 hover:border-brand hover:bg-brand/10 hover:shadow-xs"
+                      >
+                        <span className="font-display text-[12.5px] font-bold leading-tight text-ink">
+                          Custom Mould / Run
+                        </span>
+                        <ArrowUpRight className="h-4 w-4 shrink-0 text-brand transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -314,14 +327,19 @@ export function Header() {
               </div>
             </div>
 
-            <Link href="/manufacturing" tabIndex={open ? 0 : -1} className="flex items-baseline justify-between border-b border-white/15 py-5">
-              <span className="display-md text-white">Manufacturing</span>
+            <Link href="/process" tabIndex={open ? 0 : -1} className="flex items-baseline justify-between border-b border-white/15 py-5">
+              <span className="display-md text-white">Process</span>
               <span className="tabular text-[11px] font-semibold text-white/85">03</span>
+            </Link>
+
+            <Link href="/technologies" tabIndex={open ? 0 : -1} className="flex items-baseline justify-between border-b border-white/15 py-5">
+              <span className="display-md text-white">Technologies</span>
+              <span className="tabular text-[11px] font-semibold text-white/85">04</span>
             </Link>
 
             <Link href="/contact" tabIndex={open ? 0 : -1} className="flex items-baseline justify-between border-b border-white/15 py-5">
               <span className="display-md text-white">Contact</span>
-              <span className="tabular text-[11px] font-semibold text-white">04</span>
+              <span className="tabular text-[11px] font-semibold text-white">05</span>
             </Link>
 
             <a

@@ -75,6 +75,7 @@ export default async function ProductPage({ params }: PageProps) {
   const next = products[(index + 1) % products.length];
 
   const specRows: { label: string; value: string }[] = [
+    { label: "Material", value: "Polypropylene (PP)" },
     { label: "Capacity", value: capacityDisplay(product) },
     { label: "Brimful volume", value: product.specs.brimful },
     { label: "Product height", value: product.specs.height },
@@ -104,6 +105,7 @@ export default async function ProductPage({ params }: PageProps) {
     manufacturer: { "@type": "Organization", name: site.name, url: site.url },
     url: `${site.url}/products/${product.slug}`,
     additionalProperty: [
+      { "@type": "PropertyValue", name: "Material", value: "Polypropylene (PP)" },
       { "@type": "PropertyValue", name: "Capacity", value: capacityDisplay(product) },
       { "@type": "PropertyValue", name: "Product codes", value: codesFor(product).join(", ") },
       { "@type": "PropertyValue", name: "Brimful volume", value: product.specs.brimful },

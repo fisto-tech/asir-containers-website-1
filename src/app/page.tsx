@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { HeroSlider } from "@/components/home/HeroSlider";
+import { FeaturesSection } from "@/components/home/FeaturesSection";
 import { AboutSection } from "@/components/home/AboutSection";
-import { CountersBand } from "@/components/home/CountersBand";
-import { ApplicationShowcase } from "@/components/home/ApplicationShowcase";
 import { AdvantagesSection } from "@/components/home/AdvantagesSection";
 import { ManufacturingSection } from "@/components/home/ManufacturingSection";
-import { QualitySection } from "@/components/home/QualitySection";
+import { VisionMissionSection } from "@/components/home/VisionMissionSection";
 import { ClientsSection } from "@/components/home/ClientsSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
-import { ContactCTA } from "@/components/home/ContactCTA";
 import { site } from "@/data/site";
 import { rangeStats } from "@/data/products";
 
@@ -20,8 +18,15 @@ export const metadata: Metadata = {
 };
 
 /**
- * Static home page. Server-rendered content with targeted client islands for
- * the slider, counters and scroll animation.
+ * Final home page containing exactly:
+ * 1. Hero section slider
+ * 2. Features (mostly icon based)
+ * 3. About us
+ * 4. Why choose us
+ * 5. Machinaries
+ * 6. Vision mission
+ * 7. Our clients
+ * 8. Testimonial video section
  */
 export default function HomePage() {
   const structuredData = {
@@ -49,16 +54,29 @@ export default function HomePage() {
 
   return (
     <>
+      {/* 1. Hero section slider */}
       <HeroSlider />
+
+      {/* 2. Features (mostly icon based) */}
+      <FeaturesSection index="02" />
+
+      {/* 3. About us */}
       <AboutSection />
-      <CountersBand />
-      <ApplicationShowcase />
+
+      {/* 4. Why choose us */}
       <AdvantagesSection />
+
+      {/* 5. Machinaries */}
       <ManufacturingSection />
-      <QualitySection />
+
+      {/* 6. Vision mission */}
+      <VisionMissionSection index="06" />
+
+      {/* 7. Our clients */}
       <ClientsSection />
+
+      {/* 8. Testimonial video section */}
       <TestimonialsSection />
-      <ContactCTA />
 
       <script
         type="application/ld+json"

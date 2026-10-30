@@ -8,14 +8,27 @@
 @theme {
   --color-brand: #e51827;
   --color-brand-dark: #b8121e;
+  --color-brand-light: #fff1f2;
   --color-ink: #111111;
-  --color-charcoal: #1b1b1b;
-  --color-charcoal-soft: #242424;
+  --color-charcoal: #15181e;
+  --color-charcoal-soft: #1e232d;
   --color-mid: #333333;
-  --color-light: #f1f1ef;
-  --color-line: #e5e5e5;
-  --color-soft: #fafafa;
+  --color-light: #f1f3f7;
+  --color-line: #e3e7ee;
+  --color-soft: #f8fafc;
   --color-white: #ffffff;
+
+  /* Vibrant modern industrial color accents */
+  --color-ocean: #0284c7;
+  --color-ocean-light: #f0f9ff;
+  --color-emerald-accent: #059669;
+  --color-emerald-light: #ecfdf5;
+  --color-amber-accent: #d97706;
+  --color-amber-light: #fffbeb;
+  --color-violet-accent: #7c3aed;
+  --color-violet-light: #f5f3ff;
+  --color-indigo-accent: #4f46e5;
+  --color-indigo-light: #eef2ff;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-archivo), var(--font-inter), ui-sans-serif, sans-serif;

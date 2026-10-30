@@ -9,7 +9,7 @@ import { site } from "@/data/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const staticRoutes = ["", "/products", "/contact"].map((path) => ({
+  const staticRoutes = ["", "/products", "/process", "/technologies", "/contact"].map((path) => ({
     url: `${site.url}${path}`,
     lastModified: now,
     changeFrequency: "monthly" as const,

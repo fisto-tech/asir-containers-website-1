@@ -30,7 +30,7 @@ export function ContactCTA() {
 
           <div className="relative z-10 flex flex-col justify-between gap-6 px-7 py-8 sm:px-10 sm:py-10 lg:flex-row lg:items-center lg:px-12 lg:py-11">
             <div className="max-w-xl">
-              <SectionLabel index="08" tone="light" reveal>
+              <SectionLabel index="06" tone="light" reveal>
                 {cta.eyebrow}
               </SectionLabel>
 

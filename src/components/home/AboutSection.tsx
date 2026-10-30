@@ -65,13 +65,17 @@ export function AboutSection() {
   );
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-white py-20 lg:py-28">
-      <div className="shell">
+    <section ref={root} className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50/60 to-white py-20 lg:py-28">
+      {/* Ambient background glow */}
+      <div className="pointer-events-none absolute -left-24 top-1/2 h-80 w-80 rounded-full bg-rose-100/35 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-12 h-80 w-80 rounded-full bg-sky-100/35 blur-3xl" />
+
+      <div className="shell relative z-10">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-12">
           {/* Copy column */}
           <div className="lg:col-span-6 lg:pr-8">
             <div data-reveal>
-              <SectionLabel index="01">{aboutContent.eyebrow}</SectionLabel>
+              <SectionLabel index="03">{aboutContent.eyebrow}</SectionLabel>
             </div>
 
             <h2
@@ -83,16 +87,28 @@ export function AboutSection() {
 
             <div data-about-copy className="mt-8 max-w-xl space-y-5">
               {aboutContent.paragraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 24)} className="text-[15px] leading-[1.75] text-mid">
+                <p key={paragraph.slice(0, 24)} className="text-[15px] leading-[1.75] text-slate-600">
                   {paragraph}
                 </p>
               ))}
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+            {/* Quick stats / highlights */}
+            <div className="mt-8 grid grid-cols-2 gap-4 border-y border-slate-200/80 py-5">
+              <div>
+                <p className="font-display text-2xl font-bold text-sky-600">500ml – 20L</p>
+                <p className="mt-0.5 text-xs font-medium text-slate-500">Retail &amp; Bulk Formats</p>
+              </div>
+              <div>
+                <p className="font-display text-2xl font-bold text-emerald-600">4 Industries</p>
+                <p className="mt-0.5 text-xs font-medium text-slate-500">Paint · Agro · Food · Lube</p>
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link
                 href="/products"
-                className="group inline-flex items-center gap-2 border-b border-ink pb-1 text-sm font-medium text-ink transition-colors hover:border-brand hover:text-brand"
+                className="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-brand hover:shadow-md"
                 data-reveal
               >
                 See the full range
@@ -103,7 +119,7 @@ export function AboutSection() {
               </Link>
               <Link
                 href="/contact"
-                className="text-sm font-medium text-mid underline decoration-line underline-offset-4 transition-colors hover:text-brand"
+                className="text-sm font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-brand"
                 data-reveal
               >
                 Talk to the sales team
@@ -112,15 +128,15 @@ export function AboutSection() {
 
           </div>
 
-          {/* Media column — one tall plate with a smaller plate lapping its corner */}
-          <div className="relative lg:col-span-5 lg:col-start-8">
-            <div className="relative">
-              <figure className="zoom-plate relative aspect-4/5 overflow-hidden rounded-[24px] bg-light">
+          {/* Media column — tall plate maintaining full height aligned with left column */}
+          <div className="relative flex flex-col lg:col-span-6">
+            <div className="relative h-full min-h-[460px] w-full flex-1">
+              <figure className="zoom-plate relative h-full w-full overflow-hidden rounded-[26px] border border-slate-200/90 bg-light shadow-xl">
                 <Image
                   src={aboutContent.image.src}
                   alt={aboutContent.image.alt}
                   fill
-                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
                 <span
@@ -128,16 +144,16 @@ export function AboutSection() {
                   className="pointer-events-none absolute inset-x-0 top-0 h-2/5 bg-[linear-gradient(to_bottom,rgba(17,17,17,0.6),transparent)]"
                 />
                 <figcaption className="absolute inset-x-0 top-0 p-6 text-white">
-                  <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-white/85">
+                  <span className="inline-block rounded-md border border-white/20 bg-white/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-xs">
                     Moulding floor
                   </span>
-                  <span className="mt-1.5 block font-display text-[17px] font-semibold leading-snug">
+                  <span className="mt-2 block font-display text-[17px] font-semibold leading-snug">
                     Every format tooled for the closure it carries.
                   </span>
                 </figcaption>
               </figure>
 
-              <figure className="zoom-plate absolute -bottom-10 -left-6 hidden w-[44%] overflow-hidden rounded-[18px] border-[6px] border-white bg-light shadow-[0_24px_60px_-24px_rgba(17,17,17,0.45)] sm:block">
+              <figure className="zoom-plate absolute -bottom-6 -left-6 hidden w-[42%] overflow-hidden rounded-[20px] border-[6px] border-white bg-light shadow-[0_24px_60px_-24px_rgba(17,17,17,0.45)] sm:block">
                 <span className="relative block aspect-square">
                   <Image
                     src="/images/detail/stacked-pails.jpg"
@@ -148,14 +164,6 @@ export function AboutSection() {
                   />
                 </span>
               </figure>
-            </div>
-
-            {/* Red keyline detail — reads as a drawing annotation, not a card */}
-            <div className="mt-14 flex items-start gap-3 sm:mt-16">
-              <span aria-hidden className="mt-2.5 h-px w-12 shrink-0 bg-brand" />
-              <p className="text-[12px] leading-relaxed text-mid">
-                Moulding, closures and dispatch — one site, one record per pack.
-              </p>
             </div>
           </div>
         </div>

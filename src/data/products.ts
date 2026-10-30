@@ -91,8 +91,8 @@ export const applications: Application[] = [
       "The widest run in the range — 500 ml retail pails through 20 litre and 20 KG bulk containers.",
     longBlurb:
       "Almost the whole tool room: every P-series paint pail from 500 ml to 20 litre, plus the K-series pails from 1 KG to 20 KG.",
-    image: "/images/categories/paint.jpg",
-    imageAlt: "White round plastic paint pail with a flat lid and metal handle",
+    image: "/images/applications/paint.jpg",
+    imageAlt: "Interior painting job site with paint pails, ladders, and roller trays",
   },
   {
     slug: "agro",
@@ -102,8 +102,8 @@ export const applications: Application[] = [
       "Paint-pail tooling and the 5 litre round container supplied for agro-chemical packing.",
     longBlurb:
       "The same P-series containers as paint — 500 ml through 20 litre, 10 KG — plus the 5 litre round A5.",
-    image: "/images/categories/agro.jpg",
-    imageAlt: "Green round plastic pail container for agro-chemical packing",
+    image: "/images/applications/agro.jpg",
+    imageAlt: "Agricultural field crop environment with heavy duty green agro-chemical pails",
   },
   {
     slug: "food",
@@ -113,8 +113,8 @@ export const applications: Application[] = [
       "From 500 ml pails to the 15 and 17 litre interlock square containers for food packing.",
     longBlurb:
       "The widest spread: small P-series pails, K-series weight-marked containers, and 5, 15 and 17 litre F-series square pails.",
-    image: "/images/categories/food.jpg",
-    imageAlt: "White square plastic food pail container with interlock lid",
+    image: "/images/applications/food.jpg",
+    imageAlt: "Food manufacturing facility with food grade plastic pails and processing line",
   },
   {
     slug: "lube",
@@ -124,7 +124,7 @@ export const applications: Application[] = [
       "Weight-marked pails for oil and grease — 2 KG and 5 KG, 20 KG, and the 5 litre round A5.",
     longBlurb:
       "The K-series weight-marked containers — 2 KG, 5 KG, 20 KG — and the 5 litre round A5.",
-    image: "/images/categories/lube.jpg",
+    image: "/images/applications/lube.jpg",
     imageAlt: "Red plastic industrial pail container for lubricants with white lid",
   },
 ];

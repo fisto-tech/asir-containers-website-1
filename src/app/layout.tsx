@@ -56,6 +56,15 @@ export const metadata: Metadata = {
   },
   alternates: { canonical: "/" },
   robots: { index: true, follow: true },
+  icons: {
+    icon: [
+      { url: "/images/asir-containers-logo.svg", type: "image/svg+xml" },
+    ],
+    shortcut: ["/images/asir-containers-logo.svg"],
+    apple: [
+      { url: "/images/asir-containers-logo.svg", type: "image/svg+xml" },
+    ],
+  },
 };
 
 export const viewport: Viewport = {

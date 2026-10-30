@@ -27,7 +27,7 @@ export function TestimonialsSection() {
         <div className="flex flex-col justify-between gap-6 border-b border-line pb-8 lg:flex-row lg:items-end">
           <div>
             <div data-reveal>
-              <SectionLabel index="07">Customer testimonials</SectionLabel>
+              <SectionLabel index="08">Testimonials</SectionLabel>
             </div>
             <h2 className="display-lg sheen-ink mt-5 text-ink" data-reveal="letters">
               Straight from

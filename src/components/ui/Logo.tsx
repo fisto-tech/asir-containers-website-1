@@ -23,18 +23,9 @@ export function Logo({ tone = "dark", className = "", imageClassName = "", compa
       aria-label={`${site.name} — home`}
       className={`group inline-flex items-center transition-opacity hover:opacity-90 ${className}`}
     >
-      {/* 
-        The official SVG logo has viewBox 0 0 53 16 (aspect ratio 53:16 ~ 3.31:1).
-        When tone is light (over hero dark background or dark footer), we invert the dark letters to crisp white
-        while preserving the red flame icon mark cleanly.
-      */}
-      <div
-        className={`relative flex items-center transition-all ${
-          isLight ? "brightness-0 invert drop-shadow-xs" : ""
-        }`}
-      >
+      <div className="relative flex items-center">
         <Image
-          src="/images/asir-containers-logo.svg"
+          src={isLight ? "/images/asir-containers-logo-white.svg" : "/images/asir-containers-logo.svg"}
           alt={site.name}
           width={232}
           height={90}

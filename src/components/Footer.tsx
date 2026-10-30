@@ -59,10 +59,10 @@ export function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10 xl:gap-12">
           {/* Col 1: Brand & Bio */}
           <div className="flex flex-col">
-            <div className="h-6 flex items-center">
-              <Logo tone="light" />
+            <div className="flex items-center pb-3 border-b border-white/10 lg:border-transparent lg:pb-0">
+              <Logo tone="light" imageClassName="!h-14 sm:!h-16" />
             </div>
-            <p className="mt-4 text-[13.5px] leading-relaxed text-white/75">
+            <p className="mt-5 text-[13.5px] leading-relaxed text-white/70 max-w-sm">
               {site.description}
             </p>
           </div>

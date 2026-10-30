@@ -34,7 +34,7 @@ export function QualitySection() {
       <Reveal className="shell">
         <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
-            <SectionLabel index="06">Certifications</SectionLabel>
+            <SectionLabel index="04">Certifications</SectionLabel>
             <h2 className="display-lg sheen-ink mt-5 text-ink" data-reveal="letters">
               Documents on request.
             </h2>

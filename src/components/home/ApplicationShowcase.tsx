@@ -43,7 +43,7 @@ export function ApplicationShowcase() {
       <div className="shell">
         <div className="grid gap-8 border-b border-line pb-10 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <SectionLabel index="03" reveal>
+            <SectionLabel index="02" reveal>
               Applications
             </SectionLabel>
             <h2 className="display-lg sheen-ink mt-5 text-ink" data-reveal="letters">
