@@ -84,22 +84,17 @@ export function FlowStrip() {
   return (
     <section ref={root} className="bg-[#fbfaf7] py-20 lg:py-28" aria-labelledby="flow-heading">
       <div className="shell">
-        <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-          <div className="max-w-xl">
-            <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-brand">
-              Process flow
-            </p>
-            <h2
-              id="flow-heading"
-              className="mt-3 font-display text-[clamp(1.8rem,3.2vw,2.75rem)] font-semibold leading-[1.06] tracking-[-0.03em] text-ink"
-              data-reveal="letters"
-            >
-              Moulded, printed and packed on one floor.
-            </h2>
-          </div>
-          <p className="max-w-sm text-[14px] leading-relaxed text-mid" data-reveal>
-            {inProcess.intro}
+        <div className="max-w-xl">
+          <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-brand">
+            Process flow
           </p>
+          <h2
+            id="flow-heading"
+            className="mt-3 font-display text-[clamp(1.8rem,3.2vw,2.75rem)] font-semibold leading-[1.06] tracking-[-0.03em] text-ink"
+            data-reveal="letters"
+          >
+            Moulded, printed and packed on one floor.
+          </h2>
         </div>
 
         <div

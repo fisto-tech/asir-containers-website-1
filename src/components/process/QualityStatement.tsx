@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
-import { qualityStatement } from "@/data/manufacturing";
+import { inspectionStages, qualityStatement } from "@/data/manufacturing";
+
+const gateDots = ["bg-emerald-accent", "bg-ocean", "bg-amber-accent"];
 
 /**
  * Quality statement as a pull-quote band: the quote and its note on the left,
@@ -31,6 +33,19 @@ export function QualityStatement() {
             <p className="mt-7 max-w-lg text-[14.5px] leading-relaxed text-mid" data-reveal>
               {qualityStatement.note}
             </p>
+
+            <ul className="mt-8 grid gap-x-6 gap-y-4 sm:grid-cols-3" data-reveal>
+              {inspectionStages.map((stage, index) => (
+                <li key={stage.index} className="border-t border-line pt-3">
+                  <span className="flex items-center gap-2.5">
+                    <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${gateDots[index]}`} />
+                    <span className="text-[13.5px] font-medium leading-snug text-ink">
+                      {stage.title}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className="lg:col-span-5">
