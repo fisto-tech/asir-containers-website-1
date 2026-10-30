@@ -44,6 +44,20 @@ Notes
 - The manufacturing band notes beside the image that the facility photography is
   representative (`src/components/home/ManufacturingSection.tsx`) — remove that note with
   the real imagery.
+- `/process` and `/technologies` reuse the existing hero and plant plates rather than new
+  files. `/process`: `hero/hero-01.jpg` + `facility/machinery-01.jpg` (masthead spread),
+  `facility/labelling.jpg`, `hero/hero-03.jpg` and `families/paint-pail.jpg` (the three
+  in-process routes), `detail/stacked-pails.jpg` (quality band) and
+  `facility/dispatch.jpg` (closing banner). `/technologies`:
+  `facility/machinery-01.jpg` + `facility/machinery-02.jpg` (masthead spread) and
+  `facility/labelling.jpg` (closing banner). No "representative photography" caption is
+  shown in the UI any more; to swap in real plant photography, edit the `src` values in
+  `components/process/ProcessHero.tsx`, `components/process/InProcessStages.tsx`,
+  `components/process/QualityStatement.tsx`, `components/technologies/TechHero.tsx` and the
+  two page files. The contact band uses its own derived asset,
+  `public/images/contact/contact-hero.jpg` (a 2:1 re-frame of
+  `detail/stacked-pails.jpg` with mirrored edges); replace that file when real
+  studio photography lands.
 
 ---
 

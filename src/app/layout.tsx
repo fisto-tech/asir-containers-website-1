@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Inter } from "next/font/google";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/archivo/wdth.css";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -7,19 +8,6 @@ import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { Preloader } from "@/components/ui/Preloader";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { site } from "@/data/site";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const archivo = Archivo({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-archivo",
-  axes: ["wdth"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -75,11 +63,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${archivo.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/*
           Flags that JavaScript is available before first paint, so scroll-reveal

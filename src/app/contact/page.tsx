@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Navigation, Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact/ContactForm";
-import { Reveal } from "@/components/motion/Reveal";
-import { SectionLabel } from "@/components/ui/SectionLabel";
-import { PageMasthead } from "@/components/ui/PageMasthead";
+import { ContactHero } from "@/components/contact/ContactHero";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -26,13 +24,10 @@ export default function ContactPage() {
 
   return (
     <>
-      <Reveal>
-        <PageMasthead
-          compact
-          title="Contact Us"
-          intro="Get in touch for product specifications, bulk orders, and custom packaging requirements."
-        />
-      </Reveal>
+      <ContactHero
+        title="Contact Us"
+        intro="Get in touch for product specifications, bulk orders, and custom packaging requirements."
+      />
 
       <section className="bg-white py-10 lg:py-16">
         <div className="shell grid gap-12 lg:grid-cols-12 lg:gap-14 lg:items-stretch">
