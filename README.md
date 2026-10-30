@@ -10,6 +10,7 @@ auth or CMS.
 | Language | TypeScript (strict) |
 | Styling | Tailwind CSS v4 (CSS-first `@theme` tokens) |
 | Animation | GSAP 3 + ScrollTrigger + SplitText + `@gsap/react`, Lenis smooth scroll, CSS icon loops |
+| Fonts | Self-hosted variable faces via `@fontsource-variable/*` — no Google Fonts fetch at build or run time |
 | Icons | lucide-react |
 | Package manager | npm |
 | Rendering | Static (SSG) for `/`, `/products`, `/contact` and all 17 product pages |
@@ -48,6 +49,8 @@ Node 20+ is required (developed on Node 20.20).
 | `/products` | Static + client filtering | Filters hydrate from `?application=&type=&capacity=&lid=&lock=&color=&q=` |
 | Catalogue (nav) | External | Navbar button opens `https://www.example.com/` in a new tab — the only "Catalogue" label on the site |
 | `/products/[slug]` | SSG via `generateStaticParams` | 17 product pages, unique metadata each — specs, quality statement, in-process activities, machine ledger |
+| `/process` | Static | Dark engineering masthead, quality gates accordion, in-process stage switcher, scrubbed process-flow rail |
+| `/technologies` | Static | Two-plate masthead, tonnage instrument, production machinery ledger, auxiliaries register |
 | `/contact` | Static | Validated enquiry form with honest “not connected” state |
 | `/sitemap.xml`, `/robots.txt` | Static | Generated from the product dataset |
 | `/_not-found` | Static | Custom 404 |
@@ -97,6 +100,9 @@ src/
 ├── components/
 │   ├── Header.tsx  Footer.tsx
 │   ├── home/                   # Hero, about, counters, applications, advantages…
+│   ├── process/                # /process — hero, flow strip, stage switcher, quality statement
+│   ├── technologies/           # /technologies — hero, capability panel, machine cards, auxiliaries
+│   ├── sections/ColorCTA.tsx   # Closing brand panel shared by /process and /technologies
 │   ├── products/               # Catalogue, filters, product card, product media
 │   ├── motion/SmoothScroll.tsx # Lenis + ScrollTrigger wiring
 │   ├── contact/ContactForm.tsx
@@ -105,6 +111,8 @@ src/
 ├── data/
 │   ├── products.ts             # Single source of truth for the range
 │   ├── site.ts                 # Company details, nav, certifications, testimonials
+│   ├── manufacturing.ts        # Quality statement, gates, printing routes, machine ledger
+│   ├── process.ts              # /process stage order + photography
 │   └── home.ts                 # Home page editorial copy
 └── lib/
     ├── animations.ts           # Shared GSAP helpers + plugin registration
@@ -120,6 +128,30 @@ docs/screenshots/               # Current production-build screenshots (desktop 
 options, counts, related products, static params, sitemap entries and JSON-LD are all
 **derived** from it. Adding a product record adds a page, a card, filter facets and a
 sitemap entry with no component changes.
+
+---
+
+## Process & Technologies pages
+
+Both pages are light, colour-led and deliberately quiet: white and warm-cream grounds,
+large uncropped photography with soft shadows, one accent colour per section (brand red,
+ocean blue, emerald, amber) and a single coloured element per card. No dark sections, no
+overlays on photography, no numbered eyebrows, no chips or badges.
+
+| Block | Page | Behaviour |
+|---|---|---|
+| Masthead | both | Cream-to-white ground with soft colour washes, a large plant plate plus a smaller inset plate, heading rises line by line |
+| Inspection gates | `/process` | Statement quote beside three gate cards, each with its own accent colour |
+| In-process stage switcher | `/process` | One large plate beside a plain list; the open stage reveals its detail, bullets or client marks and the plate crossfades (auto-advances every 6.5 s, pauses on hover) |
+| Process-flow strip | `/process` | Four tinted cards — emerald, ocean, amber, brand — reading left to right with wide chevrons between them |
+| Capability panel | `/technologies` | Soft ocean panel, 80–650 T set large with an animated colour bar underneath |
+| Machinery cards | `/technologies` | Four production routes on cream, capacity set in brand red as the card's loudest element |
+| Auxiliaries | `/technologies` | Six white tiles on grey, coloured icon discs and counts that run up |
+| Closing band | both | Solid brand panel with the plant photograph held beside the copy — no overlay on the image |
+
+All content is read from `src/data/manufacturing.ts` and `src/data/process.ts` (verbatim).
+`/process` and `/technologies` open on a light hero, so the fixed header renders transparent
+with ink type until the first scroll (see `overLightHero` in `components/Header.tsx`).
 
 ---
 
@@ -145,6 +177,8 @@ JavaScript, and every loop stops under `prefers-reduced-motion`:
 |---|---|
 | `.icon-spin` `.icon-float` `.icon-pulse` `.icon-swing` `.icon-travel` | Animated icons |
 | `.ambient-media` / `.ambient-media-slow` | Slow zoom drift on photography (hero, cards, family thumbnails, detail shots) |
+| `.drift` | Slow colour wash behind a hero or banner, offset per element with `[animation-delay:-6s]` |
+| `.animate-dash` | Travelling dashed run behind the process-flow cards |
 | `.ambient-progress` | Red progress rule that times the auto-advancing panels and rows |
 | `.ambient-ring` | Expanding ring on the testimonial play control |
 | `.ambient-sheen` | Soft light sweep across the reserved video plates |
