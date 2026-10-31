@@ -1,109 +1,119 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import Image from "next/image";
 import { Counter } from "@/components/ui/Counter";
-import { gsap, ScrollTrigger, useGSAP, reduceMotion, useScrollReveal } from "@/lib/animations";
-import { machinery } from "@/data/manufacturing";
+import { gsap, ScrollTrigger, useGSAP, reduceMotion } from "@/lib/animations";
 
-const direct = machinery.production.rows[0];
-
-/**
- * Capability panel — the press envelope set as a big number over a colour bar
- * that fills as the panel comes into view. Soft tinted ground, no instruments.
- */
 export function CapabilityPanel() {
   const root = useRef<HTMLElement | null>(null);
-  useScrollReveal(root);
+  const [tonnage, setTonnage] = useState<number>(350);
 
   useGSAP(
     () => {
       const scope = root.current;
-      if (!scope) return;
+      if (!scope || reduceMotion()) return;
 
-      const bar = scope.querySelector<HTMLElement>("[data-cap-bar]");
-      if (!bar) return;
-
-      if (reduceMotion()) {
-        gsap.set(bar, { width: "100%" });
-        return;
+      const maskEl = scope.querySelector<HTMLElement>("[data-mask-cap]");
+      if (maskEl) {
+        gsap.fromTo(
+          maskEl,
+          { clipPath: "inset(0% 10% 0% 10%)" },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            ease: "none",
+            scrollTrigger: {
+              trigger: maskEl,
+              start: "top 85%",
+              end: "bottom 40%",
+              scrub: 0.8,
+            },
+          }
+        );
       }
-
-      gsap.set(bar, { width: "0%" });
-      const trigger = ScrollTrigger.create({
-        trigger: bar,
-        start: "top 92%",
-        end: "top 55%",
-        scrub: 0.6,
-        onUpdate: (self) => {
-          bar.style.width = `${Math.round(self.progress * 100)}%`;
-        },
-      });
-
-      return () => trigger.kill();
     },
-    { scope: root },
+    { scope: root }
   );
 
   return (
-    <section ref={root} className="bg-white py-16 lg:py-24" aria-labelledby="capability-heading">
-      <div className="shell">
-        <div className="relative overflow-hidden rounded-[30px] bg-ocean-light px-7 py-10 sm:px-12 lg:px-14 lg:py-14">
-          <span
-            aria-hidden
-            className="drift pointer-events-none absolute -right-16 -top-20 h-[280px] w-[280px] rounded-full bg-ocean/10 blur-3xl"
-          />
-          <div className="relative grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
-            <div className="lg:col-span-5">
-              <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-ocean" data-reveal>
-                Machinery
-              </p>
+    <section
+      ref={root}
+      className="relative overflow-hidden bg-[#fafafa] min-h-[60vh] max-h-[78vh] flex flex-col justify-center py-12 border-b border-slate-100"
+      aria-labelledby="capability-heading"
+    >
+      <div className="shell relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          
+          {/* Left: Masked Facility Image Plate */}
+          <div className="lg:col-span-6">
+            <div
+              data-mask-cap
+              className="relative h-[300px] sm:h-[380px] lg:h-[420px] rounded-[32px] overflow-hidden shadow-xl group"
+            >
+              <Image
+                src="/images/facility/machinery-02.jpg"
+                alt="Injection press clamping unit"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
 
-              <h2 id="capability-heading" className="sr-only">
-                {direct?.name ?? machinery.production.title}
-              </h2>
-
-              <p className="mt-4 flex flex-wrap items-baseline gap-x-3" data-reveal>
-                <span className="font-display text-[clamp(2.9rem,5.4vw,4.4rem)] font-semibold leading-none tracking-[-0.035em] text-ink">
-                  80
+              <div className="absolute bottom-6 left-6 right-6 text-white flex justify-between items-end">
+                <div>
+                  <p className="text-xs uppercase text-amber-300 font-bold">Closed-Loop Precision</p>
+                  <p className="font-display font-bold text-lg">Proportional Hydraulic Clamping</p>
+                </div>
+                <span className="text-xs font-semibold bg-white/20 backdrop-blur-md px-3 py-1 rounded-full">
+                  ±0.015mm
                 </span>
-                <span aria-hidden className="h-[3px] w-7 rounded-full bg-brand" />
-                <span className="font-display text-[clamp(2.9rem,5.4vw,4.4rem)] font-semibold leading-none tracking-[-0.035em] text-brand">
-                  <Counter value={650} />
-                </span>
-                <span className="font-display text-[22px] font-semibold text-mid">T</span>
-              </p>
-
-              <p className="mt-5 max-w-sm text-[14px] leading-relaxed text-mid" data-reveal>
-                {direct?.note}
-              </p>
-            </div>
-
-            <div className="lg:col-span-7">
-              <div
-                className="relative h-3 w-full overflow-hidden rounded-full bg-white"
-                data-reveal
-              >
-                <div
-                  data-cap-bar
-                  className="h-full rounded-full bg-gradient-to-r from-ocean to-brand"
-                  style={{ width: "0%" }}
-                />
-                <span
-                  aria-hidden
-                  className="ambient-sheen pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-transparent via-white/70 to-transparent"
-                />
               </div>
-              <div className="mt-2.5 flex items-center justify-between text-[12.5px] text-mid">
-                <span>80 T</span>
-                <span>650 T</span>
-              </div>
-
-              <p className="mt-7 max-w-xl text-[14px] leading-relaxed text-mid" data-reveal>
-                {machinery.intro}
-              </p>
-
             </div>
           </div>
+
+          {/* Right: Clean Interactive Tuner */}
+          <div className="lg:col-span-6">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#0284c7]">
+              Clamping Envelope
+            </span>
+
+            <h2
+              id="capability-heading"
+              className="mt-2 font-display text-[clamp(2.2rem,4vw,3.6rem)] font-extrabold tracking-tight text-slate-900 leading-[1.05]"
+            >
+              80 to 650 Tonnes Capacity.
+            </h2>
+
+            <p className="mt-3 text-slate-600 text-sm leading-relaxed max-w-lg">
+              Equipped to produce everything from 500ml food tubs up to heavy-duty 25L chemical containers with complete leak-proof structural integrity.
+            </p>
+
+            {/* Slider Widget */}
+            <div className="mt-6 p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+              <div className="flex justify-between items-baseline mb-3">
+                <span className="text-xs font-bold uppercase text-slate-500">Selected Tonnage</span>
+                <span className="font-display text-3xl font-extrabold text-slate-900">{tonnage} T</span>
+              </div>
+
+              <input
+                type="range"
+                min="80"
+                max="650"
+                step="10"
+                value={tonnage}
+                onChange={(e) => setTonnage(Number(e.target.value))}
+                aria-label="Tonnage capacity slider"
+                className="w-full h-2.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0284c7]"
+              />
+
+              <div className="flex justify-between text-xs text-slate-400 font-semibold mt-2">
+                <span>80T Small Containers</span>
+                <span>350T Pails</span>
+                <span>650T Drums</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

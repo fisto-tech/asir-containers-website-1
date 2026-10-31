@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { TechHero } from "@/components/technologies/TechHero";
-import { CapabilityPanel } from "@/components/technologies/CapabilityPanel";
-import { MachineCards } from "@/components/technologies/MachineCards";
-import { Auxiliaries } from "@/components/technologies/Auxiliaries";
+import { OurCapabilities } from "@/components/technologies/OurCapabilities";
+import { AccessoriesSection } from "@/components/technologies/AccessoriesSection";
 import { ColorCTA } from "@/components/sections/ColorCTA";
 import { site } from "@/data/site";
 
@@ -23,9 +22,8 @@ export default function TechnologiesPage() {
   return (
     <>
       <TechHero />
-      <CapabilityPanel />
-      <MachineCards />
-      <Auxiliaries />
+      <OurCapabilities />
+      <AccessoriesSection />
       <ColorCTA
         eyebrow="Production Capacity"
         heading="Have volume requirements or specific machine tooling?"

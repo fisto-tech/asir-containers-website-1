@@ -2,134 +2,149 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { gsap, useGSAP, revealLines, reduceMotion, EASE } from "@/lib/animations";
-import { machinery } from "@/data/manufacturing";
+import { ArrowRight, Box, Cog, Crosshair } from "lucide-react";
+import { gsap, useGSAP, reduceMotion } from "@/lib/animations";
 
-const rowDots = ["bg-ocean", "bg-emerald-accent", "bg-amber-accent", "bg-brand"];
-
-/**
- * Technologies masthead — a different shape from the process page: the copy
- * runs across the top, then one long plate of the press floor runs edge to edge
- * beneath it, with the machine routes listed on a hairline below.
- */
 export function TechHero() {
   const root = useRef<HTMLElement | null>(null);
 
   useGSAP(
     () => {
       const scope = root.current;
-      if (!scope) return;
+      if (!scope || reduceMotion()) return;
 
-      let cancelled = false;
-      const heading = scope.querySelector<HTMLElement>("[data-tech-heading]");
-      const splitHeading = () => {
-        if (cancelled || !heading) return;
-        revealLines(heading, { mode: "words", delay: 0.2, scrollTrigger: false });
-      };
-      if (heading) {
-        if (document.fonts?.status === "loaded") splitHeading();
-        else void document.fonts?.ready.then(splitHeading);
+      const imgPlate = scope.querySelector<HTMLElement>("[data-hero-img]");
+      if (imgPlate) {
+        gsap.fromTo(
+          imgPlate,
+          { opacity: 0, scale: 0.97, y: 16 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+            delay: 0.15,
+          }
+        );
       }
-
-      if (reduceMotion()) return () => { cancelled = true; };
-
-      gsap.fromTo(
-        scope.querySelector("[data-tech-plate]"),
-        { clipPath: "inset(0% 0% 100% 0%)" },
-        { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.out" },
-      );
-
-      gsap.from(scope.querySelectorAll("[data-tech-fade]"), {
-        y: 20,
-        autoAlpha: 0,
-        duration: 0.9,
-        delay: 0.3,
-        stagger: 0.08,
-        ease: EASE.out,
-      });
-
-      return () => {
-        cancelled = true;
-      };
     },
-    { scope: root },
+    { scope: root }
   );
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-white pb-10 lg:pb-14">
-      <div
-        aria-hidden
-        className="drift pointer-events-none absolute -left-36 -top-44 h-[540px] w-[540px] rounded-full bg-ocean/10 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="drift pointer-events-none absolute -right-40 top-10 h-[460px] w-[460px] rounded-full bg-amber-accent/10 blur-3xl [animation-delay:-9s]"
-      />
+    <section
+      ref={root}
+      className="relative overflow-hidden bg-[#FAF7F2] pt-28 pb-14 lg:pt-32 lg:pb-20 border-b border-line/60"
+    >
+      <div className="shell relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          
+          {/* Left Column: Heading, Metrics & CTA */}
+          <div className="lg:col-span-6 flex flex-col">
+            <span className="font-mono text-[11.5px] font-bold uppercase tracking-[0.22em] text-slate-500">
+              PRECISION PLASTIC PACKAGING
+            </span>
 
-      <div className="shell relative pt-28 lg:pt-36">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-14">
-          <div className="lg:col-span-8">
-            <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-ocean">
-              Technologies
-            </p>
-
-            <h1
-              data-tech-heading
-              className="mt-5 max-w-[18ch] font-display text-[clamp(2.4rem,4.8vw,4rem)] font-semibold leading-[1.02] tracking-[-0.032em] text-ink"
-            >
-              Technologies &amp; Machinery
+            <h1 className="mt-3 font-display text-[2.7rem] sm:text-[3.4rem] lg:text-[4rem] font-bold tracking-tight text-ink leading-[1.05]">
+              High-Tonnage <br />
+              Precision <br />
+              Moulding<span className="text-brand">.</span>
             </h1>
 
-            <p className="mt-6 max-w-xl text-[15.5px] leading-relaxed text-mid">
-              State-of-the-art production floor equipped with microprocessor-controlled injection
-              moulding presses, high-speed automated decoration lines, and closed-loop auxiliary
-              systems.
+            <p className="mt-4 text-[15.5px] sm:text-[16.5px] leading-relaxed text-slate-600 max-w-lg">
+              Advanced injection moulding solutions for stronger, safer and more reliable plastic packaging.
             </p>
+
+            {/* 3 Metric Badges */}
+            <div className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 pb-5 border-t border-slate-200/80">
+              {/* Metric 1 */}
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 ring-1 ring-cyan-200/60 shadow-xs">
+                  <Box className="h-5 w-5" />
+                </span>
+                <div>
+                  <div className="font-display text-[15px] font-bold text-ink leading-tight">
+                    80T–650T
+                  </div>
+                  <div className="text-[11.5px] font-medium text-slate-500">
+                    Clamping Force
+                  </div>
+                </div>
+              </div>
+
+              {/* Metric 2 */}
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 ring-1 ring-blue-200/60 shadow-xs">
+                  <Cog className="h-5 w-5" />
+                </span>
+                <div>
+                  <div className="font-display text-[15px] font-bold text-ink leading-tight">
+                    Dual-Axis IML
+                  </div>
+                  <div className="text-[11.5px] font-medium text-slate-500">
+                    In-Mould Labelling
+                  </div>
+                </div>
+              </div>
+
+              {/* Metric 3 */}
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200/60 shadow-xs">
+                  <Crosshair className="h-5 w-5" />
+                </span>
+                <div>
+                  <div className="font-display text-[15px] font-bold text-ink leading-tight">
+                    ±0.015mm
+                  </div>
+                  <div className="text-[11.5px] font-medium text-slate-500">
+                    Precision Tolerance
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <div className="mt-3 flex items-center">
+              <Link
+                href="/contact"
+                className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-brand text-white font-semibold text-sm transition-all duration-300 hover:bg-brand-dark hover:shadow-lg hover:shadow-brand/20 active:scale-[0.99]"
+              >
+                <span>Request Allocation</span>
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </div>
+
+            {/* Bottom tagline marker */}
+            <div className="mt-8 flex items-center gap-3">
+              <div className="h-[2px] w-6 bg-brand shrink-0" />
+              <span className="font-mono text-[10.5px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                BUILT FOR A CLEANER, SAFER TOMORROW
+              </span>
+            </div>
           </div>
 
-          <div className="lg:col-span-4 lg:flex lg:justify-end">
-            <Link
-              href="/contact"
-              data-tech-fade
-              className="group inline-flex h-12 items-center gap-2.5 rounded-[10px] bg-brand px-6 text-[14px] font-semibold text-white transition-colors duration-300 hover:bg-brand-dark"
+          {/* Right Column: Hero Visual */}
+          <div className="lg:col-span-6">
+            <div
+              data-hero-img
+              className="group relative aspect-[4/3.4] sm:aspect-[4/3] lg:aspect-[16/13] w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200/80 bg-white p-2 shadow-xl shadow-slate-200/60"
             >
-              Inquire capacity
-              <ArrowRight
-                aria-hidden
-                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </Link>
+              <div className="relative h-full w-full overflow-hidden rounded-xl sm:rounded-2xl bg-slate-100">
+                <Image
+                  src="/images/technologies/tech-hero-photo.webp"
+                  alt="High-Tonnage Precision Moulding line at Asir Containers"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-103"
+                />
+              </div>
+            </div>
           </div>
+
         </div>
-      </div>
-
-      {/* One long plate, edge to edge */}
-      <div data-tech-plate className="relative mt-11 h-[300px] bg-light sm:h-[400px] lg:mt-14 lg:h-[540px]">
-        <Image
-          src="/images/facility/machinery-01.jpg"
-          alt="Injection moulding machines running in the plant"
-          fill
-          priority
-          sizes="100vw"
-          className="ambient-media-slow object-cover"
-        />
-      </div>
-
-      <div className="shell relative">
-        <ul className="grid border-t border-line sm:grid-cols-2 lg:grid-cols-4">
-          {machinery.production.rows.map((row, index) => (
-            <li
-              key={row.name}
-              data-tech-fade
-              className="flex items-center gap-3 border-b border-line py-4 text-[13.5px] text-ink/80 sm:py-5 lg:border-b-0 lg:border-r lg:last:border-r-0 lg:px-5 lg:first:pl-0"
-            >
-              <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${rowDots[index % rowDots.length]}`} />
-              {row.name}
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );

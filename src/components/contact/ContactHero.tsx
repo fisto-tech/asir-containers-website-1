@@ -4,11 +4,6 @@ import { useRef } from "react";
 import Image from "next/image";
 import { gsap, useGSAP, revealLines, reduceMotion, EASE } from "@/lib/animations";
 
-/**
- * Contact masthead as a banner: the title and one line of copy on the left, the
- * stacked pails fading out of the page on the right. Nothing else sits in the
- * band — the form below carries the detail.
- */
 export function ContactHero({ title, intro }: { title: string; intro: string }) {
   const root = useRef<HTMLElement | null>(null);
 
@@ -30,14 +25,6 @@ export function ContactHero({ title, intro }: { title: string; intro: string }) 
 
       if (reduceMotion()) return () => { cancelled = true; };
 
-      gsap.from(scope.querySelector("[data-contact-image]"), {
-        autoAlpha: 0,
-        scale: 1.04,
-        duration: 1.2,
-        delay: 0.15,
-        ease: EASE.out,
-      });
-
       gsap.from(scope.querySelectorAll("[data-contact-fade]"), {
         y: 20,
         autoAlpha: 0,
@@ -57,27 +44,32 @@ export function ContactHero({ title, intro }: { title: string; intro: string }) 
   return (
     <section
       ref={root}
-      className="relative overflow-hidden border-b border-ink/10 bg-[linear-gradient(100deg,#ffffff_0%,#fdfaf5_46%,#f7eee0_100%)]"
+      className="relative overflow-hidden border-b border-ink/10 h-[220px] sm:h-[250px] lg:h-[280px] flex items-center bg-[#fdfbf9]"
     >
-      {/* Faint brand rings behind the product */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -right-16 top-1/2 hidden h-[420px] w-[420px] -translate-y-1/2 rounded-full border border-brand/[0.12] lg:block"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute right-6 top-1/2 hidden h-[280px] w-[280px] -translate-y-1/2 rounded-full border border-brand/[0.08] lg:block"
-      />
-      <span
-        aria-hidden
-        className="drift pointer-events-none absolute -left-32 -top-32 h-[380px] w-[380px] rounded-full bg-brand/[0.06] blur-3xl"
-      />
+      {/* Background Graphic Image - full bleed contact-us-bg.webp */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/contact/contact-us-bg.webp"
+          alt="ASIR Containers Contact Us background"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center pointer-events-none"
+        />
 
-      <div className="shell relative grid items-stretch gap-6 pb-7 pt-24 lg:grid-cols-12 lg:gap-10 lg:pb-9 lg:pt-28">
-        <div className="flex flex-col justify-center lg:col-span-7">
+        {/* Soft subtle gradient overlay on the left to ensure headline readability */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none bg-gradient-to-r from-white/90 via-white/50 to-transparent w-full sm:w-[55%] lg:w-[45%]"
+        />
+      </div>
+
+      {/* Main Text Content */}
+      <div className="shell relative z-10 w-full pt-16 sm:pt-18 lg:pt-20">
+        <div className="max-w-md lg:max-w-lg">
           <h1
             data-contact-heading
-            className="font-display text-[clamp(2.1rem,3.4vw,2.9rem)] font-semibold leading-[1.06] tracking-[-0.03em] text-ink"
+            className="font-display text-[clamp(2.1rem,3.4vw,2.9rem)] font-extrabold leading-[1.05] tracking-tight text-ink drop-shadow-xs"
           >
             {title === "Contact Us" ? (
               <>
@@ -89,27 +81,11 @@ export function ContactHero({ title, intro }: { title: string; intro: string }) 
           </h1>
 
           <p
-            className="mt-3 max-w-md text-[14.5px] leading-relaxed text-mid"
+            className="mt-2.5 max-w-sm sm:max-w-md text-[14px] sm:text-[15px] leading-relaxed text-slate-700 font-medium"
             data-contact-fade
           >
             {intro}
           </p>
-        </div>
-
-        <div className="relative lg:col-span-5">
-          <div
-            data-contact-image
-            className="fade-left relative h-[150px] w-full sm:h-[165px] lg:h-full lg:min-h-[165px]"
-          >
-            <Image
-              src="/images/contact/contact-hero.jpg"
-              alt="Stacked ASIR Containers pails with red lids on a warm studio ground"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 44vw"
-              className="ambient-media-slow object-cover object-[center_55%]"
-            />
-          </div>
         </div>
       </div>
     </section>

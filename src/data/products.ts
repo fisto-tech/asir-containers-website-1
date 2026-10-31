@@ -93,7 +93,7 @@ export const applications: Application[] = [
       "The widest run in the range — 500 ml retail pails through 20 litre and 20 KG bulk containers.",
     longBlurb:
       "Almost the whole tool room: every P-series paint pail from 500 ml to 20 litre, plus the K-series pails from 1 KG to 20 KG.",
-    image: "/images/applications/paint.jpg",
+    image: "/images/applications/paint.webp",
     imageAlt: "Interior painting job site with paint pails, ladders, and roller trays",
   },
   {
@@ -104,7 +104,7 @@ export const applications: Application[] = [
       "Paint-pail tooling and the 5 litre round container supplied for agro-chemical packing.",
     longBlurb:
       "The same P-series containers as paint — 500 ml through 20 litre, 10 KG — plus the 5 litre round A5.",
-    image: "/images/applications/agro.jpg",
+    image: "/images/applications/agro.webp",
     imageAlt: "Agricultural field crop environment with heavy duty green agro-chemical pails",
   },
   {
@@ -115,7 +115,7 @@ export const applications: Application[] = [
       "From 500 ml pails to the 15 and 17 litre interlock square containers for food packing.",
     longBlurb:
       "The widest spread: small P-series pails, K-series weight-marked containers, and 5, 15 and 17 litre F-series square pails.",
-    image: "/images/applications/food.jpg",
+    image: "/images/applications/food.webp",
     imageAlt: "Food manufacturing facility with food grade plastic pails and processing line",
   },
   {

@@ -1,131 +1,140 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { Icon } from "@iconify/react";
+import { ShieldCheck, Leaf, Truck } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 
 export function AdvantagesSection() {
-  const points = [
+  const statCards = [
     {
-      title: "Hardened Steel Tooling",
-      detail: "Zero leakage under vibration",
-      description: "Precision-machined cavity moulds guarantee airtight closure from the 1st to the 100,000th cycle.",
-      icon: "tabler:tool",
+      icon: ShieldCheck,
+      value: "99.8%",
+      label: "LEAK-FREE",
+      subLabel: "QUALITY",
     },
     {
-      title: "100% Virgin Polymer",
-      detail: "Certified food-safe & non-toxic",
-      description: "Zero regrind or filler contamination, providing superior drop impact resistance and puncture strength.",
-      icon: "tabler:shield-check",
+      icon: Leaf,
+      value: "100%",
+      label: "VIRGIN PP",
+      subLabel: "MATERIAL",
     },
     {
-      title: "In-House Label & IML",
-      detail: "High-definition vibrant branding",
-      description: "High-resolution screen, heat-transfer, and in-mould labelling printed directly on the production line.",
-      icon: "tabler:palette",
-    },
-    {
-      title: "Direct Factory Dispatch",
-      detail: "Synchronized logistics supply",
-      description: "Palletized, shrink-wrapped batch shipments timed precisely to your plant's filling schedules.",
-      icon: "tabler:truck-delivery",
+      icon: Truck,
+      value: "DIRECT",
+      label: "DISPATCH",
+      subLabel: "TO KEEP YOU MOVING",
     },
   ];
 
   return (
-    <section className="relative bg-white py-16 lg:py-24">
+    <section className="relative overflow-hidden bg-white py-16 lg:py-24">
+      {/* Background soft red/pink curved ribbon wave in top right */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-20 top-0 h-[480px] w-[600px] opacity-45 blur-3xl [background:radial-gradient(ellipse_at_top_right,#fecdd3_0%,#fff1f2_45%,transparent_75%)]"
+      />
+      {/* Subtle container yard watermark in bottom right */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 right-0 z-0 h-40 w-80 opacity-20"
+      >
+        <Image
+          src="/images/facility/containers-watermark.png"
+          alt=""
+          fill
+          className="object-cover object-bottom"
+        />
+      </div>
+
       <div className="shell relative z-10">
-        <div className="grid items-stretch gap-10 lg:grid-cols-12 lg:gap-14">
-          {/* Left Column: Pure Image stretched to fill full height of content */}
-          <div className="flex flex-col lg:col-span-5">
-            <Reveal className="h-full w-full">
-              <div className="relative h-full min-h-[380px] w-full overflow-hidden rounded-[28px] border border-slate-200/80 bg-slate-100 shadow-md">
-                <Image
-                  src="/images/facility/machinery-01.jpg"
-                  alt="Precision injection moulding facility at ASIR Containers"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 480px"
-                  className="object-cover object-center transition-transform duration-500 hover:scale-105"
-                  priority
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14 xl:gap-16">
+          {/* Left Column: Machinery Graphic with Offset Red Decorative Backdrop */}
+          <div className="lg:col-span-5">
+            <Reveal>
+              <div className="relative mx-auto max-w-[440px] lg:max-w-none">
+                {/* Asymmetrical Curved Red Decorative Ribbon Backing matching exact design */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -top-4 -left-4 h-24 w-28 rounded-tl-[44px] bg-brand sm:-top-5 sm:-left-5 sm:h-28 sm:w-32 sm:rounded-tl-[52px]"
                 />
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -bottom-4 -right-4 h-24 w-28 rounded-br-[44px] bg-brand sm:-bottom-5 sm:-right-5 sm:h-28 sm:w-32 sm:rounded-br-[52px]"
+                />
+
+                {/* Primary Machinery Photo Card with smooth continuous rounded corners */}
+                <div className="relative aspect-[1/0.88] w-full overflow-hidden rounded-[36px] bg-slate-100 shadow-2xl ring-4 ring-white sm:rounded-[44px]">
+                  <Image
+                    src="/images/why-choose/why-choose.webp"
+                    alt="Automated bucket lifting and packaging line at ASIR Containers"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 520px"
+                    className="object-cover object-center transition-transform duration-700 hover:scale-104"
+                  />
+                  {/* Subtle inner border */}
+                  <div className="pointer-events-none absolute inset-0 rounded-[36px] border border-black/5 sm:rounded-[44px]" />
+                </div>
               </div>
             </Reveal>
           </div>
 
-          {/* Right Column: Clean Typography, Stats, and Minimal Feature List */}
+          {/* Right Column: Title, Narrative Copy, and 3 Stat Cards */}
           <div className="lg:col-span-7">
             <Reveal>
-              {/* Header Label */}
-              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                <span className="h-[1px] w-6 bg-slate-300" />
-                <span className="font-mono font-bold text-brand">04</span>
-                <span className="text-slate-800">WHY CHOOSE US</span>
+              {/* Header Label: WHY CHOOSE US with horizontal accent line */}
+              <div className="flex items-center gap-3">
+                <span className="text-[12.5px] font-bold uppercase tracking-[0.18em] text-brand">
+                  WHY CHOOSE US
+                </span>
+                <span className="h-[1.5px] w-24 bg-gradient-to-r from-brand to-rose-200" />
               </div>
 
-              <h2 className="mt-3.5 font-display text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl lg:text-[40px] lg:leading-[1.18]">
-                Engineered advantages that protect your bottom line.
+              {/* Main Headline */}
+              <h2 className="mt-3.5 font-display text-[2.5rem] font-bold tracking-tight text-ink sm:text-[3.25rem] lg:text-[3.5rem] leading-[1.06]">
+                Engineered for <br className="hidden sm:inline" />
+                <span className="text-brand">Reliability</span>
               </h2>
 
-              <p className="mt-3.5 text-[15px] leading-relaxed text-slate-600 sm:text-base">
-                Four fundamental manufacturing disciplines industrial buyers trust for uninterrupted supply and zero leakage.
+              {/* Descriptive Paragraph */}
+              <p className="mt-4 max-w-xl text-[15.5px] font-medium leading-relaxed text-slate-600 sm:text-[16.5px]">
+                We manufacture high-quality plastic components with precision, consistency and on-time delivery — ensuring your supply chain never stops.
               </p>
 
-              {/* 2 Clean Stat Highlights */}
-              <div className="mt-7 flex items-center gap-10 border-y border-slate-100 py-5">
-                <div>
-                  <div className="font-display text-3xl font-extrabold tracking-tight text-brand sm:text-4xl">
-                    99.8%
-                  </div>
-                  <div className="text-xs font-bold text-slate-900 uppercase tracking-wide">
-                    Seal Integrity
-                  </div>
-                  <p className="text-xs text-slate-500">Drop-tested leak-free</p>
-                </div>
-                <div className="h-10 w-[1px] bg-slate-200" />
-                <div>
-                  <div className="font-display text-3xl font-extrabold tracking-tight text-brand sm:text-4xl">
-                    100%
-                  </div>
-                  <div className="text-xs font-bold text-slate-900 uppercase tracking-wide">
-                    Virgin Polymer
-                  </div>
-                  <p className="text-xs text-slate-500">Prime food-grade PP</p>
-                </div>
-              </div>
+              {/* 3 Metric Cards Grid */}
+              <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-4.5">
+                {statCards.map((card) => {
+                  const IconComponent = card.icon;
+                  return (
+                    <div
+                      key={card.label}
+                      className="group flex flex-col items-center justify-center rounded-[22px] border border-slate-200/90 bg-white px-4 py-6 text-center shadow-[0_4px_16px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                    >
+                      {/* Red Stroke Outline Icon */}
+                      <div className="mb-3.5 flex h-11 w-11 items-center justify-center text-brand transition-transform duration-300 group-hover:scale-110">
+                        <IconComponent
+                          className="h-8 w-8 text-brand"
+                          strokeWidth={1.8}
+                        />
+                      </div>
 
-              {/* 4 Essential Capabilities List (Clean minimal cards with hover) */}
-              <div className="mt-7 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-                {points.map((pt) => (
-                  <div
-                    key={pt.title}
-                    className="group relative flex items-start gap-3.5 rounded-2xl border border-slate-200/80 bg-slate-50/60 p-4 transition-all duration-300 hover:border-brand/40 hover:bg-white hover:shadow-xs"
-                  >
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-slate-700 shadow-xs border border-slate-200/60 transition-colors group-hover:bg-brand group-hover:text-white group-hover:border-transparent">
-                      <Icon icon={pt.icon} className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-display text-[15px] font-bold text-slate-900 transition-colors group-hover:text-brand">
-                        {pt.title}
-                      </h3>
-                      <p className="mt-0.5 text-xs font-medium text-slate-500">
-                        {pt.detail}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                      {/* Primary Value */}
+                      <div className="font-display text-[26px] font-extrabold tracking-tight text-ink sm:text-[28px]">
+                        {card.value}
+                      </div>
 
-              {/* Action Link */}
-              <div className="mt-8">
-                <Link
-                  href="/products#range"
-                  className="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-xs font-bold text-white shadow-xs transition-all hover:bg-brand hover:shadow-md"
-                >
-                  <span>Explore Container Catalog</span>
-                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </Link>
+                      {/* Upper Label */}
+                      <div className="mt-1 font-mono text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                        {card.label}
+                      </div>
+
+                      {/* Lower Sub-label */}
+                      <div className="mt-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                        {card.subLabel}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </Reveal>
           </div>

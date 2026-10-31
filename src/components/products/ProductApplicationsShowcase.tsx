@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { type Application } from "@/data/products";
-import { SectionLabel } from "@/components/ui/SectionLabel";
 
 type ProductApplicationsShowcaseProps = {
   applications: Application[];
@@ -11,81 +9,90 @@ type ProductApplicationsShowcaseProps = {
 
 export function ProductApplicationsShowcase({
   applications,
-  productName,
 }: ProductApplicationsShowcaseProps) {
   if (!applications.length) return null;
 
-  // Determine grid column layout based on number of items (usually 1, 2, 3, or 4)
-  const gridColsClass =
-    applications.length === 1
-      ? "grid-cols-1 max-w-xl"
-      : applications.length === 2
-      ? "grid-cols-1 md:grid-cols-2"
-      : applications.length === 3
-      ? "grid-cols-1 md:grid-cols-3"
-      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
+  const isSingle = applications.length === 1;
 
   return (
-    <section className="border-t border-line/70 bg-light/50 py-14 lg:py-20">
+    <section className="border-t border-line/60 bg-[#FAF7F2] py-14 lg:py-20">
       <div className="shell">
-        {/* Section Header - Clean, no numbers */}
-        <div className="flex flex-col justify-between gap-4 border-b border-line pb-6 md:flex-row md:items-end">
-          <div>
-            <SectionLabel>Applications</SectionLabel>
-            <h2 className="display-md mt-2 font-display font-semibold tracking-tight text-ink">
-              Where this container is used.
+        <div
+          className={`grid items-center gap-10 lg:gap-14 ${
+            isSingle
+              ? "max-w-5xl mx-auto lg:grid-cols-12"
+              : "lg:grid-cols-12"
+          }`}
+        >
+          {/* Left Column: Heading and prominent description */}
+          <div className={isSingle ? "lg:col-span-5" : "lg:col-span-4"}>
+            <h2 className="font-display text-[2.4rem] font-bold tracking-tight text-ink sm:text-[2.85rem] lg:text-[3rem] leading-[1.08]">
+              Where this <br className="hidden sm:inline" />
+              container is used<span className="text-brand">.</span>
             </h2>
+
+            <p className="mt-4 text-[15px] sm:text-[15.5px] leading-relaxed text-slate-600">
+              {isSingle
+                ? `Specifically engineered and tested for demanding ${applications[0].name.toLowerCase()} industrial duty cycles and automated filling lines.`
+                : "Engineered and tested for demanding industrial duty cycles across primary packaging categories."}
+            </p>
+
+            {/* Red accent line indicator */}
+            <div className="mt-6 h-[2.5px] w-12 bg-brand" />
           </div>
-          <p className="max-w-md text-[14px] leading-relaxed text-mid">
-            Engineered and tested for demanding industrial duty cycles across primary packaging categories.
-          </p>
-        </div>
 
-        {/* Human-like Editorial Grid: Refined Image Dimensions + Typography */}
-        <div className={`mt-8 grid gap-6 lg:gap-8 ${gridColsClass}`}>
-          {applications.map((app) => (
-            <article key={app.slug} className="group flex flex-col">
-              {/* Image Frame - Restrained compact proportions */}
-              <Link
-                href={`/products?application=${app.slug}`}
-                className="relative aspect-16/10 w-full overflow-hidden rounded-xl bg-soft border border-line/60 transition-all duration-300 hover:border-brand/40 hover:shadow-md"
-              >
-                <Image
-                  src={app.image}
-                  alt={app.imageAlt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-104"
-                />
-              </Link>
+          {/* Right Column: Applications Image Cards */}
+          <div className={isSingle ? "lg:col-span-7" : "lg:col-span-8"}>
+            <div
+              className={`grid gap-5 sm:gap-6 ${
+                isSingle
+                  ? "grid-cols-1 w-full"
+                  : applications.length === 2
+                  ? "grid-cols-1 sm:grid-cols-2"
+                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+              }`}
+            >
+              {applications.map((app) => (
+                <Link
+                  key={app.slug}
+                  href={`/products?application=${app.slug}`}
+                  className={`group relative w-full overflow-hidden rounded-[26px] bg-slate-900 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                    isSingle ? "aspect-[16/10.2]" : "aspect-[16/11.2]"
+                  }`}
+                >
+                  <Image
+                    src={app.image}
+                    alt={app.imageAlt}
+                    fill
+                    sizes={isSingle ? "(max-width: 1024px) 100vw, 720px" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
 
-              {/* Editorial Content without numbers */}
-              <div className="mt-4 flex flex-col">
-                <h3 className="font-display text-[18px] font-semibold tracking-tight text-ink">
-                  <Link
-                    href={`/products?application=${app.slug}`}
-                    className="transition-colors hover:text-brand"
-                  >
-                    {app.name} Industry
-                  </Link>
-                </h3>
+                  {/* High quality vignette overlay */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/15 to-transparent transition-opacity duration-300 group-hover:from-slate-950/90" />
 
-                <p className="mt-1.5 text-[13.5px] leading-relaxed text-mid">
-                  {app.blurb}
-                </p>
+                  {/* Bottom Bar: Style C - Floating transparent minimal typographic label in bold white text */}
+                  <div className="absolute bottom-4 left-5 right-5 z-10 flex items-center justify-between">
+                    <span className="font-display text-[20px] sm:text-[22px] font-bold tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] transition-colors duration-300 group-hover:text-brand-light">
+                      {app.name}
+                    </span>
 
-                <div className="mt-3.5 pt-0.5">
-                  <Link
-                    href={`/products?application=${app.slug}`}
-                    className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink transition-colors hover:text-brand"
-                  >
-                    <span>Explore {app.name.toLowerCase()} containers</span>
-                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </Link>
-                </div>
-              </div>
-            </article>
-          ))}
+                    <span className="text-white/80 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2.4"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

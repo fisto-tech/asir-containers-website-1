@@ -1,14 +1,6 @@
-import {
-  ShieldCheck,
-  Target,
-  Sparkles,
-  ArrowRight,
-  Compass,
-  CheckCircle2,
-  Gem,
-  Award,
-} from "lucide-react";
-import Link from "next/link";
+"use client";
+
+import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
@@ -16,169 +8,223 @@ type Props = {
   index?: string;
 };
 
-export function VisionMissionSection({ index = "06" }: Props) {
-  const pillars = [
-    {
-      title: "Precision Tooling",
-      detail: "Mould geometries and locking ribs engineered to eliminate line spillage and lid deformities.",
-      badge: "Mould Tech",
-      color: "border-sky-200 bg-sky-50/50 text-sky-700",
-      accent: "text-sky-600",
-    },
-    {
-      title: "Material Integrity",
-      detail: "100% prime food-grade and virgin industrial polypropylene formulations, never compromised.",
-      badge: "Pure Polymer",
-      color: "border-emerald-200 bg-emerald-50/50 text-emerald-700",
-      accent: "text-emerald-600",
-    },
-    {
-      title: "Integrated Decoration",
-      detail: "In-house Screen, HTL, and IML printing to turn functional pails into shelf-ready brand assets.",
-      badge: "In-House Print",
-      color: "border-purple-200 bg-purple-50/50 text-purple-700",
-      accent: "text-purple-600",
-    },
-    {
-      title: "Batch Repeatability",
-      detail: "Three-gate incoming, impression, and finished QC checks guaranteeing exact fit from first pail to millionth.",
-      badge: "Zero Defect",
-      color: "border-amber-200 bg-amber-50/50 text-amber-700",
-      accent: "text-amber-600",
-    },
-  ];
-
+/* Precise SVG Icons matching the reference graphic */
+function ShieldIcon({ className }: { className?: string }) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50/60 to-white py-20 lg:py-28">
-      {/* Background ambient color spheres */}
-      <div className="pointer-events-none absolute -top-24 right-10 h-80 w-80 rounded-full bg-indigo-100/40 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-10 left-10 h-80 w-80 rounded-full bg-teal-100/40 blur-3xl" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
 
+function LeafIcon({ className, fill }: { className?: string; fill?: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" fill={fill ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+      <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+    </svg>
+  );
+}
+
+function CustomersIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <circle cx="9" cy="7" r="3" />
+      <path d="M3 18c0-3.3 2.7-6 6-6s6 2.7 6 6v1H3v-1z" />
+      <circle cx="16.5" cy="8.5" r="2.5" />
+      <path d="M15 15.1c1.3-.7 2.8-.7 4 0 1.2.7 2 1.8 2 3.1v.8h-6v-.8c0-1.2.5-2.4 1.5-3.1h-1.5z" />
+    </svg>
+  );
+}
+
+function LightbulbIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-1 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+      <path d="M9 18h6" />
+      <path d="M10 22h4" />
+    </svg>
+  );
+}
+
+function HandshakeIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="m11 17 2 2a1 1 0 0 0 1.4 0l4.3-4.3a1 1 0 0 0 0-1.4l-2.6-2.6a1 1 0 0 0-1.4 0L13 12" />
+      <path d="m18 10 1.6-1.6a1 1 0 0 0 0-1.4l-2.6-2.6a1 1 0 0 0-1.4 0L14 6" />
+      <path d="m2 14 6 6" />
+      <path d="m7 9 4-4a1 1 0 0 1 1.4 0l2.6 2.6a1 1 0 0 1 0 1.4L11 13" />
+      <path d="m2 19 3 3" />
+    </svg>
+  );
+}
+
+function UsersGroupIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M2.5 19c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5v1h-13v-1z" />
+      <circle cx="16.5" cy="9.5" r="2.7" />
+      <path d="M15.5 15.5c1.4-.7 3.1-.7 4.5 0 1.4.7 2.3 2 2.3 3.5v1h-6.8v-1c0-1.4.6-2.7 1.7-3.5h-1.7z" />
+    </svg>
+  );
+}
+
+export function VisionMissionSection({ index = "06" }: Props) {
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50/50 to-white py-14 lg:py-20">
       <div className="shell relative z-10">
-        <Reveal>
-          <div className="flex flex-col justify-between gap-6 border-b border-line pb-8 lg:flex-row lg:items-end">
-            <div>
-              <SectionLabel index={index}>Strategic Direction</SectionLabel>
-              <h2 className="display-lg sheen-ink mt-5 text-ink">
-                Vision &amp; Mission
-              </h2>
-            </div>
-            <p className="max-w-md text-[14.5px] leading-relaxed text-slate-600">
-              Guiding principles behind our moulding floor, tooling commitments, and lasting partnerships with industrial packaging leaders.
-            </p>
-          </div>
-        </Reveal>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-2 lg:gap-10">
-          {/* Vision Card — Regal Deep Indigo & Sapphire Palette */}
-          <Reveal className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] border border-indigo-200/90 bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 p-8 text-white shadow-xl transition-all duration-500 hover:border-indigo-400 hover:shadow-2xl hover:shadow-indigo-950/20 sm:p-10">
-            {/* Ambient inner glow */}
-            <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl transition-transform duration-700 group-hover:scale-125" />
 
-            <div className="relative z-10">
-              <div className="flex items-center justify-between">
-                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-sky-500 text-white shadow-md shadow-indigo-500/25 transition-transform duration-500 group-hover:scale-110">
-                  <Compass className="h-7 w-7" />
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-400/30 bg-indigo-900/60 px-3.5 py-1 font-mono text-[11px] font-semibold tracking-wider text-indigo-200 uppercase">
-                  <Gem className="h-3 w-3 text-sky-400" />
-                  Our Vision
-                </span>
-              </div>
-
-              <div className="mt-8">
-                <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-sky-400">
-                  Strategic Horizon
-                </span>
-                <h3 className="display-sm mt-3 font-display font-semibold text-white">
-                  To be India&apos;s benchmark for high-integrity rigid industrial packaging.
-                </h3>
-                <p className="mt-4 text-[15px] leading-relaxed text-slate-300">
-                  Setting the industry standard for precision injection-moulded pails where zero leakage, flawless stack stability, and high-impact shelf aesthetics empower chemicals, paint, food, and lubricant manufacturers across nationwide supply chains.
-                </p>
-              </div>
-            </div>
-
-            <div className="relative z-10 mt-8 border-t border-indigo-800/60 pt-6">
-              <p className="text-[13.5px] font-medium text-indigo-200 flex items-center gap-2.5">
-                <Sparkles className="h-4 w-4 text-sky-400 shrink-0" />
-                Engineering packaging reliability that protects your product and builds brand equity.
-              </p>
-            </div>
-          </Reveal>
-
-          {/* Mission Card — Crisp Emerald & Teal Precision Palette */}
-          <Reveal className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] border border-teal-200/90 bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 p-8 text-white shadow-xl transition-all duration-500 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-950/20 sm:p-10">
-            {/* Ambient inner glow */}
-            <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-emerald-500/20 blur-3xl transition-transform duration-700 group-hover:scale-125" />
-
-            <div className="relative z-10">
-              <div className="flex items-center justify-between">
-                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-400 text-white shadow-md shadow-emerald-500/25 transition-transform duration-500 group-hover:scale-110">
-                  <Target className="h-7 w-7" />
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-teal-400/30 bg-teal-900/60 px-3.5 py-1 font-mono text-[11px] font-semibold tracking-wider text-teal-200 uppercase">
-                  <Award className="h-3 w-3 text-emerald-400" />
-                  Our Mission
-                </span>
-              </div>
-
-              <div className="mt-8">
-                <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-teal-400">
-                  Execution Discipline
-                </span>
-                <h3 className="display-sm mt-3 font-display font-semibold text-white">
-                  Consistently deliver zero-defect containers with speed, clarity, and precision.
-                </h3>
-                <p className="mt-4 text-[15px] leading-relaxed text-slate-300">
-                  We achieve this by uniting modern high-tonnage moulding cells, dedicated in-house multi-route container decoration, rigorous quality gates, and transparent code-based cataloguing so every order delivers exact performance on your filling lines.
-                </p>
-              </div>
-            </div>
-
-            <div className="relative z-10 mt-8 border-t border-teal-800/60 pt-6">
-              <p className="text-[13.5px] font-medium text-teal-200 flex items-center gap-2.5">
-                <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
-                Three-gate quality discipline from raw resin intake to final dispatch.
-              </p>
-            </div>
-          </Reveal>
-        </div>
-
-        {/* Commitment Banner / 4 Core Pillars with Color Highlights */}
-        <Reveal className="mt-10 overflow-hidden rounded-[26px] border border-slate-200 bg-white p-7 sm:p-9 shadow-md">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
-            {pillars.map((item, idx) => (
-              <div key={item.title} className={`${idx !== 0 ? "pt-5 sm:pt-0 sm:pl-6" : ""}`}>
-                <div className="flex items-center justify-between">
-                  <span className={`inline-block rounded-md border px-2.5 py-0.5 text-[11px] font-bold ${item.color}`}>
-                    {item.badge}
-                  </span>
-                  <CheckCircle2 className={`h-4 w-4 ${item.accent}`} />
+        {/* Vision & Mission Banner Composition */}
+        <div className="relative mt-8 sm:mt-10">
+          <div className="relative flex flex-col gap-3.5 sm:gap-4 overflow-visible">
+            
+            {/* 1. TOP CARD: MISSION */}
+            <Reveal className="relative overflow-hidden rounded-[26px] sm:rounded-[36px] lg:rounded-[40px] border border-slate-200/90 bg-white shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
+              {/* Reduced height across viewports: h-[200px] to lg:h-[240px] xl:h-[260px] */}
+              <div className="relative h-auto min-h-[220px] md:h-[230px] lg:h-[245px] xl:h-[260px] flex items-center">
+                {/* Full-width Mission background image */}
+                <div className="absolute inset-0 z-0">
+                  <Image
+                    src="/images/mission-vission/mission-image.webp"
+                    alt="Sustainable industrial manufacturing and seedling in hands"
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover object-[center_35%]"
+                  />
+                  {/* Smooth horizontal gradient to keep left text clean */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-transparent w-full md:w-[62%] lg:w-[46%] pointer-events-none" />
                 </div>
-                <h4 className="font-display mt-3 text-[16px] font-semibold text-ink">
-                  {item.title}
-                </h4>
-                <p className="mt-2 text-[13px] leading-relaxed text-slate-600">
-                  {item.detail}
-                </p>
+
+                {/* Content Layout - md:flex-row lock for all desktop/tablet sizes */}
+                <div className="relative z-10 w-full px-6 py-6 sm:px-10 md:px-10 lg:px-14 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-4">
+                  {/* Left: Mission Title & Description */}
+                  <div className="max-w-sm lg:max-w-[380px] xl:max-w-[420px]">
+                    <h3 className="font-display text-[2.2rem] sm:text-[2.6rem] lg:text-[2.9rem] font-bold tracking-tight text-[#d91424] leading-none">
+                      Mission
+                    </h3>
+                    <div className="mt-2.5 h-[3px] w-12 bg-[#d91424]" />
+                    <p className="mt-3.5 sm:mt-4 text-[13px] sm:text-[14px] lg:text-[14.5px] font-semibold leading-[1.55] text-[#242b35]">
+                      To provide high-quality, safe and sustainable containers, ensuring the health and satisfaction of our customers.
+                    </p>
+                  </div>
+
+                  {/* Right: 3 Red Outline Badges with Labels */}
+                  <div className="flex flex-col gap-2.5 sm:gap-3 lg:gap-3.5 md:pr-4 lg:pr-8 shrink-0">
+                    {/* Badge 1: Safety First */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 sm:h-10 sm:w-10 lg:h-11 lg:w-11 shrink-0 items-center justify-center rounded-full border-2 border-[#d91424] bg-white text-[#d91424] shadow-xs">
+                        <ShieldIcon className="h-5 w-5 sm:h-5 sm:w-5" />
+                      </div>
+                      <div className="border-l border-slate-300 pl-2.5 py-0.5">
+                        <p className="text-[11px] sm:text-[12px] font-bold text-[#1f2937] leading-tight">Safety</p>
+                        <p className="text-[11px] sm:text-[12px] font-bold text-[#1f2937] leading-tight">First</p>
+                      </div>
+                    </div>
+
+                    {/* Badge 2: Sustainable Future */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 sm:h-10 sm:w-10 lg:h-11 lg:w-11 shrink-0 items-center justify-center rounded-full border-2 border-[#d91424] bg-white text-[#d91424] shadow-xs">
+                        <LeafIcon className="h-5 w-5 sm:h-5 sm:w-5" />
+                      </div>
+                      <div className="border-l border-slate-300 pl-2.5 py-0.5">
+                        <p className="text-[11px] sm:text-[12px] font-bold text-[#1f2937] leading-tight">Sustainable</p>
+                        <p className="text-[11px] sm:text-[12px] font-bold text-[#1f2937] leading-tight">Future</p>
+                      </div>
+                    </div>
+
+                    {/* Badge 3: Customer Satisfaction */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 sm:h-10 sm:w-10 lg:h-11 lg:w-11 shrink-0 items-center justify-center rounded-full border-2 border-[#d91424] bg-white text-[#d91424] shadow-xs">
+                        <CustomersIcon className="h-5 w-5 sm:h-5 sm:w-5" />
+                      </div>
+                      <div className="border-l border-slate-300 pl-2.5 py-0.5">
+                        <p className="text-[11px] sm:text-[12px] font-bold text-[#1f2937] leading-tight">Customer</p>
+                        <p className="text-[11px] sm:text-[12px] font-bold text-[#1f2937] leading-tight">Satisfaction</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
+            </Reveal>
+
+            {/* 2. BOTTOM CARD: VISION */}
+            <Reveal className="relative overflow-hidden rounded-[26px] sm:rounded-[36px] lg:rounded-[40px] bg-[#c71120] text-white shadow-[0_12px_36px_rgba(199,17,32,0.18)]">
+              {/* Reduced height across viewports */}
+              <div className="relative h-auto min-h-[220px] md:h-[230px] lg:h-[245px] xl:h-[260px] flex items-center">
+                {/* Full-width Vision background image */}
+                <div className="absolute inset-0 z-0">
+                  <Image
+                    src="/images/mission-vission/vission-image.webp"
+                    alt="Vision summit sunrise"
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover object-[center_35%]"
+                  />
+                  {/* Rich red blend gradient on left */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#c71120] via-[#c71120]/90 to-transparent w-full md:w-[62%] lg:w-[46%] pointer-events-none" />
+                </div>
+
+                {/* Content Layout - md:flex-row lock */}
+                <div className="relative z-10 w-full px-6 py-6 sm:px-10 md:px-10 lg:px-14 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-4">
+                  {/* Left: Vision Title & Description */}
+                  <div className="max-w-sm lg:max-w-[380px] xl:max-w-[420px]">
+                    <h3 className="font-display text-[2.2rem] sm:text-[2.6rem] lg:text-[2.9rem] font-bold tracking-tight text-white leading-none">
+                      Vision
+                    </h3>
+                    <div className="mt-2.5 h-[3px] w-12 bg-white" />
+                    <p className="mt-3.5 sm:mt-4 text-[13px] sm:text-[14px] lg:text-[14.5px] font-semibold leading-[1.55] text-white/95">
+                      To be a globally trusted and preferred partner for container coating solutions, recognized for innovation, quality, sustainability and customer value.
+                    </p>
+                  </div>
+
+                  {/* Right: 2x2 Grid of Circular Outlined Icons */}
+                  <div className="grid grid-cols-2 gap-3 sm:gap-3.5 md:pr-4 lg:pr-8 shrink-0">
+                    {/* Icon 1: Innovation */}
+                    <div className="flex h-10 w-10 sm:h-11 sm:w-11 lg:h-12 lg:w-12 items-center justify-center rounded-full border-2 border-white bg-transparent text-white shadow-xs transition-transform hover:scale-105">
+                      <LightbulbIcon className="h-5 w-5 sm:h-5 sm:w-5" />
+                    </div>
+
+                    {/* Icon 2: Sustainability */}
+                    <div className="flex h-10 w-10 sm:h-11 sm:w-11 lg:h-12 lg:w-12 items-center justify-center rounded-full border-2 border-white bg-transparent text-white shadow-xs transition-transform hover:scale-105">
+                      <LeafIcon className="h-5 w-5 sm:h-5 sm:w-5" fill={false} />
+                    </div>
+
+                    {/* Icon 3: Partnership */}
+                    <div className="flex h-10 w-10 sm:h-11 sm:w-11 lg:h-12 lg:w-12 items-center justify-center rounded-full border-2 border-white bg-transparent text-white shadow-xs transition-transform hover:scale-105">
+                      <HandshakeIcon className="h-5 w-5 sm:h-5 sm:w-5" />
+                    </div>
+
+                    {/* Icon 4: Customer Value */}
+                    <div className="flex h-10 w-10 sm:h-11 sm:w-11 lg:h-12 lg:w-12 items-center justify-center rounded-full border-2 border-white bg-transparent text-white shadow-xs transition-transform hover:scale-105">
+                      <UsersGroupIcon className="h-5 w-5 sm:h-5 sm:w-5" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
           </div>
 
-          <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-slate-100 pt-6 sm:flex-row sm:items-center">
-            <p className="text-[13.5px] font-medium text-slate-600">
-              Want to review tooling specs, sample trial batches, or custom decoration proofs?
-            </p>
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand to-rose-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:shadow-md hover:scale-102"
-            >
-              Consult with our engineers
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+          {/* 3. CENTER OVERLAPPING FLOATING GLOBE BADGE - Dynamically responsive on md, lg, and xl screens */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 hidden -translate-x-1/2 -translate-y-1/2 md:block">
+            <div className="relative h-44 w-44 lg:h-52 lg:w-52 xl:h-56 xl:w-56 overflow-hidden rounded-full border-[6px] lg:border-[7px] border-white bg-white shadow-[0_12px_40px_rgba(0,0,0,0.32)]">
+              <Image
+                src="/images/mission-vission/mission-vission-globe.webp"
+                alt="Global connected logistics network"
+                fill
+                priority
+                sizes="(max-width: 1024px) 180px, 230px"
+                className="object-cover"
+              />
+            </div>
           </div>
-        </Reveal>
+
+        </div>
       </div>
     </section>
   );

@@ -1,146 +1,202 @@
 "use client";
 
+import { useRef, useState } from "react";
 import Image from "next/image";
-import { useRef } from "react";
-import { Bot, Factory, Flame, Printer, type LucideIcon } from "lucide-react";
-import { useScrollReveal } from "@/lib/animations";
-import { machinery } from "@/data/manufacturing";
+import { Bot, Factory, Flame, Printer, Sparkles, CheckCircle2 } from "lucide-react";
+import { gsap, useGSAP, reduceMotion } from "@/lib/animations";
 
-const icons: Record<string, LucideIcon> = {
-  "Direct machineries": Factory,
-  "Screen printing": Printer,
-  HTL: Flame,
-  "Inmould labeling (IML)": Bot,
-};
-
-const accents = [
+const routes = [
   {
-    tile: "bg-brand-light text-brand",
-    value: "text-brand",
-    rule: "bg-brand",
+    id: "moulding",
+    title: "Injection Moulding",
+    metric: "80T – 650T",
+    icon: Factory,
+    iconColor: "text-amber-500",
+    iconBg: "bg-amber-50",
+    summary: "Microprocessor-governed toggle injection presses producing seamless, impact-resistant pails.",
     image: "/images/facility/machinery-02.jpg",
-    alt: "Injection moulding machine on the production floor",
+    sampleImage: "/images/families/round-pail.jpg",
   },
   {
-    tile: "bg-ocean-light text-ocean",
-    value: "text-ocean",
-    rule: "bg-ocean",
-    image: "/images/facility/labelling.jpg",
-    alt: "Containers moving through the in-line printing station",
-  },
-  {
-    tile: "bg-amber-light text-amber-accent",
-    value: "text-amber-accent",
-    rule: "bg-amber-accent",
-    image: "/images/hero/hero-03.jpg",
-    alt: "Heat-transfer labelling line in the plant",
-  },
-  {
-    tile: "bg-emerald-light text-emerald-accent",
-    value: "text-emerald-accent",
-    rule: "bg-emerald-accent",
+    id: "iml",
+    title: "Robotic In-Mould Labelling",
+    metric: "3-Cavity",
+    icon: Bot,
+    iconColor: "text-emerald-500",
+    iconBg: "bg-emerald-50",
+    summary: "Fused polypropylene labels bonded directly during moulding for 100% peel-proof finish.",
     image: "/images/families/paint-pail.jpg",
-    alt: "Container with its label moulded into the wall",
+    sampleImage: "/images/applications/food.webp",
+  },
+  {
+    id: "htl",
+    title: "Heat Transfer Labelling",
+    metric: "4-Colour",
+    icon: Flame,
+    iconColor: "text-rose-500",
+    iconBg: "bg-rose-50",
+    summary: "Multi-colour thermal transfer delivering sharp gradients and rich, opaque prints.",
+    image: "/images/hero/hero-03.jpg",
+    sampleImage: "/images/applications/lube.jpg",
+  },
+  {
+    id: "screen",
+    title: "Screen Printing Line",
+    metric: "6-Colour",
+    icon: Printer,
+    iconColor: "text-sky-500",
+    iconBg: "bg-sky-50",
+    summary: "In-line flame pre-treatment and instant UV quartz curing built for chemical & solvent resilience.",
+    image: "/images/facility/labelling.jpg",
+    sampleImage: "/images/applications/agro.webp",
   },
 ];
 
-/**
- * The four production routes, each opening on a photograph of the line it runs
- * on. The photographs carry a slow ambient zoom and colour washes drift behind
- * the row, so the block is alive before anyone hovers it.
- */
 export function MachineCards() {
+  const [activeIdx, setActiveIdx] = useState(0);
   const root = useRef<HTMLElement | null>(null);
-  useScrollReveal(root);
+  const mediaRef = useRef<HTMLDivElement | null>(null);
+
+  const active = routes[activeIdx];
+
+  const handleSelect = (idx: number) => {
+    if (idx === activeIdx) return;
+    if (reduceMotion()) {
+      setActiveIdx(idx);
+      return;
+    }
+
+    if (mediaRef.current) {
+      gsap.fromTo(
+        mediaRef.current,
+        { opacity: 0.4, scale: 0.98 },
+        { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }
+      );
+    }
+    setActiveIdx(idx);
+  };
 
   return (
     <section
       ref={root}
-      className="relative overflow-hidden bg-[#fbfaf7] pb-20 pt-16 lg:pb-28 lg:pt-20"
-      aria-labelledby="machines-heading"
+      className="relative overflow-hidden bg-white min-h-[60vh] max-h-[78vh] flex flex-col justify-center py-12 border-b border-slate-100"
+      aria-labelledby="machinery-station-heading"
     >
-      <span
-        aria-hidden
-        className="drift pointer-events-none absolute -left-32 top-24 h-[420px] w-[420px] rounded-full bg-ocean/[0.07] blur-3xl"
-      />
-      <span
-        aria-hidden
-        className="drift pointer-events-none absolute -right-28 bottom-0 h-[380px] w-[380px] rounded-full bg-amber-accent/[0.07] blur-3xl [animation-delay:-11s]"
-      />
-
-      <div className="shell relative">
-        <div className="max-w-xl">
-          <p
-            className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-amber-accent"
-            data-reveal
-          >
-            Production
+      <div className="shell relative z-10">
+        
+        {/* Header with animated icon */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e51827]">
+              <Sparkles className="h-3.5 w-3.5 animate-spin [animation-duration:5s]" />
+              <span>Integrated Operations</span>
+            </div>
+            <h2
+              id="machinery-station-heading"
+              className="mt-2 font-display text-[clamp(2.2rem,4vw,3.6rem)] font-extrabold tracking-tight text-slate-900 leading-tight"
+            >
+              Moulding &amp; Printing Lines.
+            </h2>
+          </div>
+          <p className="text-slate-500 text-xs sm:text-sm max-w-sm">
+            All four decoration and moulding operations are executed under one roof.
           </p>
-          <h2
-            id="machines-heading"
-            className="mt-3 font-display text-[clamp(1.7rem,2.8vw,2.4rem)] font-semibold leading-[1.1] tracking-[-0.025em] text-ink"
-            data-reveal="letters"
-          >
-            {machinery.production.title}
-          </h2>
         </div>
 
-        <ul className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {machinery.production.rows.map((row, index) => {
-            const Icon = icons[row.name] ?? Factory;
-            const accent = accents[index % accents.length];
+        {/* Content Split: Left Navigation / Right Dual Images */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          
+          {/* Left: 4-Line Button Selector with dedicated animated icons */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-2.5">
+            {routes.map((r, i) => {
+              const isCur = i === activeIdx;
+              const Icon = r.icon;
 
-            return (
-              <li
-                key={row.name}
-                data-reveal
-                data-reveal-delay={String(index * 0.06)}
-                className="group flex flex-col overflow-hidden rounded-[22px] bg-white ring-1 ring-black/[0.05] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_26px_54px_-32px_rgba(17,17,17,0.42)]"
-              >
-                <div className="relative h-[148px] overflow-hidden bg-light">
-                  <span className="absolute inset-0 block transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]">
-                    <Image
-                      src={accent.image}
-                      alt={accent.alt}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="ambient-media object-cover"
-                    />
-                  </span>
-                </div>
-
-                <div className="flex flex-1 flex-col p-5">
+              return (
+                <button
+                  key={r.id}
+                  type="button"
+                  onClick={() => handleSelect(i)}
+                  className={`text-left p-4 rounded-2xl transition-all duration-200 border cursor-pointer flex items-start gap-3.5 ${
+                    isCur
+                      ? "bg-[#fafafa] border-[#e51827] shadow-sm"
+                      : "bg-white border-slate-100 hover:border-slate-200"
+                  }`}
+                >
                   <span
-                    className={`flex h-9 w-9 items-center justify-center rounded-[11px] ${accent.tile}`}
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-all ${
+                      isCur
+                        ? `${r.iconBg} ${r.iconColor} scale-110 shadow-sm`
+                        : "bg-slate-50 text-slate-400"
+                    }`}
                   >
-                    <Icon aria-hidden className="h-4 w-4" strokeWidth={1.8} />
+                    <Icon className="h-5 w-5" />
                   </span>
 
-                  <h3 className="mt-3 font-display text-[16.5px] font-semibold leading-snug text-ink">
-                    {row.name}
-                  </h3>
-
-                  <p
-                    className={`mt-1.5 font-display text-[23px] font-semibold leading-none tracking-[-0.02em] ${accent.value}`}
-                  >
-                    {row.capacity}
-                  </p>
-
-                  {row.note && (
-                    <p className="mt-2.5 text-[13px] leading-relaxed text-mid">{row.note}</p>
-                  )}
-
-                  <div className="mt-auto pt-5">
-                    <span
-                      aria-hidden
-                      className={`block h-[3px] w-8 rounded-full transition-all duration-500 group-hover:w-14 ${accent.rule}`}
-                    />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-baseline mb-0.5">
+                      <p className={`font-display text-base font-bold ${isCur ? "text-slate-900" : "text-slate-600"}`}>
+                        {r.title}
+                      </p>
+                      <span className="text-xs font-bold text-[#e51827]">
+                        {r.metric}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-500 line-clamp-1">
+                      {r.summary}
+                    </p>
                   </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right: Dual Visual Showcase */}
+          <div ref={mediaRef} className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-12 gap-4">
+            
+            {/* Primary Machinery Image */}
+            <div className="sm:col-span-8 relative min-h-[260px] lg:min-h-[380px] rounded-[28px] overflow-hidden shadow-lg group">
+              <Image
+                src={active.image}
+                alt={active.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
+              <div className="absolute bottom-5 left-5 right-5 text-white flex items-center justify-between">
+                <div>
+                  <p className="text-xs uppercase text-amber-300 font-bold">Active Machine Route</p>
+                  <p className="font-display font-bold text-xl">{active.title}</p>
                 </div>
-              </li>
-            );
-          })}
-        </ul>
+                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                  100% In-House
+                </span>
+              </div>
+            </div>
+
+            {/* Secondary Product Output Image */}
+            <div className="sm:col-span-4 relative min-h-[140px] lg:min-h-[380px] rounded-[28px] overflow-hidden shadow-md group">
+              <Image
+                src={active.sampleImage}
+                alt={`${active.title} sample`}
+                fill
+                sizes="(max-width: 1024px) 100vw, 22vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5 text-white">
+                <p className="text-xs uppercase text-emerald-300 font-bold">Finished Format</p>
+                <p className="font-display font-semibold text-sm">Industrial Grade</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
     </section>
   );

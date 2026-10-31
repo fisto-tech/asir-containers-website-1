@@ -6,7 +6,6 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Info } from "lucide-react";
 import { ProductMedia } from "@/components/products/ProductMedia";
 import { ProductCard } from "@/components/products/ProductCard";
 import { ProductApplicationsShowcase } from "@/components/products/ProductApplicationsShowcase";
-import { InspectionSection } from "@/components/product/InspectionSection";
 import { Reveal } from "@/components/motion/Reveal";
 import { AnimatedIcon, applicationIcons, type IconMotion } from "@/components/ui/AnimatedIcon";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -257,10 +256,6 @@ export default async function ProductPage({ params }: PageProps) {
           productName={product.name}
         />
       </Reveal>
-
-      {/* Quality statement + inspection gates */}
-      <InspectionSection />
-
 
       {/* Related */}
       <section className="bg-white py-16 lg:py-20">

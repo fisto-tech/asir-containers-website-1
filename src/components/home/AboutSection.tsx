@@ -1,171 +1,168 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { gsap, ScrollTrigger, useGSAP, revealLines, parallax, reduceMotion, useScrollReveal } from "@/lib/animations";
-import { aboutContent } from "@/data/home";
-import { SectionLabel } from "@/components/ui/SectionLabel";
-
+import { useRef } from "react";
+import { Icon } from "@iconify/react";
+import { gsap, useGSAP, revealLines, reduceMotion } from "@/lib/animations";
 
 export function AboutSection() {
   const root = useRef<HTMLElement | null>(null);
-  /* Generic `[data-reveal]` / `[data-reveal-mask]` passes (eyebrow, links, plates). */
-  useScrollReveal(root);
 
   useGSAP(
     () => {
-      const heading = root.current?.querySelector<HTMLElement>("[data-about-heading]");
-      if (heading) revealLines(heading, { scrollTrigger: true });
+      const scope = root.current;
+      if (!scope) return;
 
+      let cancelled = false;
+      const heading = scope.querySelector<HTMLElement>("[data-about-heading]");
+      const splitHeading = () => {
+        if (cancelled || !heading) return;
+        revealLines(heading, { mode: "words", delay: 0.1 });
+      };
 
-      if (reduceMotion()) {
-        gsap.set("[data-about-copy] > *", { opacity: 1, y: 0 });
-        return;
+      if (heading) {
+        if (document.fonts?.status === "loaded") splitHeading();
+        else void document.fonts?.ready.then(splitHeading);
       }
 
-      const copy = gsap.utils.toArray<HTMLElement>("[data-about-copy] > *");
-      gsap.set(copy, { opacity: 0, y: 22 });
-      const playCopy = () =>
-        gsap.to(copy, { opacity: 1, y: 0, duration: 0.9, stagger: 0.1, ease: "power3.out", overwrite: "auto" });
-
-      ScrollTrigger.create({
-        trigger: "[data-about-copy]",
-        start: "top 85%",
-        end: "top 25%",
-        invalidateOnRefresh: true,
-        onEnter: playCopy,
-        onEnterBack: playCopy,
-        onLeaveBack: () => gsap.to(copy, { opacity: 0, y: 22, duration: 0.4, ease: "power2.in", overwrite: "auto" }),
-      });
-
-      const media = root.current?.querySelector<HTMLElement>("[data-about-media]");
-      if (media) parallax(media, 60);
-
-      const inset = root.current?.querySelector<HTMLElement>("[data-about-inset]");
-      if (inset) {
-        gsap.set(inset, { yPercent: 18, opacity: 0 });
-        const playInset = () =>
-          gsap.to(inset, { yPercent: 0, opacity: 1, duration: 1.2, ease: "expo.out", overwrite: "auto" });
-
-        ScrollTrigger.create({
-          trigger: inset,
-          start: "top 95%",
-          end: "top 25%",
-          invalidateOnRefresh: true,
-          onEnter: playInset,
-          onEnterBack: playInset,
-          onLeaveBack: () =>
-            gsap.to(inset, { yPercent: 18, opacity: 0, duration: 0.5, ease: "power2.in", overwrite: "auto" }),
-        });
-      }
+      return () => {
+        cancelled = true;
+      };
     },
     { scope: root },
   );
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50/60 to-white py-20 lg:py-28">
-      {/* Ambient background glow */}
-      <div className="pointer-events-none absolute -left-24 top-1/2 h-80 w-80 rounded-full bg-rose-100/35 blur-3xl" />
-      <div className="pointer-events-none absolute -right-24 bottom-12 h-80 w-80 rounded-full bg-sky-100/35 blur-3xl" />
+    <section ref={root} className="relative overflow-hidden bg-white py-14 lg:py-24">
+      {/* Background Decorative Graphic Elements */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-20 -top-24 h-[550px] w-[550px] rounded-full border-[40px] border-[#e51827]/[0.05] blur-[1px]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-6 -bottom-16 h-[340px] w-[340px] rounded-full bg-gradient-to-tl from-[#e51827]/[0.06] to-transparent blur-2xl"
+      />
 
       <div className="shell relative z-10">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-12">
-          {/* Copy column */}
-          <div className="lg:col-span-6 lg:pr-8">
-            <div data-reveal>
-              <SectionLabel index="03">{aboutContent.eyebrow}</SectionLabel>
-            </div>
+        <div className="grid items-stretch gap-10 lg:grid-cols-12 lg:gap-14">
+          
+          {/* Left Column */}
+          <div className="lg:col-span-6 lg:pr-4 flex flex-col justify-between">
+            <div>
+              {/* Title: Who We Are */}
+              <h2
+                data-about-heading
+                className="font-display text-[2.9rem] sm:text-[3.5rem] lg:text-[4rem] font-black tracking-tight text-slate-900 leading-[1.02]"
+              >
+                Who <span className="text-[#e51827]">We Are</span>
+              </h2>
 
-            <h2
-              data-about-heading
-              className="display-lg sheen-ink mt-6 whitespace-pre-line text-ink"
-            >
-              {aboutContent.heading}
-            </h2>
+              {/* Subtitle */}
+              <p className="mt-4 font-display text-[18px] sm:text-[20px] lg:text-[21px] font-bold text-slate-800 leading-snug">
+                Precision Packaging for a Safer, Brighter Tomorrow
+              </p>
 
-            <div data-about-copy className="mt-8 max-w-xl space-y-5">
-              {aboutContent.paragraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 24)} className="text-[15px] leading-[1.75] text-slate-600">
-                  {paragraph}
+              {/* Narrative Paragraphs */}
+              <div className="mt-5 space-y-4 text-[16px] sm:text-[17px] leading-[1.7] text-slate-600 font-normal">
+                <p>
+                  At ASIR Containers, we specialize in high-tonnage precision injection moulding, engineering world-class rigid plastic pails and containers for paint, agro-chemicals, food products, and industrial lubricants.
                 </p>
-              ))}
-            </div>
-
-            {/* Quick stats / highlights */}
-            <div className="mt-8 grid grid-cols-2 gap-4 border-y border-slate-200/80 py-5">
-              <div>
-                <p className="font-display text-2xl font-bold text-sky-600">500ml – 20L</p>
-                <p className="mt-0.5 text-xs font-medium text-slate-500">Retail &amp; Bulk Formats</p>
+                <p>
+                  Crafted from 100% food-grade virgin polymers, every product is engineered with tamper-evident, hermetic closures to ensure zero leakage and withstand rigorous logistics across India and global supply chains.
+                </p>
               </div>
-              <div>
-                <p className="font-display text-2xl font-bold text-emerald-600">4 Industries</p>
-                <p className="mt-0.5 text-xs font-medium text-slate-500">Paint · Agro · Food · Lube</p>
-              </div>
-            </div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-              <Link
-                href="/products"
-                className="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-brand hover:shadow-md"
-                data-reveal
-              >
-                See the full range
-                <ArrowUpRight
-                  aria-hidden
-                  className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
-              </Link>
-              <Link
-                href="/contact"
-                className="text-sm font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-brand"
-                data-reveal
-              >
-                Talk to the sales team
-              </Link>
+              {/* 3 Left-Aligned Icon Blocks with Crisp Vector Icons */}
+              <div className="mt-10 flex flex-wrap items-start justify-start gap-6 sm:gap-10">
+                
+                {/* 1. Precision Engineering: Left aligned */}
+                <div className="flex flex-col items-start text-left">
+                  <div className="flex h-[72px] w-[72px] sm:h-[80px] sm:w-[80px] items-center justify-center rounded-[24px] bg-[#eff6ff] transition-transform duration-300 hover:scale-105">
+                    {/* High-definition gear icon with circular center hole */}
+                    <Icon icon="fa6-solid:gear" className="h-8 w-8 sm:h-9 sm:w-9 text-[#0066cc]" />
+                  </div>
+                  <p className="mt-3 font-display text-[13.5px] sm:text-[14.5px] font-bold text-[#1a233a] leading-tight">
+                    Precision<br />Engineering
+                  </p>
+                </div>
+
+                {/* 2. Trusted Protection: Left aligned */}
+                <div className="flex flex-col items-start text-left">
+                  <div className="flex h-[72px] w-[72px] sm:h-[80px] sm:w-[80px] items-center justify-center rounded-[24px] bg-[#eff6ff] transition-transform duration-300 hover:scale-105">
+                    {/* High-definition shield with checkmark */}
+                    <Icon icon="fluent:shield-task-24-filled" className="h-9 w-9 sm:h-10 sm:w-10 text-[#0066cc]" />
+                  </div>
+                  <p className="mt-3 font-display text-[13.5px] sm:text-[14.5px] font-bold text-[#1a233a] leading-tight">
+                    Trusted<br />Protection
+                  </p>
+                </div>
+
+                {/* 3. Built for Your Brand: Left aligned */}
+                <div className="flex flex-col items-start text-left">
+                  <div className="flex h-[72px] w-[72px] sm:h-[80px] sm:w-[80px] items-center justify-center rounded-[24px] bg-[#eff6ff] transition-transform duration-300 hover:scale-105">
+                    {/* High-definition 3-person team silhouette */}
+                    <Icon icon="fluent:people-community-24-filled" className="h-9 w-9 sm:h-10 sm:w-10 text-[#0066cc]" />
+                  </div>
+                  <p className="mt-3 font-display text-[13.5px] sm:text-[14.5px] font-bold text-[#1a233a] leading-tight">
+                    Built for<br />Your Brand
+                  </p>
+                </div>
+
+              </div>
             </div>
 
           </div>
 
-          {/* Media column — tall plate maintaining full height aligned with left column */}
-          <div className="relative flex flex-col lg:col-span-6">
-            <div className="relative h-full min-h-[460px] w-full flex-1">
-              <figure className="zoom-plate relative h-full w-full overflow-hidden rounded-[26px] border border-slate-200/90 bg-light shadow-xl">
+          {/* Right Column: Tall 2-Image Composition */}
+          <div className="relative flex flex-col justify-center lg:col-span-6">
+            {/* Dot Pattern Matrix Backdrop */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -left-6 -top-6 z-0 h-28 w-28 opacity-25"
+              style={{
+                backgroundImage: "radial-gradient(#e51827 1.5px, transparent 1.5px)",
+                backgroundSize: "12px 12px",
+              }}
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -right-6 -bottom-6 z-0 h-28 w-28 opacity-25"
+              style={{
+                backgroundImage: "radial-gradient(#e51827 1.5px, transparent 1.5px)",
+                backgroundSize: "12px 12px",
+              }}
+            />
+
+            {/* Height-focused aspect ratio */}
+            <div className="relative w-full h-[460px] sm:h-[520px] lg:h-[580px]">
+              {/* Primary Large Image: Building Infrastructure */}
+              <figure className="relative h-full w-full overflow-hidden rounded-[32px] border border-slate-200/90 bg-white shadow-2xl">
                 <Image
-                  src={aboutContent.image.src}
-                  alt={aboutContent.image.alt}
+                  src="/images/about/about-image-infrastructure.webp"
+                  alt="ASIR Containers modern manufacturing facility"
                   fill
+                  priority
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
+                  className="object-cover object-[center_60%]"
                 />
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 top-0 h-2/5 bg-[linear-gradient(to_bottom,rgba(17,17,17,0.6),transparent)]"
-                />
-                <figcaption className="absolute inset-x-0 top-0 p-6 text-white">
-                  <span className="inline-block rounded-md border border-white/20 bg-white/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-xs">
-                    Moulding floor
-                  </span>
-                  <span className="mt-2 block font-display text-[17px] font-semibold leading-snug">
-                    Every format tooled for the closure it carries.
-                  </span>
-                </figcaption>
               </figure>
 
-              <figure className="zoom-plate absolute -bottom-6 -left-6 hidden w-[42%] overflow-hidden rounded-[20px] border-[6px] border-white bg-light shadow-[0_24px_60px_-24px_rgba(17,17,17,0.45)] sm:block">
-                <span className="relative block aspect-square">
+              {/* Secondary Overlapping Front Image */}
+              <figure className="absolute -bottom-6 -left-6 w-[52%] overflow-hidden rounded-[24px] border-[6px] border-white bg-white shadow-[0_24px_50px_rgba(0,0,0,0.25)]">
+                <span className="relative block aspect-[4/3.5]">
                   <Image
-                    src="/images/detail/stacked-pails.jpg"
-                    alt="Representative photograph of stacked plastic pails"
+                    src="/images/about/about-us-image-2.png"
+                    alt="Containers on automated plant conveyor line"
                     fill
-                    sizes="(max-width: 1024px) 40vw, 18vw"
+                    sizes="(max-width: 1024px) 50vw, 26vw"
                     className="object-cover"
                   />
                 </span>
               </figure>
             </div>
           </div>
+
         </div>
       </div>
     </section>
