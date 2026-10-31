@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useScrollReveal } from "@/lib/animations";
 import { AlertCircle, Check, CheckCircle2, ChevronDown, Loader2, Send, X } from "lucide-react";
 import { site, type EnquiryType } from "@/data/site";
 import { products } from "@/data/products";
@@ -54,6 +55,7 @@ export function ContactForm() {
   const [productRef, setProductRef] = useState("");
   const [enquiryMenuOpen, setEnquiryMenuOpen] = useState(false);
   const formRef = useRef<HTMLFormElement | null>(null);
+  useScrollReveal(formRef);
   const enquiryDropdownRef = useRef<HTMLDivElement | null>(null);
 
   /* Close enquiry dropdown on click outside */
@@ -141,7 +143,7 @@ export function ContactForm() {
       noValidate
       className="w-full"
     >
-      <div className="flex items-start justify-between gap-4 border-b border-ink pb-5">
+      <div data-reveal data-reveal-delay="0.05" className="flex items-start justify-between gap-4 border-b border-ink pb-5">
         <div>
           <h2 className="font-display text-[26px] font-semibold leading-tight text-ink">
             Enquiry form
@@ -150,7 +152,7 @@ export function ContactForm() {
       </div>
 
       {productRef && (
-        <div className="mt-6 flex flex-wrap items-baseline gap-x-3 border-b border-line pb-3 text-[14px] text-mid">
+        <div data-reveal data-reveal-delay="0.1" className="mt-6 flex flex-wrap items-baseline gap-x-3 border-b border-line pb-3 text-[14px] text-mid">
           <span className="text-[14px] text-mid">
             Product
           </span>
@@ -181,7 +183,7 @@ export function ContactForm() {
       )}
 
       <div className="mt-7 grid gap-x-8 gap-y-6 sm:grid-cols-2">
-        <Field
+        <div data-reveal data-reveal-delay="0.1"><Field
           label="Name"
           name="name"
           required
@@ -190,8 +192,8 @@ export function ContactForm() {
           error={errors.name}
           autoComplete="name"
           placeholder="Full name"
-        />
-        <Field
+        /></div>
+        <div data-reveal data-reveal-delay="0.15"><Field
           label="Company"
           name="company"
           required
@@ -200,8 +202,8 @@ export function ContactForm() {
           error={errors.company}
           autoComplete="organization"
           placeholder="Company name"
-        />
-        <Field
+        /></div>
+        <div data-reveal data-reveal-delay="0.2"><Field
           label="Email"
           name="email"
           type="email"
@@ -211,8 +213,8 @@ export function ContactForm() {
           error={errors.email}
           autoComplete="email"
           placeholder="name@company.com"
-        />
-        <Field
+        /></div>
+        <div data-reveal data-reveal-delay="0.25"><Field
           label="Phone"
           name="phone"
           type="tel"
@@ -222,9 +224,9 @@ export function ContactForm() {
           autoComplete="tel"
           placeholder="+91"
           hint="Optional"
-        />
+        /></div>
 
-        <div className="sm:col-span-2" ref={enquiryDropdownRef}>
+        <div data-reveal data-reveal-delay="0.3" className="sm:col-span-2" ref={enquiryDropdownRef}>
           <div
             className={`field-shell group relative rounded-[14px] border bg-[#fafafa]/80 px-4.5 pb-2.5 pt-3 transition-all duration-200 hover:bg-white ${
               errors.enquiryType
@@ -314,7 +316,7 @@ export function ContactForm() {
           )}
         </div>
 
-        <div className="sm:col-span-2">
+        <div data-reveal data-reveal-delay="0.35" className="sm:col-span-2">
           <div
             className={`field-shell group relative rounded-[14px] border bg-[#fafafa]/80 px-4.5 pb-3 pt-3 transition-all duration-200 hover:bg-white ${
               errors.message
@@ -355,7 +357,7 @@ export function ContactForm() {
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="mt-8 flex flex-col gap-4 border-t border-line/80 pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <div data-reveal data-reveal-delay="0.4" className="mt-8 flex flex-col gap-4 border-t border-line/80 pt-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-xs text-[12.5px] leading-relaxed text-mid">
           We use your details only to respond to this enquiry.
         </p>

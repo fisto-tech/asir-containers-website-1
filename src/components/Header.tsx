@@ -94,12 +94,10 @@ export function Header() {
     closeTimer.current = window.setTimeout(() => setProductsOpen(false), 200);
   };
 
-  /* "/" opens on a dark hero → transparent header with light type.
-     "/process" and "/technologies" open on a light hero → transparent header
-     with ink type, so the page runs to the top edge without a white bar. */
-  const overHero = pathname === "/" && !scrolled && !open;
+  /* "/" now opens on an organic light studio hero → transparent header with ink type (same as /process and /technologies) */
+  const overHero = false;
   const overLightHero =
-    (pathname === "/process" || pathname === "/technologies") && !scrolled && !open;
+    (pathname === "/" || pathname === "/process" || pathname === "/technologies") && !scrolled && !open;
   const onProductsPage = pathname.startsWith("/products");
 
   const isActive = (href: string) => {
@@ -107,11 +105,9 @@ export function Header() {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  const linkTone = overHero
-    ? "text-white/80 hover:text-white"
-    : overLightHero
-      ? "text-mid hover:text-ink"
-      : "text-mid/90 hover:text-ink";
+  const linkTone = overLightHero
+    ? "text-slate-900 font-semibold hover:text-brand"
+    : "text-slate-700 font-medium hover:text-ink";
 
   return (
     <>
@@ -124,13 +120,11 @@ export function Header() {
 
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,height,box-shadow] duration-500 ${
-          overHero
-            ? "border-b border-white/15 bg-transparent"
-            : overLightHero
-              ? "border-b border-transparent bg-transparent"
-              : scrolled
-                ? "border-b border-line/80 bg-white/95 backdrop-blur-md shadow-xs"
-                : "border-b border-line bg-white"
+          overLightHero
+            ? "border-b border-transparent bg-transparent"
+            : scrolled
+              ? "border-b border-line/80 bg-white/95 backdrop-blur-md shadow-xs"
+              : "border-b border-line bg-white"
         }`}
       >
         <div
@@ -138,7 +132,7 @@ export function Header() {
             scrolled ? "h-[64px]" : "h-[74px]"
           }`}
         >
-          <Logo tone={overHero ? "light" : "dark"} />
+          <Logo tone="dark" />
 
           <nav aria-label="Primary" className="hidden items-center gap-9 lg:flex">
             {navigation.map((item) =>
@@ -240,7 +234,7 @@ export function Header() {
                   href={item.href}
                   data-active={isActive(item.href)}
                   className={`link-rule text-[14px] font-medium tracking-tight ${linkTone} ${
-                    isActive(item.href) ? (overHero ? "text-white font-semibold" : "!text-ink font-semibold") : ""
+                    isActive(item.href) ? "!text-brand font-bold" : ""
                   }`}
                 >
                   {item.label}

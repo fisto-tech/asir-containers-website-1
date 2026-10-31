@@ -18,11 +18,11 @@ export function TechHero() {
       if (imgPlate) {
         gsap.fromTo(
           imgPlate,
-          { opacity: 0, scale: 0.97, y: 16 },
+          { opacity: 0, scale: 0.98, x: 20 },
           {
             opacity: 1,
             scale: 1,
-            y: 0,
+            x: 0,
             duration: 1,
             ease: "power3.out",
             delay: 0.15,
@@ -36,39 +36,36 @@ export function TechHero() {
   return (
     <section
       ref={root}
-      className="relative overflow-hidden bg-[#FAF7F2] pt-28 pb-14 lg:pt-32 lg:pb-20 border-b border-line/60"
+      className="relative overflow-hidden bg-white pt-24 sm:pt-28 lg:pt-0 border-b border-line/60 w-full"
     >
-      <div className="shell relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          
-          {/* Left Column: Heading, Metrics & CTA */}
-          <div className="lg:col-span-6 flex flex-col">
-            <span className="font-mono text-[11.5px] font-bold uppercase tracking-[0.22em] text-slate-500">
-              PRECISION PLASTIC PACKAGING
-            </span>
-
-            <h1 className="mt-3 font-display text-[2.7rem] sm:text-[3.4rem] lg:text-[4rem] font-bold tracking-tight text-ink leading-[1.05]">
+      {/* Full width split grid without containerisation */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[560px] lg:min-h-[620px] xl:min-h-[660px] items-stretch w-full">
+        
+        {/* Left Column: Heading, Metrics & CTA */}
+        <div className="lg:col-span-6 xl:col-span-5 flex flex-col justify-center pl-6 sm:pl-12 lg:pl-[5vw] xl:pl-[7vw] pr-6 lg:pr-10 py-10 lg:py-35 z-10">
+          <div className="max-w-xl">
+            <h1 className="mt-3.5 font-display text-[2.85rem] sm:text-[3.6rem] lg:text-[4.2rem] font-extrabold tracking-tight text-ink leading-[1.03]">
               High-Tonnage <br />
               Precision <br />
-              Moulding<span className="text-brand">.</span>
+              <span className="text-brand">Moulding.</span>
             </h1>
 
-            <p className="mt-4 text-[15.5px] sm:text-[16.5px] leading-relaxed text-slate-600 max-w-lg">
+            <p className="mt-4 text-[15px] sm:text-[16px] leading-relaxed text-slate-600 max-w-lg">
               Advanced injection moulding solutions for stronger, safer and more reliable plastic packaging.
             </p>
 
             {/* 3 Metric Badges */}
-            <div className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 pb-5 border-t border-slate-200/80">
+            <div className="mt-8 flex flex-wrap sm:flex-nowrap items-center gap-5 sm:gap-7">
               {/* Metric 1 */}
               <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 ring-1 ring-cyan-200/60 shadow-xs">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 ring-1 ring-cyan-200/60 shadow-xs">
                   <Box className="h-5 w-5" />
                 </span>
                 <div>
-                  <div className="font-display text-[15px] font-bold text-ink leading-tight">
+                  <div className="font-display text-[14.5px] font-bold text-ink leading-tight">
                     80T–650T
                   </div>
-                  <div className="text-[11.5px] font-medium text-slate-500">
+                  <div className="text-[11px] font-medium text-slate-500">
                     Clamping Force
                   </div>
                 </div>
@@ -76,14 +73,14 @@ export function TechHero() {
 
               {/* Metric 2 */}
               <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 ring-1 ring-blue-200/60 shadow-xs">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 ring-1 ring-blue-200/60 shadow-xs">
                   <Cog className="h-5 w-5" />
                 </span>
                 <div>
-                  <div className="font-display text-[15px] font-bold text-ink leading-tight">
+                  <div className="font-display text-[14.5px] font-bold text-ink leading-tight">
                     Dual-Axis IML
                   </div>
-                  <div className="text-[11.5px] font-medium text-slate-500">
+                  <div className="text-[11px] font-medium text-slate-500">
                     In-Mould Labelling
                   </div>
                 </div>
@@ -91,14 +88,14 @@ export function TechHero() {
 
               {/* Metric 3 */}
               <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200/60 shadow-xs">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200/60 shadow-xs">
                   <Crosshair className="h-5 w-5" />
                 </span>
                 <div>
-                  <div className="font-display text-[15px] font-bold text-ink leading-tight">
+                  <div className="font-display text-[14.5px] font-bold text-ink leading-tight">
                     ±0.015mm
                   </div>
-                  <div className="text-[11.5px] font-medium text-slate-500">
+                  <div className="text-[11px] font-medium text-slate-500">
                     Precision Tolerance
                   </div>
                 </div>
@@ -106,7 +103,7 @@ export function TechHero() {
             </div>
 
             {/* CTA Button */}
-            <div className="mt-3 flex items-center">
+            <div className="mt-8 flex items-center">
               <Link
                 href="/contact"
                 className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-brand text-white font-semibold text-sm transition-all duration-300 hover:bg-brand-dark hover:shadow-lg hover:shadow-brand/20 active:scale-[0.99]"
@@ -116,35 +113,50 @@ export function TechHero() {
               </Link>
             </div>
 
-            {/* Bottom tagline marker */}
-            <div className="mt-8 flex items-center gap-3">
-              <div className="h-[2px] w-6 bg-brand shrink-0" />
-              <span className="font-mono text-[10.5px] font-bold uppercase tracking-[0.2em] text-slate-400">
-                BUILT FOR A CLEANER, SAFER TOMORROW
-              </span>
-            </div>
+           
           </div>
-
-          {/* Right Column: Hero Visual */}
-          <div className="lg:col-span-6">
-            <div
-              data-hero-img
-              className="group relative aspect-[4/3.4] sm:aspect-[4/3] lg:aspect-[16/13] w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200/80 bg-white p-2 shadow-xl shadow-slate-200/60"
-            >
-              <div className="relative h-full w-full overflow-hidden rounded-xl sm:rounded-2xl bg-slate-100">
-                <Image
-                  src="/images/technologies/tech-hero-photo.webp"
-                  alt="High-Tonnage Precision Moulding line at Asir Containers"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-103"
-                />
-              </div>
-            </div>
-          </div>
-
         </div>
+
+        {/* Right Column: Full-Bleed Hero Visual without Containerisation */}
+        <div className="lg:col-span-6 xl:col-span-7 relative min-h-[380px] sm:min-h-[460px] lg:min-h-full w-full overflow-hidden">
+          <div
+            data-hero-img
+            className="relative h-full w-full min-h-[400px] sm:min-h-[480px] lg:min-h-full"
+          >
+            <Image
+              src="/images/technologies/technology-hero.webp"
+              alt="High-Tonnage Precision Moulding line at Asir Containers"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 60vw"
+              className="object-cover object-center lg:object-left"
+            />
+
+            {/* Top ambient scrim under transparent header for crisp text contrast */}
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white/95 via-white/50 to-transparent z-10" />
+
+            {/* Diagonal Architectural Cut & Red Accent Stroke */}
+            <svg
+              className="pointer-events-none absolute inset-0 h-full w-full hidden sm:block"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              {/* Clean white top-left wedge */}
+              <polygon points="0,0 12,0 0,28" fill="#ffffff" />
+              {/* High-precision red accent hairline */}
+              <line
+                x1="12"
+                y1="0"
+                x2="0"
+                y2="28"
+                stroke="#E51827"
+                strokeWidth="1.6"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+          </div>
+        </div>
+
       </div>
     </section>
   );

@@ -69,7 +69,7 @@ export function OurCapabilities() {
                 className="group relative flex flex-col rounded-2xl border border-slate-200/90 bg-white p-3.5 shadow-sm transition-all duration-300 hover:border-slate-300 hover:shadow-md"
               >
                 {/* Card Top Image */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-100">
+                <div className="relative aspect-[3/2] w-full overflow-hidden rounded-xl bg-slate-100">
                   <Image
                     src={cap.image}
                     alt={cap.alt}
@@ -79,19 +79,20 @@ export function OurCapabilities() {
                   />
                 </div>
 
-                {/* Card Bottom: Icon + Title + Arrow */}
-                <div className="flex items-center justify-between pt-4 px-1 pb-1">
+                {/* Card Bottom: Floating Overlapping Icon Badge + Title + Arrow */}
+                <div className="relative flex items-center justify-between pt-1 px-1 pb-1">
                   <div className="flex items-center gap-3 min-w-0">
+                    {/* Circular double-ring badge straddling the image border */}
                     <span
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ring-1 shadow-xs ${cap.iconColor}`}
+                      className={`relative -mt-6 z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full ring-4 ring-white shadow-md transition-transform duration-300 group-hover:scale-105 ${cap.iconColor}`}
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-5 w-5" />
                     </span>
-                    <span className="font-display text-[15px] font-bold text-ink truncate group-hover:text-brand transition-colors">
+                    <span className="font-display text-[15px] font-bold text-ink truncate group-hover:text-brand transition-colors pt-1.5">
                       {cap.title}
                     </span>
                   </div>
-                  <ArrowRight className="h-4 w-4 shrink-0 text-brand transition-transform duration-300 group-hover:translate-x-1 ml-2" />
+                  <ArrowRight className="h-4 w-4 shrink-0 text-brand transition-transform duration-300 group-hover:translate-x-1 ml-2 pt-1.5" />
                 </div>
               </div>
             );

@@ -27,7 +27,7 @@ export function AdvantagesSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-white py-16 lg:py-24">
+    <section className="relative overflow-hidden bg-white py-16 lg:py-24 border-b border-slate-100/80">
       {/* Background soft red/pink curved ribbon wave in top right */}
       <div
         aria-hidden
@@ -51,7 +51,7 @@ export function AdvantagesSection() {
           {/* Left Column: Machinery Graphic with Offset Red Decorative Backdrop */}
           <div className="lg:col-span-5">
             <Reveal>
-              <div className="relative mx-auto max-w-[440px] lg:max-w-none">
+              <div data-reveal data-reveal-delay="0.1" className="relative mx-auto max-w-[440px] lg:max-w-none">
                 {/* Asymmetrical Curved Red Decorative Ribbon Backing matching exact design */}
                 <div
                   aria-hidden
@@ -83,7 +83,7 @@ export function AdvantagesSection() {
           <div className="lg:col-span-7">
             <Reveal>
               {/* Header Label: WHY CHOOSE US with horizontal accent line */}
-              <div className="flex items-center gap-3">
+              <div data-reveal data-reveal-delay="0.1" className="flex items-center gap-3">
                 <span className="text-[12.5px] font-bold uppercase tracking-[0.18em] text-brand">
                   WHY CHOOSE US
                 </span>
@@ -91,23 +91,25 @@ export function AdvantagesSection() {
               </div>
 
               {/* Main Headline */}
-              <h2 className="mt-3.5 font-display text-[2.5rem] font-bold tracking-tight text-ink sm:text-[3.25rem] lg:text-[3.5rem] leading-[1.06]">
+              <h2 data-reveal data-reveal-delay="0.15" className="mt-3.5 font-display text-[2.5rem] font-bold tracking-tight text-ink sm:text-[3.25rem] lg:text-[3.5rem] leading-[1.06]">
                 Engineered for <br className="hidden sm:inline" />
                 <span className="text-brand">Reliability</span>
               </h2>
 
               {/* Descriptive Paragraph */}
-              <p className="mt-4 max-w-xl text-[15.5px] font-medium leading-relaxed text-slate-600 sm:text-[16.5px]">
+              <p data-reveal data-reveal-delay="0.2" className="mt-4 max-w-xl text-[15.5px] font-medium leading-relaxed text-slate-600 sm:text-[16.5px]">
                 We manufacture high-quality plastic components with precision, consistency and on-time delivery — ensuring your supply chain never stops.
               </p>
 
               {/* 3 Metric Cards Grid */}
               <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-4.5">
-                {statCards.map((card) => {
+                {statCards.map((card, idx) => {
                   const IconComponent = card.icon;
                   return (
                     <div
                       key={card.label}
+                      data-reveal
+                      data-reveal-delay={(0.25 + idx * 0.08).toFixed(2)}
                       className="group flex flex-col items-center justify-center rounded-[22px] border border-slate-200/90 bg-white px-4 py-6 text-center shadow-[0_4px_16px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                     >
                       {/* Red Stroke Outline Icon */}

@@ -1,6 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, MapPin, Phone, Mail } from "lucide-react";
+import { ArrowUpRight, ChevronRight, Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { site } from "@/data/site";
 
@@ -41,8 +43,8 @@ function YoutubeIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-/** Clean outline application icons */
-function PaintBrushIcon({ className = "h-4 w-4" }: { className?: string }) {
+/** Clean outline application icons matching reference mockup */
+function PaintBrushIcon({ className = "h-4.5 w-4.5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="m19 11-8-8-8.6 8.6a2 2 0 0 0 0 2.8l5.2 5.2c.8.8 2 .8 2.8 0L19 11Z" />
@@ -53,7 +55,7 @@ function PaintBrushIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function SeedlingIcon({ className = "h-4 w-4" }: { className?: string }) {
+function SeedlingIcon({ className = "h-4.5 w-4.5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 22v-9" />
@@ -63,7 +65,7 @@ function SeedlingIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function CutleryIcon({ className = "h-4 w-4" }: { className?: string }) {
+function CutleryIcon({ className = "h-4.5 w-4.5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M18 2v20" />
@@ -74,7 +76,7 @@ function CutleryIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function DropIcon({ className = "h-4 w-4" }: { className?: string }) {
+function DropIcon({ className = "h-4.5 w-4.5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-6-1.5-1.6-3-3.9-4-7-1 3.1-2.5 5.4-4 7-2 2.1-3 4-3 6a7 7 0 0 0 7 7Z" />
@@ -99,90 +101,95 @@ const applicationsList = [
 
 export function Footer() {
   return (
-    <footer className="relative bg-[#07090e] text-white overflow-hidden">
-      {/* Background Graphic Image (public/images/footer-bg.png) - spans full height through copyright */}
+    <footer className="relative bg-white text-slate-900 overflow-hidden border-t border-slate-200/80">
+      {/* Background Graphic Image (public/images/footer-bg.webp) - spans full width with pails on right */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <Image
-          src="/images/footer-bg.png"
+          src="/images/footer-bg.webp"
           alt="ASIR Industrial Packaging"
           fill
           priority={false}
-          className="object-contain object-right"
+          className="object-cover object-right"
         />
       </div>
 
-      {/* Main Footer Content — fluid responsive vw scaling on desktop to scale proportionally with the background image */}
-      <div className="relative z-10 w-full pt-14 pb-10 lg:pt-[4.5vw] lg:pb-[3.5vw] px-6 sm:px-10 lg:pl-[4.5vw] lg:pr-[2vw] lg:max-w-[70vw]">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-[2.5vw] items-stretch">
+      {/* Main Footer Content — clean flex layout so columns have rock-solid widths */}
+      <div className="relative z-10 w-full pt-12 pb-12 lg:pt-16 lg:pb-16 px-6 sm:px-10 lg:pl-[4.5vw]">
+        <div className="flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start gap-8 lg:gap-8 xl:gap-10">
           
-          {/* Column 1: Brand & About (3.8 cols) */}
-          <div className="lg:col-span-4 pr-0 lg:pr-[0.5vw] flex flex-col justify-between">
+          {/* Column 1: Brand & About */}
+          <div className="w-full sm:w-[300px] lg:w-[320px] xl:w-[340px] shrink-0 flex flex-col justify-between">
             <div>
-              <div className="flex items-center -mt-1 lg:-mt-[0.25vw]">
-                <Logo tone="light" imageClassName="!h-11 sm:!h-12 lg:!h-[2.6vw]" />
+              <div className="flex items-center -mt-1">
+                <Logo tone="dark" imageClassName="!h-11 sm:!h-12" />
               </div>
 
-              <p className="mt-4 lg:mt-[1.1vw] text-[13.5px] lg:text-[0.82vw] leading-relaxed text-[#94a3b8] max-w-sm lg:max-w-[21vw] font-normal">
+              <p className="mt-5 text-[14.5px] sm:text-[15px] leading-relaxed text-slate-600 font-normal">
                 ASIR Containers manufactures rigid plastic pails and containers for the paint, agro, food and lubricant industries — in round and square formats, with multiple closure options and industry-specific colour availability.
               </p>
             </div>
 
-            {/* Social Icons aligned towards bottom */}
-            <div className="mt-6 lg:mt-[1.6vw] flex items-center gap-3 lg:gap-[0.65vw]">
+            {/* Social Icons */}
+            <div className="mt-7 flex items-center gap-3">
               <a
                 href={site.social.find((s) => s.icon === "linkedin")?.href || "https://linkedin.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="flex h-9 w-9 lg:h-[2vw] lg:w-[2vw] items-center justify-center rounded-full border border-white/20 text-slate-300 transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white"
+                className="flex h-9.5 w-9.5 items-center justify-center rounded-full bg-slate-100 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
               >
-                <LinkedinIcon className="h-4 w-4 lg:h-[0.9vw] lg:w-[0.9vw]" />
+                <LinkedinIcon className="h-4 w-4" />
               </a>
               <a
                 href={site.social.find((s) => s.icon === "instagram")?.href || "https://instagram.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="flex h-9 w-9 lg:h-[2vw] lg:w-[2vw] items-center justify-center rounded-full border border-white/20 text-slate-300 transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white"
+                className="flex h-9.5 w-9.5 items-center justify-center rounded-full bg-slate-100 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
               >
-                <InstagramIcon className="h-4 w-4 lg:h-[0.9vw] lg:w-[0.9vw]" />
+                <InstagramIcon className="h-4 w-4" />
               </a>
               <a
                 href={site.social.find((s) => s.icon === "facebook")?.href || "https://facebook.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="flex h-9 w-9 lg:h-[2vw] lg:w-[2vw] items-center justify-center rounded-full border border-white/20 text-slate-300 transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white"
+                className="flex h-9.5 w-9.5 items-center justify-center rounded-full bg-slate-100 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
               >
-                <FacebookIcon className="h-4 w-4 lg:h-[0.9vw] lg:w-[0.9vw]" />
+                <FacebookIcon className="h-4 w-4" />
               </a>
               <a
                 href={site.social.find((s) => s.icon === "youtube")?.href || "https://youtube.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
-                className="flex h-9 w-9 lg:h-[2vw] lg:w-[2vw] items-center justify-center rounded-full border border-white/20 text-slate-300 transition-all duration-300 hover:border-brand hover:bg-brand hover:text-white"
+                className="flex h-9.5 w-9.5 items-center justify-center rounded-full bg-slate-100 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
               >
-                <YoutubeIcon className="h-4 w-4 lg:h-[0.9vw] lg:w-[0.9vw]" />
+                <YoutubeIcon className="h-4 w-4" />
               </a>
+            </div>
+
+            {/* Red accent line indicator */}
+            <div className="mt-7 flex items-center">
+              <div className="h-[2.5px] w-12 bg-brand" />
+              <div className="h-[1px] w-28 bg-slate-200" />
             </div>
           </div>
 
-          {/* Column 2: Contact (2.8 cols) */}
-          <div className="lg:col-span-3 lg:border-l lg:border-white/10 lg:pl-[2.2vw]">
-            <h3 className="font-display text-[15.5px] lg:text-[0.98vw] font-bold text-white tracking-wide">
+          {/* Column 2: Contact Card */}
+          <div className="w-full sm:w-[275px] lg:w-[275px] shrink-0 rounded-2xl bg-[#FFF6F6] border border-[#FEE1E1] p-5 shadow-xs">
+            <h3 className="font-display text-[17.5px] font-bold text-ink tracking-tight leading-none">
               Contact
             </h3>
-            <div className="mt-2.5 lg:mt-[0.55vw] flex h-[2px] w-full max-w-[120px] lg:max-w-[12vw]">
-              <div className="h-full w-8 lg:w-[2.5vw] bg-brand shrink-0" />
-              <div className="h-full w-full bg-white/15" />
-            </div>
+            <div className="mt-2.5 mb-5 h-[2px] w-6 bg-brand" />
 
-            <div className="mt-6 lg:mt-[1.3vw] space-y-4 lg:space-y-[0.85vw] text-[13.5px] lg:text-[0.82vw]">
+            <div className="space-y-3.5">
               {/* Address */}
-              <div className="flex items-start gap-3 lg:gap-[0.55vw]">
-                <MapPin className="h-4.5 w-4.5 lg:h-[1vw] lg:w-[1vw] text-brand shrink-0 mt-0.5" />
-                <p className="text-[#94a3b8] leading-relaxed text-[13px] lg:text-[0.8vw]">
+              <div className="flex items-start gap-3">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FEECEB] text-brand mt-0.5">
+                  <MapPin className="h-4 w-4" />
+                </span>
+                <p className="text-slate-700 text-[13.5px] sm:text-[14px] leading-relaxed font-normal">
                   1734-c1, Pallapatti Rd,<br />
                   near Central Excise Office<br />
                   Thiruthangal, Sivakasi,<br />
@@ -191,22 +198,26 @@ export function Footer() {
               </div>
 
               {/* Phone */}
-              <div className="flex items-center gap-3 lg:gap-[0.55vw] pt-1 lg:pt-[0.2vw]">
-                <Phone className="h-4.5 w-4.5 lg:h-[1vw] lg:w-[1vw] text-brand shrink-0" />
+              <div className="flex items-center gap-3 pt-0.5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FEECEB] text-brand">
+                  <Phone className="h-4 w-4" />
+                </span>
                 <a
                   href="tel:+919876543210"
-                  className="text-[#94a3b8] hover:text-white transition-colors text-[13px] lg:text-[0.8vw]"
+                  className="text-slate-800 text-[14px] sm:text-[14.5px] font-medium hover:text-brand transition-colors"
                 >
                   +91 98765 43210
                 </a>
               </div>
 
               {/* Email */}
-              <div className="flex items-center gap-3 lg:gap-[0.55vw] pt-1 lg:pt-[0.2vw]">
-                <Mail className="h-4.5 w-4.5 lg:h-[1vw] lg:w-[1vw] text-brand shrink-0" />
+              <div className="flex items-center gap-3 pt-0.5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FEECEB] text-brand">
+                  <Mail className="h-4 w-4" />
+                </span>
                 <a
                   href="mailto:sales@asircontainers.com"
-                  className="text-[#94a3b8] hover:text-white transition-colors text-[13px] lg:text-[0.8vw]"
+                  className="text-slate-800 text-[14px] sm:text-[14.5px] font-medium hover:text-brand transition-colors"
                 >
                   sales@asircontainers.com
                 </a>
@@ -214,56 +225,51 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Column 3: Navigate (2.2 cols) */}
-          <div className="lg:col-span-2 lg:border-l lg:border-white/10 lg:pl-[2.2vw]">
-            <h3 className="font-display text-[15.5px] lg:text-[0.98vw] font-bold text-white tracking-wide">
+          {/* Column 3: Navigate — pt-5 on desktop so header aligns with Contact */}
+          <div className="w-full sm:w-[145px] lg:w-[145px] shrink-0 pt-0 sm:pt-5">
+            <h3 className="font-display text-[17.5px] font-bold text-ink tracking-tight leading-none">
               Navigate
             </h3>
-            <div className="mt-2.5 lg:mt-[0.55vw] flex h-[2px] w-full max-w-[120px] lg:max-w-[10vw]">
-              <div className="h-full w-8 lg:w-[2.5vw] bg-brand shrink-0" />
-              <div className="h-full w-full bg-white/15" />
-            </div>
+            <div className="mt-2.5 mb-5 h-[2px] w-6 bg-brand" />
 
-            <ul className="mt-6 lg:mt-[1.3vw] space-y-3.5 lg:space-y-[0.8vw]">
+            <ul className="space-y-1">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="block text-[13.5px] lg:text-[0.82vw] text-[#94a3b8] transition-colors hover:text-white"
+                    className="group flex items-center justify-between text-[14.5px] sm:text-[15px] font-medium text-slate-700 hover:text-brand py-2 transition-colors"
                   >
-                    {link.label}
+                    <span>{link.label}</span>
+                    <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-brand group-hover:translate-x-0.5 transition-all" />
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Column 4: Applications (3 cols) */}
-          <div className="lg:col-span-3 lg:border-l lg:border-white/10 lg:pl-[2.2vw]">
-            <h3 className="font-display text-[15.5px] lg:text-[0.98vw] font-bold text-white tracking-wide">
+          {/* Column 4: Applications — pt-5 on desktop so header aligns with Contact */}
+          <div className="w-full sm:w-[175px] lg:w-[175px] shrink-0 pt-0 sm:pt-5">
+            <h3 className="font-display text-[17.5px] font-bold text-ink tracking-tight leading-none">
               Applications
             </h3>
-            <div className="mt-2.5 lg:mt-[0.55vw] flex h-[2px] w-full max-w-[120px] lg:max-w-[14vw]">
-              <div className="h-full w-8 lg:w-[2.5vw] bg-brand shrink-0" />
-              <div className="h-full w-full bg-white/15" />
-            </div>
+            <div className="mt-2.5 mb-5 h-[2px] w-6 bg-brand" />
 
-            <ul className="mt-6 lg:mt-[1.3vw] space-y-4 lg:space-y-[0.85vw]">
+            <ul className="space-y-1">
               {applicationsList.map((app) => {
                 const Icon = app.icon;
                 return (
                   <li key={app.label}>
                     <Link
                       href={app.href}
-                      className="group flex items-center justify-between text-[13.5px] lg:text-[0.82vw] text-[#94a3b8] transition-colors hover:text-white max-w-[170px] lg:max-w-[14vw]"
+                      className="group flex items-center justify-between text-[14.5px] sm:text-[15px] font-medium text-slate-700 hover:text-brand py-2 transition-colors"
                     >
-                      <span className="flex items-center gap-2.5 lg:gap-[0.55vw]">
-                        <Icon className="h-4 w-4 lg:h-[0.95vw] lg:w-[0.95vw] text-slate-400 transition-colors group-hover:text-white shrink-0" />
+                      <span className="flex items-center gap-2.5">
+                        <Icon className="h-4.5 w-4.5 text-brand shrink-0" />
                         <span>{app.label}</span>
                       </span>
-                      <span className="flex items-center gap-1.5 lg:gap-[0.3vw] tabular text-[12.5px] lg:text-[0.78vw] text-slate-400 group-hover:text-white">
+                      <span className="flex items-center gap-1 font-mono text-[13px] text-slate-400 group-hover:text-brand transition-colors">
                         <span>{app.count}</span>
-                        <ArrowUpRight className="h-3.5 w-3.5 lg:h-[0.82vw] lg:w-[0.82vw] text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white" />
+                        <ArrowUpRight className="h-3.5 w-3.5" />
                       </span>
                     </Link>
                   </li>
@@ -271,15 +277,29 @@ export function Footer() {
               })}
             </ul>
           </div>
+
         </div>
       </div>
 
-      {/* Bottom Copyright Bar — transparent so the right side image expands down completely */}
-      <div className="relative z-10 border-t border-white/10 py-5 lg:py-[1.2vw]">
-        <div className="text-center">
-          <p className="text-[13px] lg:text-[0.82vw] text-slate-400 font-normal">
-            © {year} {site.name}. All rights reserved.
-          </p>
+      {/* Bottom Copyright Bar with Slogan */}
+      <div className="relative z-10 border-t border-slate-200/80 py-5 px-6 sm:px-10 lg:px-[5vw]">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          
+          {/* Left: Tagline marker */}
+          <div className="flex items-center gap-3">
+            <div className="h-[2px] w-8 bg-brand shrink-0" />
+            <span className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">
+              BUILT FOR A BRIGHTER TOMORROW
+            </span>
+          </div>
+
+          {/* Right: Copyright Text */}
+          <div className="text-center sm:text-right pr-0 sm:pr-16">
+            <p className="text-[13px] text-slate-500 font-normal">
+              © {year} {site.name}. All rights reserved.
+            </p>
+          </div>
+
         </div>
       </div>
     </footer>

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/inter";
-import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource-variable/plus-jakarta-sans";
+import "@fontsource-variable/outfit";
+import "@fontsource-variable/jetbrains-mono";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";

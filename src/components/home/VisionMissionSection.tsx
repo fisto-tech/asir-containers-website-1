@@ -73,16 +73,16 @@ function UsersGroupIcon({ className }: { className?: string }) {
 
 export function VisionMissionSection({ index = "06" }: Props) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50/50 to-white py-14 lg:py-20">
+    <section className="relative overflow-hidden bg-white py-8 lg:py-12 border-b border-slate-100/80">
       <div className="shell relative z-10">
 
 
         {/* Vision & Mission Banner Composition */}
-        <div className="relative mt-8 sm:mt-10">
+        <div className="relative">
           <div className="relative flex flex-col gap-3.5 sm:gap-4 overflow-visible">
             
             {/* 1. TOP CARD: MISSION */}
-            <Reveal className="relative overflow-hidden rounded-[26px] sm:rounded-[36px] lg:rounded-[40px] border border-slate-200/90 bg-white shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
+            <Reveal data-reveal data-reveal-delay="0.1" className="relative overflow-hidden rounded-[26px] sm:rounded-[36px] lg:rounded-[40px] border border-slate-200/90 bg-white shadow-[0_12px_36px_rgba(0,0,0,0.05)]">
               {/* Reduced height across viewports: h-[200px] to lg:h-[240px] xl:h-[260px] */}
               <div className="relative h-auto min-h-[220px] md:h-[230px] lg:h-[245px] xl:h-[260px] flex items-center">
                 {/* Full-width Mission background image */}
@@ -152,7 +152,7 @@ export function VisionMissionSection({ index = "06" }: Props) {
             </Reveal>
 
             {/* 2. BOTTOM CARD: VISION */}
-            <Reveal className="relative overflow-hidden rounded-[26px] sm:rounded-[36px] lg:rounded-[40px] bg-[#c71120] text-white shadow-[0_12px_36px_rgba(199,17,32,0.18)]">
+            <Reveal data-reveal data-reveal-delay="0.25" className="relative overflow-hidden rounded-[26px] sm:rounded-[36px] lg:rounded-[40px] bg-[#c71120] text-white shadow-[0_12px_36px_rgba(199,17,32,0.18)]">
               {/* Reduced height across viewports */}
               <div className="relative h-auto min-h-[220px] md:h-[230px] lg:h-[245px] xl:h-[260px] flex items-center">
                 {/* Full-width Vision background image */}

@@ -135,21 +135,13 @@ export function FeaturesSection({ index = "02" }: Props) {
   }, [hoveredIdx]);
 
   return (
-    <section className="relative bg-white py-16 lg:py-24">
+    <section className="relative bg-white py-16 lg:py-24 border-b border-slate-100/80">
       <div className="shell relative z-10">
         {/* Header */}
         <Reveal>
-          <div className="mx-auto mb-14 max-w-2xl text-center">
-            {/* Top pill label */}
-            <div className="inline-flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-              <span className="h-[1px] w-6 bg-slate-300" />
-              <span className="font-mono font-bold text-brand">{index}</span>
-              <span>FEATURES</span>
-              <span className="h-[1px] w-6 bg-slate-300" />
-            </div>
-
-            <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-              Container Specifications
+          <div data-reveal data-reveal-delay="0.1" className="mx-auto mb-14 max-w-2xl text-center">
+            <h2 className="font-display text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+              Container Features
             </h2>
             <p className="mt-2.5 text-[15px] text-slate-500">
               Thoughtfully designed for safer, cleaner and more convenient storage.
@@ -166,12 +158,14 @@ export function FeaturesSection({ index = "02" }: Props) {
             return (
               <Reveal key={item.title}>
                 <div
+                  data-reveal
+                  data-reveal-delay={(0.08 * (idx % 4)).toFixed(2)}
                   onMouseEnter={() => setHoveredIdx(idx)}
                   onMouseLeave={() => setHoveredIdx(null)}
                   className={`group relative flex items-center overflow-hidden rounded-[28px] bg-white p-6 transition-all duration-300 ${
                     isHighlighted
-                      ? "border-2 -translate-y-1"
-                      : "border hover:border-2"
+                      ? "border-2 -translate-y-1 shadow-md"
+                      : "border hover:border-2 hover:shadow-md"
                   }`}
                   style={{
                     borderColor: isHighlighted ? t.accentColor : `${t.accentColor}40`,

@@ -76,94 +76,58 @@ const stats = [
 
 export function AccessoriesSection() {
   return (
-    <section className="bg-white py-14 lg:py-20">
+    <section className="bg-white py-14 lg:py-20 border-b border-line/60">
       <div className="shell">
-        {/* Main Card Container */}
-        <div className="rounded-3xl border border-slate-200/80 bg-[#F6F9FD] p-6 sm:p-10 lg:p-12 shadow-xs">
-          
-          {/* Top Row: Visual & Checklist */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left: Image & Caption */}
-            <div className="lg:col-span-6 flex flex-col">
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-white shadow-xs border border-slate-200/70">
-                <Image
-                  src="/images/technologies/accessories-collection.webp"
-                  alt="Asir containers accessories collection: lids, handles, seals and spouts"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover"
-                />
-              </div>
-              <p className="mt-3.5 text-sm font-medium text-slate-600 tracking-tight">
-                Reliable Accessories for Every Packaging Need.
-              </p>
+        {/* Main Content: Image & Checklist without outer card wrapping */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+          {/* Left: Image & Caption */}
+          <div className="lg:col-span-6 flex flex-col">
+            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-200/80">
+              <Image
+                src="/images/technologies/technology-accessories.webp"
+                alt="Asir containers accessories collection: lids, handles, seals and spouts"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
             </div>
 
-            {/* Right: Accessories Header & 6 Categories */}
-            <div className="lg:col-span-6 flex flex-col">
-              <h2 className="font-display text-[2.2rem] sm:text-[2.75rem] font-bold text-ink tracking-tight leading-tight">
-                Accessories
-              </h2>
-              <p className="mt-2.5 text-[15px] sm:text-[16px] leading-relaxed text-slate-600 max-w-lg">
-                A complete range of accessories to enhance functionality, safety and brand value.
-              </p>
-
-              {/* 6 Accessories grid (2 columns) */}
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-                {accessoriesList.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <div
-                      key={item.name}
-                      className="flex items-center gap-3.5 py-1"
-                    >
-                      <span
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ring-1 shadow-xs ${item.iconColor}`}
-                      >
-                        <Icon className="h-4.5 w-4.5" />
-                      </span>
-                      <span className="font-display text-[15px] font-bold text-ink">
-                        {item.name}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
           </div>
 
-          {/* Bottom Row: 4 Metric Cards */}
-          <div className="mt-10 pt-8 border-t border-slate-200/80">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-              {stats.map((stat, i) => {
-                const Icon = stat.icon;
+          {/* Right: Accessories Header & 6 Categories */}
+          <div className="lg:col-span-6 flex flex-col">
+            <h2 className="font-display text-[2.2rem] sm:text-[2.75rem] font-bold text-ink tracking-tight leading-tight">
+              Accessories
+            </h2>
+            <p className="mt-2.5 text-[15px] sm:text-[16px] leading-relaxed text-slate-600 max-w-lg">
+              A complete range of accessories to enhance functionality, safety and brand value.
+            </p>
+
+            {/* 6 Accessories grid (2 columns) */}
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+              {accessoriesList.map((item) => {
+                const Icon = item.icon;
                 return (
                   <div
-                    key={stat.label}
-                    className={`flex items-center gap-3.5 ${
-                      i !== 0 ? "sm:border-l sm:border-slate-200/70 sm:pl-6" : ""
-                    }`}
+                    key={item.name}
+                    className="flex items-center gap-3.5 py-1"
                   >
                     <span
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ring-1 shadow-xs ${stat.iconColor}`}
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ring-1 shadow-xs ${item.iconColor}`}
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-4.5 w-4.5" />
                     </span>
-                    <div>
-                      <div className="font-display text-lg sm:text-xl font-bold text-ink leading-tight">
-                        {stat.value}
-                      </div>
-                      <div className="text-xs font-medium text-slate-500 mt-0.5">
-                        {stat.label}
-                      </div>
-                    </div>
+                    <span className="font-display text-[15px] font-bold text-ink">
+                      {item.name}
+                    </span>
                   </div>
                 );
               })}
             </div>
           </div>
-
         </div>
+
+      
       </div>
     </section>
   );

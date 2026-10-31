@@ -80,7 +80,7 @@ export function TestimonialsSection() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-white py-20 lg:py-28">
+    <section className="relative overflow-hidden bg-white py-20 lg:py-28 border-b border-slate-100/80">
       {/* Subtle background angled color accents matching reference */}
       <div
         aria-hidden
@@ -94,7 +94,7 @@ export function TestimonialsSection() {
       <div className="shell relative z-10">
         {/* Header matching reference */}
         <Reveal>
-          <div className="flex flex-col justify-between gap-4 pb-12 sm:flex-row sm:items-end">
+          <div data-reveal data-reveal-delay="0.1" className="flex flex-col justify-between gap-4 pb-12 sm:flex-row sm:items-end">
             <div>
               {/* Eyebrow: Red dash + 08 TESTIMONIALS */}
               <div className="flex items-center gap-2.5">
@@ -119,12 +119,14 @@ export function TestimonialsSection() {
 
         {/* 3 Video Cards Grid (Direct In-Card Playback with Controls) */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {videos.map((item) => {
+          {videos.map((item, idx) => {
             const isCurrent = playingId === item.id;
 
             return (
               <Reveal key={item.id}>
                 <div
+                  data-reveal
+                  data-reveal-delay={(0.15 + idx * 0.1).toFixed(2)}
                   className="group relative overflow-hidden rounded-[20px] bg-slate-950 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-slate-800/80"
                 >
                   {/* 16:10 aspect ratio card */}

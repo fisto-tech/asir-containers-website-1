@@ -3,101 +3,110 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Play, Pause } from "lucide-react";
-import { gsap, SplitText, reduceMotion, EASE } from "@/lib/animations";
-import { heroSlides } from "@/data/home";
-import { AnimatedIcon, type IconName } from "@/components/ui/AnimatedIcon";
+import { ArrowLeft, ArrowRight, Play, ShieldCheck, Layers, Link as LinkIcon } from "lucide-react";
+import { gsap, SplitText, reduceMotion } from "@/lib/animations";
 
-const SLIDE_DURATION = 7500;
+const SLIDE_DURATION = 3000;
 
-const slideIcons: Record<string, IconName> = {
-  paint: "paint",
-  square: "lock",
-  codes: "codes",
-};
+export const heroSlidesData = [
+  {
+    id: "square",
+    eyebrow: "SQUARE INTERLOCK SYSTEMS",
+    titleLine1: "Built to",
+    titleLine2: "Hold More.",
+    descLine1: "Stackable square formats with airtight hermetic locks,",
+    descLine2: "tamper-evident seals, and reinforced logistics handles.",
+    image: "/images/hero/home-hero-1.webp",
+    imageAlt: "Square interlock rigid plastic pails on multi-tier stone podium showcase",
+    thumbnail: "/images/hero/home-hero-1.webp",
+    thumbTitle: "Square Range",
+    primary: { label: "Explore Products", href: "/products?application=food" },
+    colors: {
+      eyebrow: "text-[#002b49]",
+      title1: "text-[#002b49]",
+      title2: "text-[#E51827]",
+      btnBg: "bg-[#9e6938] hover:bg-[#88572b] shadow-[#9e6938]/25 hover:shadow-[#9e6938]/35",
+      accentText: "text-[#E51827]",
+    },
+  },
+  {
+    id: "industrial",
+    eyebrow: "FOOD & EDIBLE OIL CONTAINERS",
+    titleLine1: "Airtight Seal,",
+    titleLine2: "Pure Quality.",
+    descLine1: "100% food-grade packaging with tamper-evident lids,",
+    descLine2: "certified for dairy, edible oils, and food distribution.",
+    image: "/images/hero/home-hero-2.webp",
+    imageAlt: "Airtight food-grade white containers with secure yellow sealing lids on display",
+    thumbnail: "/images/hero/home-hero-2.webp",
+    thumbTitle: "Food Range",
+    primary: { label: "Explore Products", href: "/products?application=food" },
+    colors: {
+      eyebrow: "text-[#c26d1b]",
+      title1: "text-[#002b49]",
+      title2: "text-[#d97706]",
+      btnBg: "bg-[#002b49] hover:bg-[#001c30] shadow-[#002b49]/25 hover:shadow-[#002b49]/35",
+      accentText: "text-[#d97706]",
+    },
+  },
+  {
+    id: "paint",
+    eyebrow: "HEAVY-DUTY INDUSTRIAL PAILS",
+    titleLine1: "Toughened for",
+    titleLine2: "Heavy Duty.",
+    descLine1: "High-density pails with reinforced wire bail handles,",
+    descLine2: "built for paints, coatings, and chemical stability.",
+    image: "/images/hero/home-hero-3.webp",
+    imageAlt: "Industrial white plastic pails with heavy duty wire bail handles on podium",
+    thumbnail: "/images/hero/home-hero-3.webp",
+    thumbTitle: "Paint & Coating",
+    primary: { label: "Explore Products", href: "/products?application=paint" },
+    colors: {
+      eyebrow: "text-[#2e6244]",
+      title1: "text-[#0f172a]",
+      title2: "text-[#1e6f47]",
+      btnBg: "bg-[#1e6f47] hover:bg-[#165536] shadow-[#1e6f47]/25 hover:shadow-[#1e6f47]/35",
+      accentText: "text-[#1e6f47]",
+    },
+  },
+  {
+    id: "lubricants",
+    eyebrow: "SPOUT CLOSURE LUBRICANT PAILS",
+    titleLine1: "Engineered for",
+    titleLine2: "Industrial Fluids.",
+    descLine1: "High-impact rigid pails with integrated pouring spouts,",
+    descLine2: "ensuring smooth dispensing and zero-leak transport.",
+    image: "/images/hero/home-hero-4.webp",
+    imageAlt: "Lubricant and chemical plastic pails equipped with pour-spout dispensing lids",
+    thumbnail: "/images/hero/home-hero-4.webp",
+    thumbTitle: "Lubricant Range",
+    primary: { label: "Explore Products", href: "/products?application=lubricant" },
+    colors: {
+      eyebrow: "text-[#025a70]",
+      title1: "text-[#002b49]",
+      title2: "text-[#0284c7]",
+      btnBg: "bg-[#0284c7] hover:bg-[#0369a1] shadow-[#0284c7]/25 hover:shadow-[#0284c7]/35",
+      accentText: "text-[#0284c7]",
+    },
+  },
+];
 
-/**
- * Full-bleed hero carousel.
- * - GSAP crossfades the imagery and masked SplitText headline per slide
- * - Autoplay pauses on hover, focus, touch and after any manual navigation
- * - Swipeable, keyboard operable, and fully static without JavaScript
- */
 export function HeroSlider() {
-  const slides = heroSlides;
+  const slides = heroSlidesData;
   const [index, setIndex] = useState(0);
+  const [animating, setAnimating] = useState(false);
   const [paused, setPaused] = useState(false);
-  const [userPaused, setUserPaused] = useState(false);
-  const [progressKey, setProgressKey] = useState(0);
 
-  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
   const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
-  const animating = useRef(false);
-  const splits = useRef<SplitText[]>([]);
 
-  const trackSplit = (split: SplitText) => {
-    splits.current.push(split);
-  };
-
-  /* ------------------------------------------------------------- first slide */
-  useEffect(() => {
-    const image = imageRefs.current[0];
-    const content = contentRefs.current[0];
-    const title = titleRefs.current[0];
-    if (!image || !content || !title) return;
-
-    if (reduceMotion()) {
-      gsap.set([image, content], { autoAlpha: 1 });
-      return;
-    }
-
-    const split = SplitText.create(title, {
-      type: "lines",
-      mask: "lines",
-      linesClass: "split-line",
-      aria: "auto",
-    });
-    trackSplit(split);
-
-    const timeline = gsap.timeline();
-    timeline
-      .fromTo(content, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0)
-      .fromTo(
-        image,
-        { autoAlpha: 0, scale: 1.08 },
-        { autoAlpha: 1, scale: 1, duration: 1.9, ease: "expo.out" },
-        0,
-      )
-      .from(
-        split.lines,
-        { yPercent: 115, duration: 1.35, stagger: 0.11, ease: "expo.out" },
-        0.25,
-      )
-      .fromTo(
-        content.querySelectorAll<HTMLElement>("[data-hero-fade]"),
-        { autoAlpha: 0, y: 18 },
-        { autoAlpha: 1, y: 0, duration: 1.05, stagger: 0.12, ease: EASE.out },
-        0.5,
-      );
-
-    return () => {
-      timeline.kill();
-      split.revert();
-    };
-  }, []);
-
-  useEffect(() => {
-    const allSplits = splits.current;
-    return () => allSplits.forEach((split) => split.revert());
-  }, []);
-
-  /* --------------------------------------------------------------- navigation */
   const goTo = useCallback(
-    (nextIndex: number, direction: 1 | -1 = 1, byUser = true) => {
+    (nextIndex: number, direction: 1 | -1 = 1) => {
       const total = slides.length;
       const target = (nextIndex + total) % total;
-      if (target === index || animating.current) return;
+      if (target === index || animating) return;
 
       const currentImage = imageRefs.current[index];
       const currentContent = contentRefs.current[index];
@@ -106,77 +115,136 @@ export function HeroSlider() {
       const nextTitle = titleRefs.current[target];
       if (!currentImage || !currentContent || !nextImage || !nextContent) return;
 
-      animating.current = true;
+      setAnimating(true);
       setIndex(target);
-      setProgressKey((key) => key + 1);
-      if (byUser) {
-        setPaused(true);
-        setUserPaused(true);
-      }
 
       if (reduceMotion()) {
         gsap.set([currentImage, currentContent], { autoAlpha: 0 });
         gsap.set([nextImage, nextContent], { autoAlpha: 1 });
-        animating.current = false;
+        setAnimating(false);
         return;
       }
 
-      const split = nextTitle
-        ? SplitText.create(nextTitle, {
-            type: "lines",
-            mask: "lines",
-            linesClass: "split-line",
-            aria: "auto",
-          })
-        : null;
-      if (split) trackSplit(split);
+      const currentElements = currentContent.querySelectorAll("[data-anim-dir]");
+      const eyebrow = nextContent.querySelector("[data-anim-dir='top']");
+      const title1 = nextContent.querySelector("[data-anim-dir='left']");
+      const title2 = nextContent.querySelector("[data-anim-dir='right']");
+      const desc1 = nextContent.querySelector("[data-anim-dir='desc1']");
+      const desc2 = nextContent.querySelector("[data-anim-dir='desc2']");
+      const ctaBtn = nextContent.querySelector("[data-anim-dir='btn']");
 
       const timeline = gsap.timeline({
         onComplete: () => {
-          animating.current = false;
-          if (split) {
-            splits.current = splits.current.filter((item) => item !== split);
-            split.revert();
-          }
+          setAnimating(false);
+          gsap.set(currentImage, { autoAlpha: 0, clearProps: "clipPath,transform" });
+          gsap.set(currentContent, { autoAlpha: 0 });
         },
       });
 
+      // 1. Right-side image reveal: overlays from right using clip-path wipe & soft scale
+      gsap.set(nextImage, { autoAlpha: 1, zIndex: 10 });
+      gsap.set(currentImage, { zIndex: 1 });
+
+      const imageDuration = 1.15; // Time taken for image to wipe in fully
+
       timeline
-        .to(currentContent, { autoAlpha: 0, y: -18 * direction, duration: 0.5, ease: "power2.in" }, 0)
-        .to(currentImage, { autoAlpha: 0, scale: 1.04, duration: 1.1, ease: "power2.inOut" }, 0)
         .fromTo(
           nextImage,
-          { autoAlpha: 0, scale: 1.07 },
-          { autoAlpha: 1, scale: 1, duration: 1.55, ease: "expo.out" },
-          0.15,
+          { clipPath: "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)", scale: 1.05 },
+          {
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            scale: 1,
+            duration: imageDuration,
+            ease: "power3.inOut",
+          },
+          0,
         )
-        .fromTo(nextContent, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.45 }, 0.3)
-        .from(
-          split ? split.lines : [],
-          { yPercent: 115, duration: 1.25, stagger: 0.09, ease: "expo.out" },
-          0.45,
-        )
-        .fromTo(
-          nextContent.querySelectorAll<HTMLElement>("[data-hero-fade]"),
-          { autoAlpha: 0, y: 16 },
-          { autoAlpha: 1, y: 0, duration: 0.95, stagger: 0.1, ease: EASE.out },
-          0.55,
+        // Previous image softly fades out underneath
+        .to(currentImage, { autoAlpha: 0, duration: 0.8, ease: "power2.out" }, 0.3)
+        // Previous text lines fade/slide out immediately
+        .to(currentElements, { y: -14 * direction, autoAlpha: 0, duration: 0.3, stagger: 0.03, ease: "power2.in" }, 0);
+
+      // Time point when the text animation begins (0.3 seconds after the image finishes revealing!)
+      const textStartTime = imageDuration + 0.3;
+
+      // Make next content visible right before text animation starts
+      timeline.set(nextContent, { autoAlpha: 1 }, textStartTime - 0.05);
+
+      // 2. Left side animated reveals: each line comes from different directions!
+      // - Eyebrow drops in from TOP
+      if (eyebrow) {
+        timeline.fromTo(
+          eyebrow,
+          { y: -26, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.65, ease: "back.out(1.4)" },
+          textStartTime,
         );
+      }
+
+      // - Title Line 1 slides in from LEFT
+      if (title1) {
+        timeline.fromTo(
+          title1,
+          { x: -60, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.7, ease: "power3.out" },
+          textStartTime + 0.1,
+        );
+      }
+
+      // - Title Line 2 slides in from RIGHT
+      if (title2) {
+        timeline.fromTo(
+          title2,
+          { x: 60, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.7, ease: "power3.out" },
+          textStartTime + 0.2,
+        );
+      }
+
+      // - Description Line 1 slides in from LEFT
+      if (desc1) {
+        timeline.fromTo(
+          desc1,
+          { x: -40, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.65, ease: "power3.out" },
+          textStartTime + 0.3,
+        );
+      }
+
+      // - Description Line 2 slides in from RIGHT
+      if (desc2) {
+        timeline.fromTo(
+          desc2,
+          { x: 40, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.65, ease: "power3.out" },
+          textStartTime + 0.4,
+        );
+      }
+
+      // - Button pops up from BOTTOM with spring
+      if (ctaBtn) {
+        timeline.fromTo(
+          ctaBtn,
+          { y: 30, scale: 0.94, autoAlpha: 0 },
+          { y: 0, scale: 1, autoAlpha: 1, duration: 0.65, ease: "back.out(1.5)" },
+          textStartTime + 0.5,
+        );
+      }
     },
-    [index, slides.length],
+    [index, animating, slides.length],
   );
 
   const next = useCallback(() => goTo(index + 1, 1), [goTo, index]);
-  const previous = useCallback(() => goTo(index - 1, -1), [goTo, index]);
+  const prev = useCallback(() => goTo(index - 1, -1), [goTo, index]);
 
-  /* ----------------------------------------------------------------- autoplay */
   useEffect(() => {
-    if (paused || userPaused || reduceMotion()) return;
-    const timer = window.setTimeout(() => goTo(index + 1, 1, false), SLIDE_DURATION);
-    return () => window.clearTimeout(timer);
-  }, [index, paused, userPaused, goTo]);
+    if (paused) return;
+    const timer = setInterval(() => {
+      goTo(index + 1, 1);
+    }, SLIDE_DURATION);
+    return () => clearInterval(timer);
+  }, [index, paused, goTo]);
 
-  /* ------------------------------------------------------- touch / pointer swipe */
   const onPointerDown = (event: React.PointerEvent) => {
     pointerStart.current = { x: event.clientX, y: event.clientY };
   };
@@ -186,219 +254,189 @@ export function HeroSlider() {
     const dx = event.clientX - pointerStart.current.x;
     const dy = event.clientY - pointerStart.current.y;
     pointerStart.current = null;
-    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) {
-      dx < 0 ? next() : previous();
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      dx < 0 ? next() : prev();
     }
-  };
-
-  const toggleAutoplay = () => {
-    setUserPaused((value) => !value);
-    setPaused(false);
   };
 
   return (
     <section
-      aria-roledescription="carousel"
-      aria-label="ASIR Containers highlights"
-      className="relative isolate flex min-h-[660px] w-full flex-col justify-end overflow-hidden bg-charcoal text-white lg:h-[100svh] lg:max-h-[1080px] lg:min-h-[720px]"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node)) setPaused(false);
-      }}
+      aria-label="ASIR Containers Hero Showcase"
+      className="relative w-full overflow-hidden bg-[#FBF8F3] min-h-[720px] sm:min-h-[760px] lg:h-[100svh] lg:max-h-[1080px] lg:min-h-[780px] flex flex-col justify-between"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
-      onTouchStart={() => setPaused(true)}
     >
-      {slides.map((slide, slideIndex) => {
-        const isActive = slideIndex === index;
-        return (
-          <div
-            key={slide.id}
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`Slide ${slideIndex + 1} of ${slides.length}: ${slide.label}`}
-            aria-hidden={!isActive}
-            className={`absolute inset-0 ${isActive ? "" : "pointer-events-none"}`}
-          >
+      {/* ----------------- Background Images Slide Layer (Full Bleed View with Reduced Scrim) ----------------- */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {slides.map((slide, slideIndex) => {
+          const isActive = slideIndex === index;
+          return (
             <div
+              key={slide.id}
               ref={(node) => {
                 imageRefs.current[slideIndex] = node;
               }}
-              className="absolute inset-0 [.js_&]:opacity-0"
+              className={`absolute inset-0 transition-opacity duration-700 ${
+                isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
             >
+              {/* Full-bleed photography filling entire hero area */}
               <Image
                 src={slide.image}
                 alt={slide.imageAlt}
                 fill
                 priority={slideIndex === 0}
-                sizes="100vw"
-                className="ambient-media-slow object-cover"
+                className="object-cover object-[78%_center] lg:object-[82%_center]"
               />
+
+              {/* Left scrim: slightly increased for optimal readability while keeping product photography open */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FBF8F3] via-[#FBF8F3]/80 sm:via-[#FBF8F3]/55 to-transparent w-full lg:w-[54%]" />
             </div>
+          );
+        })}
+      </div>
 
-            {/* Legibility scrims — a dark industrial base with a red hint */}
-            <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 to-ink/35" />
-            <div className="absolute inset-0 bg-[radial-gradient(120%_95%_at_0%_95%,rgba(17,17,17,0.92)_0%,rgba(17,17,17,0.15)_55%,transparent_85%)]" />
-
-            <div
-              ref={(node) => {
-                contentRefs.current[slideIndex] = node;
-              }}
-              className={`relative z-10 flex h-full flex-col justify-end pb-28 pt-32 [.js_&]:opacity-0 lg:pb-32 ${
-                isActive ? "" : "invisible"
-              }`}
-            >
-              <div className="shell">
-                <div className="max-w-3xl">
-                  <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/85" data-hero-fade>
-                    <AnimatedIcon
-                      name={slideIcons[slide.id] ?? "boxes"}
-                      motion="pulse"
-                      className="h-4 w-4 text-brand"
-                    />
+      {/* ----------------- Left Foreground Editorial Content (Pauses autoplay when hovered here alone) ----------------- */}
+      <div className="relative z-20 w-full pt-28 sm:pt-36 lg:pt-[8vw] pb-12 flex-1 flex flex-col justify-center px-6 sm:px-12 lg:px-[5.5vw]">
+        <div
+          className="w-full max-w-[560px] lg:max-w-[40vw]"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          {slides.map((slide, slideIndex) => {
+            const isActive = slideIndex === index;
+            return (
+              <div
+                key={slide.id}
+                ref={(node) => {
+                  contentRefs.current[slideIndex] = node;
+                }}
+                className={`${isActive ? "block" : "hidden"}`}
+              >
+                {/* 1. Eyebrow Text Line (Drops from TOP) */}
+                <div className="overflow-hidden">
+                  <p
+                    data-anim-dir="top"
+                    className={`font-mono text-xs sm:text-[13px] lg:text-[0.9vw] font-bold uppercase tracking-[0.24em] mb-3 sm:mb-4 lg:mb-[1.1vw] ${slide.colors.eyebrow}`}
+                  >
                     {slide.eyebrow}
                   </p>
+                </div>
 
-                  <h1
-                    ref={(node) => {
-                      titleRefs.current[slideIndex] = node;
-                    }}
-                    className="display-xl mt-6 whitespace-pre-line sheen-light"
-                  >
-                    {slide.title}
-                  </h1>
+                {/* 2. Title Text: Line 1 from LEFT & Line 2 from RIGHT */}
+                <h1
+                  ref={(node) => {
+                    titleRefs.current[slideIndex] = node;
+                  }}
+                  className="font-display text-[2.85rem] sm:text-[3.8rem] lg:text-[4.5vw] font-black tracking-tight leading-[1.02]"
+                >
+                  <span className="block overflow-hidden">
+                    <span data-anim-dir="left" className={`block ${slide.colors.title1}`}>
+                      {slide.titleLine1}
+                    </span>
+                  </span>
+                  <span className="block overflow-hidden">
+                    <span data-anim-dir="right" className={`block ${slide.colors.title2}`}>
+                      {slide.titleLine2}
+                    </span>
+                  </span>
+                </h1>
 
-                  <p
-                    data-hero-fade
-                    className="mt-7 max-w-xl text-[15px] leading-relaxed text-white/85 sm:text-base"
-                  >
-                    {slide.copy}
-                  </p>
+                {/* 3. Description: Line 1 from LEFT & Line 2 from RIGHT */}
+                <div className="mt-4 sm:mt-5 lg:mt-[1.3vw] text-[15px] sm:text-[16.5px] lg:text-[1.15vw] leading-[1.55] text-slate-700 font-normal space-y-1">
+                  <div className="overflow-hidden">
+                    <p data-anim-dir="desc1">{slide.descLine1}</p>
+                  </div>
+                  <div className="overflow-hidden">
+                    <p data-anim-dir="desc2">{slide.descLine2}</p>
+                  </div>
+                </div>
 
-                  <div data-hero-fade className="mt-9 flex flex-wrap items-center gap-3">
+                {/* 4. Button (Slides up from BOTTOM with spring) */}
+                <div className="mt-7 sm:mt-8 lg:mt-[1.8vw] overflow-hidden">
+                  <div data-anim-dir="btn">
                     <Link
                       href={slide.primary.href}
-                      className="group/cta inline-flex h-13 items-center gap-2 bg-brand px-6 text-sm font-medium transition-colors hover:bg-brand-dark"
+                      className={`group inline-flex items-center gap-3 lg:gap-[0.7vw] rounded-lg px-6 sm:px-7 lg:px-[1.8vw] py-3.5 lg:py-[0.85vw] text-[14.5px] sm:text-[15.5px] lg:text-[1.05vw] font-semibold text-white shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] ${slide.colors.btnBg}`}
                     >
-                      {slide.primary.label}
-                      <ArrowRight
-                        aria-hidden
-                        className="h-4 w-4 transition-transform group-hover/cta:translate-x-1"
-                      />
-                    </Link>
-                    <Link
-                      href={slide.secondary.href}
-                      className="inline-flex h-13 items-center border border-white/30 px-6 text-sm font-medium transition-colors hover:border-white hover:bg-white hover:text-ink"
-                    >
-                      {slide.secondary.label}
+                      <span>{slide.primary.label}</span>
+                      <ArrowRight className="h-4 w-4 lg:h-[1vw] lg:w-[1vw] transition-transform duration-300 group-hover:translate-x-1" />
                     </Link>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        );
-      })}
+            );
+          })}
+        </div>
+      </div>
 
-      {/* Control bar */}
-      <div className="absolute inset-x-0 bottom-0 z-20 border-t border-white/15 bg-ink/30 backdrop-blur-[2px]">
-        <div className="shell flex h-20 items-stretch justify-between gap-4">
-          <div className="flex flex-1 items-stretch">
-            {slides.map((slide, slideIndex) => {
-              const active = slideIndex === index;
-              return (
-                <button
-                  key={slide.id}
-                  type="button"
-                  onClick={() => goTo(slideIndex, slideIndex > index ? 1 : -1)}
-                  aria-label={`Show slide ${slideIndex + 1}: ${slide.label}`}
-                  aria-current={active ? "true" : undefined}
-                  className="group relative flex flex-1 flex-col justify-center gap-2.5 pr-4 text-left"
-                >
-                  <span className="flex items-baseline gap-2.5">
-                    <span
-                      className={`tabular text-[10px] font-semibold transition-colors ${
-                        active ? "text-brand" : "text-white/85 group-hover:text-white/85"
-                      }`}
-                    >
-                      {String(slideIndex + 1).padStart(2, "0")}
-                    </span>
-                    <span
-                      className={`hidden truncate text-[11px] font-medium uppercase tracking-[0.16em] transition-colors sm:block ${
-                        active ? "text-white" : "text-white/85 group-hover:text-white/85"
-                      }`}
-                    >
-                      {slide.label}
-                    </span>
-                  </span>
-                  <span className="relative h-[2px] w-full overflow-hidden bg-white/20">
-                    {active && (
-                      <span
-                        key={`${slideIndex}-${progressKey}`}
-                        className="absolute inset-y-0 left-0 w-full origin-left bg-brand"
-                        style={{
-                          animation: reduceMotion()
-                            ? undefined
-                            : `hero-progress ${SLIDE_DURATION}ms linear forwards`,
-                          animationPlayState: paused || userPaused ? "paused" : "running",
-                          transform: reduceMotion() ? "scaleX(1)" : undefined,
-                        }}
-                      />
-                    )}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="mr-2 hidden items-baseline gap-1 tabular text-xs text-white/85 sm:flex">
-              <span className="text-sm text-white">{String(index + 1).padStart(2, "0")}</span>
-              / {String(slides.length).padStart(2, "0")}
-            </span>
+      {/* ----------------- Right Side Vertical Product Cards Sidebar ----------------- */}
+      <div className="absolute right-4 sm:right-6 lg:right-10 top-1/2 z-30 hidden -translate-y-1/2 flex-col items-center gap-3 lg:flex">
+        {slides.map((s, i) => {
+          const active = i === index;
+          return (
             <button
+              key={s.id}
               type="button"
-              onClick={toggleAutoplay}
-              aria-label={userPaused ? "Resume slideshow" : "Pause slideshow"}
-              className="hidden h-11 w-11 items-center justify-center border border-white/25 transition-colors hover:border-white hover:bg-white hover:text-ink sm:flex"
+              onClick={() => goTo(i, i > index ? 1 : -1)}
+              className={`group relative flex flex-col items-center w-[92px] overflow-hidden rounded-xl border transition-all duration-300 ${active
+                  ? "border-slate-900 bg-white shadow-lg ring-1 ring-slate-900/40 scale-[1.04]"
+                  : "border-slate-200/90 bg-white/90 backdrop-blur-sm hover:border-slate-300 hover:bg-white shadow-xs"
+                }`}
             >
-              {userPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
+              {/* Image flush at the top with zero top padding */}
+              <div className="relative w-full h-[48px] overflow-hidden">
+                <Image
+                  src={s.thumbnail}
+                  alt={s.thumbTitle}
+                  fill
+                  className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+
+              {/* Text only below image with dedicated padding */}
+              <div className="w-full px-1.5 py-2 text-center bg-inherit">
+                <span className={`text-[10.5px] font-bold leading-tight block ${active ? s.colors.accentText : "text-slate-700"}`}>
+                  {s.thumbTitle}
+                </span>
+              </div>
             </button>
+          );
+        })}
+      </div>
+
+      {/* ----------------- Bottom Right Navigation Controls ----------------- */}
+      <div className="relative z-30 pb-6 sm:pb-8 pt-2">
+        <div className="shell flex items-center justify-end">
+          <div className="flex items-center gap-3 rounded-full bg-white/80 p-1.5 shadow-sm backdrop-blur-sm border border-slate-200/60">
+            {/* Prev button */}
             <button
               type="button"
-              onClick={previous}
+              onClick={prev}
               aria-label="Previous slide"
-              className="flex h-11 w-11 items-center justify-center border border-white/25 transition-colors hover:border-white hover:bg-white hover:text-ink"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-800 transition-all duration-200 hover:border-[#002b49] hover:text-[#002b49] active:scale-95"
             >
               <ArrowLeft className="h-4 w-4" />
             </button>
+
+            {/* Counter */}
+            <span className="px-2 font-mono text-xs font-bold text-slate-800 tracking-wider">
+              <span className="text-slate-950 font-black">{String(index + 1).padStart(2, "0")}</span>
+              <span className="text-slate-400 font-normal"> / {String(slides.length).padStart(2, "0")}</span>
+            </span>
+
+            {/* Next button */}
             <button
               type="button"
               onClick={next}
               aria-label="Next slide"
-              className="flex h-11 w-11 items-center justify-center border border-white/25 transition-colors hover:border-white hover:bg-white hover:text-ink"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-800 transition-all duration-200 hover:border-[#002b49] hover:text-[#002b49] active:scale-95"
             >
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </div>
       </div>
-
-      <Link
-        href="/products"
-        aria-label="Browse the ASIR Containers range"
-        className="group absolute right-8 top-1/2 z-10 hidden -translate-y-1/2 items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-white/85 transition-colors hover:text-white 2xl:flex"
-      >
-        <span className="[writing-mode:vertical-rl]">Range · 17 containers</span>
-        <ArrowUpRight
-          aria-hidden
-          className="h-4 w-4 text-brand transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
-        />
-      </Link>
-
-      <style>{`@keyframes hero-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }`}</style>
     </section>
   );
 }
