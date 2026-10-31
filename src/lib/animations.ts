@@ -39,9 +39,20 @@ export const reduceMotion = () =>
 
 /**
  * Animates any `[data-reveal]` descendant of `scope` as it enters the viewport.
- * Elements play in on scroll down and play back out when scrolled up again
- * (`toggleActions: play none none reverse`), so motion is always reversible.
- * Optional `data-reveal-delay="0.15"` staggers individual elements.
+ * Elements play in on scroll down, animate out when scrolled past in both directions,
+ * and reverse gracefully on scroll back up (`play reverse play reverse`), providing a fully
+ * responsive two-way scroll experience.
+ *
+ * Supported directions & variants via attributes:
+ * - `data-reveal-dir="up"` (default): lifts from bottom (y: +36)
+ * - `data-reveal-dir="down"`: drops from top (y: -36)
+ * - `data-reveal-dir="left"`: slides in from left (x: -45)
+ * - `data-reveal-dir="right"`: slides in from right (x: +45)
+ * - `data-reveal-dir="scale"`: zooms up from soft scale (scale: 0.92, y: 15)
+ * - `data-reveal-dir="scale-rotate"`: slight scale and subtle tilt for cards (scale: 0.94, rotation: -1.5)
+ * - `data-reveal-dir="clip-left"`: wipes from left using clip-path
+ * - `data-reveal-dir="clip-right"`: wipes from right using clip-path
+ * - `data-reveal-delay="0.15"`: custom entry delay
  */
 export const useScrollReveal = (scope: RefObject<HTMLElement | null>) => {
   useGSAP(
@@ -60,24 +71,84 @@ export const useScrollReveal = (scope: RefObject<HTMLElement | null>) => {
       if (!targets.length && !masks.length) return;
 
       if (reduceMotion()) {
-        gsap.set([...targets, ...masks], { opacity: 1, y: 0, clearProps: "clipPath" });
+        gsap.set([...targets, ...masks], {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          scale: 1,
+          rotation: 0,
+          clearProps: "all",
+        });
         return;
       }
 
       targets.forEach((element) => {
         const delay = Number(element.dataset.revealDelay ?? 0);
-        const fromX = element.dataset.revealAxis === "x";
-        gsap.set(element, { opacity: 0, y: fromX ? 0 : 16, x: fromX ? 16 : 0 });
+        const dir = element.dataset.revealDir || (element.dataset.revealAxis === "x" ? "left" : "up");
+
+        // Compute starting properties based on requested animation variant
+        let initialProps: gsap.TweenVars = { opacity: 0, y: 36, x: 0, scale: 1, rotation: 0 };
+        let activeProps: gsap.TweenVars = { opacity: 1, y: 0, x: 0, scale: 1, rotation: 0 };
+
+        if (dir === "down") {
+          initialProps = { opacity: 0, y: -36, x: 0, scale: 1, rotation: 0 };
+        } else if (dir === "left") {
+          initialProps = { opacity: 0, y: 0, x: -45, scale: 1, rotation: 0 };
+        } else if (dir === "right") {
+          initialProps = { opacity: 0, y: 0, x: 45, scale: 1, rotation: 0 };
+        } else if (dir === "scale") {
+          initialProps = { opacity: 0, y: 15, x: 0, scale: 0.92, rotation: 0 };
+        } else if (dir === "scale-rotate") {
+          initialProps = { opacity: 0, y: 20, x: 0, scale: 0.94, rotation: -1.5 };
+        } else if (dir === "clip-left") {
+          initialProps = { opacity: 0, clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)", x: -20 };
+          activeProps = { opacity: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0 };
+        } else if (dir === "clip-right") {
+          initialProps = { opacity: 0, clipPath: "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)", x: 20 };
+          activeProps = { opacity: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0 };
+        }
+
+        gsap.set(element, initialProps);
 
         ScrollTrigger.create({
           trigger: element,
-          start: "top 96%",
-          end: "top 25%",
+          start: "top 92%",
+          end: "bottom 6%",
           invalidateOnRefresh: true,
-          onEnter: () => gsap.to(element, { opacity: 1, y: 0, x: 0, duration: 0.95, delay, ease: EASE.out, overwrite: "auto" }),
-          onEnterBack: () => gsap.to(element, { opacity: 1, y: 0, x: 0, duration: 0.7, ease: EASE.out, overwrite: "auto" }),
+          // Forward scroll entry (scrolling down into view)
+          onEnter: () =>
+            gsap.to(element, {
+              ...activeProps,
+              duration: 0.9,
+              delay,
+              ease: "power3.out",
+              overwrite: "auto",
+            }),
+          // Forward scroll leave (scrolled past top) -> soft reverse exit
+          onLeave: () =>
+            gsap.to(element, {
+              opacity: 0,
+              y: dir === "down" ? 25 : -25,
+              duration: 0.45,
+              ease: "power2.in",
+              overwrite: "auto",
+            }),
+          // Backward scroll entry (scrolling back up into view) -> reverse in
+          onEnterBack: () =>
+            gsap.to(element, {
+              ...activeProps,
+              duration: 0.8,
+              ease: "power3.out",
+              overwrite: "auto",
+            }),
+          // Backward scroll leave (scrolled back down below view) -> reverse reset
           onLeaveBack: () =>
-            gsap.to(element, { opacity: 0, y: fromX ? 0 : 16, x: fromX ? 16 : 0, duration: 0.45, ease: "power2.in", overwrite: "auto" }),
+            gsap.to(element, {
+              ...initialProps,
+              duration: 0.5,
+              ease: "power2.in",
+              overwrite: "auto",
+            }),
         });
       });
 
@@ -86,11 +157,13 @@ export const useScrollReveal = (scope: RefObject<HTMLElement | null>) => {
 
         ScrollTrigger.create({
           trigger: element,
-          start: "top 96%",
-          end: "top 25%",
+          start: "top 92%",
+          end: "bottom 8%",
           invalidateOnRefresh: true,
           onEnter: () =>
             gsap.to(element, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.25, ease: "expo.out", overwrite: "auto" }),
+          onLeave: () =>
+            gsap.to(element, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.5, ease: "power2.in", overwrite: "auto" }),
           onEnterBack: () =>
             gsap.to(element, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.9, ease: "expo.out", overwrite: "auto" }),
           onLeaveBack: () =>
@@ -217,16 +290,21 @@ export const revealLines = (
       ? null
       : ScrollTrigger.create({
           trigger: element,
-          start: "top 95%",
-          end: "top 20%",
+          start: "top 98%",
+          end: "bottom 5%",
           invalidateOnRefresh: true,
           onEnter: () => play("down"),
+          onLeave: () =>
+            gsap.to(pieces, { yPercent: -120, opacity: 0, duration: 0.35, ease: "power2.in", overwrite: "auto" }),
           onEnterBack: () => play("up"),
           onLeaveBack: () =>
             gsap.to(pieces, { yPercent: 120, opacity: 0, duration: 0.35, ease: "power2.in", overwrite: "auto" }),
         });
 
-  if (!trigger) play("down");
+  // If already inside the viewport or near the top on initial load, trigger entry immediately
+  if (!trigger || (typeof window !== "undefined" && element.getBoundingClientRect().top < window.innerHeight)) {
+    play("down");
+  }
 
   return () => {
     wave?.kill();

@@ -41,7 +41,7 @@ const stages: Stage[] = [
     accentBar: "bg-violet-600",
     surface: "bg-violet-50",
     ring: "ring-violet-600/25",
-    glow: "bg-violet-500/20",
+    glow: "bg-violet-500/5",
   },
   {
     title: routes[0].name,
@@ -57,7 +57,7 @@ const stages: Stage[] = [
     accentBar: "bg-emerald-accent",
     surface: "bg-emerald-light",
     ring: "ring-emerald-accent/30",
-    glow: "bg-emerald-accent/20",
+    glow: "bg-emerald-accent/5",
   },
   {
     title: routes[1].name,
@@ -73,15 +73,15 @@ const stages: Stage[] = [
     accentBar: "bg-ocean",
     surface: "bg-ocean-light",
     ring: "ring-ocean/30",
-    glow: "bg-ocean/20",
+    glow: "bg-ocean/5",
   },
   {
     title: routes[2].name,
     detail: routes[2].detail,
     capacity: machines[3].capacity,
     note: machines[3].note,
-    image: "/images/families/paint-pail.jpg",
-    alt: "Container whose label is moulded into the wall of the pail",
+    image: "/images/products/detail/detail-paint-01.jpg",
+    alt: "In-mould labelled containers in inspection",
     icon: Bot,
     tile: "bg-amber-light text-amber-accent",
     tileActive: "bg-amber-accent text-white",
@@ -89,17 +89,12 @@ const stages: Stage[] = [
     accentBar: "bg-amber-accent",
     surface: "bg-amber-light",
     ring: "ring-amber-accent/30",
-    glow: "bg-amber-accent/20",
+    glow: "bg-amber-accent/5",
   },
 ];
 
-const CYCLE = 6000;
+const CYCLE = 4200;
 
-/**
- * In-process activities: moulding plus the three decoration routes. One plate
- * changes with the selected row, a colour glow behind it follows the selection,
- * and every row carries its own icon and working capacity.
- */
 export function InProcessStages() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -116,41 +111,72 @@ export function InProcessStages() {
   }, [paused]);
 
   return (
-    <section ref={root} className="bg-white py-20 lg:py-28" aria-labelledby="stages-heading">
-      <div className="shell">
+    <section
+      ref={root}
+      className="relative overflow-hidden bg-slate-50/70 py-12 lg:py-16 border-b border-slate-200/60"
+      aria-labelledby="stages-heading"
+    >
+      {/* Background Graphic Accents */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-20 -top-20 h-[520px] w-[520px] rounded-full border-[36px] border-[#0284c7]/[0.035] blur-[1px]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-10 -bottom-24 h-[440px] w-[440px] rounded-full bg-gradient-to-tl from-[#e51827]/[0.05] via-[#7c3aed]/[0.03] to-transparent blur-3xl"
+      />
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-16 top-12 h-36 w-36 opacity-20"
+        style={{
+          backgroundImage: "radial-gradient(#111 1.5px, transparent 1.5px)",
+          backgroundSize: "14px 14px",
+        }}
+      />
+
+      <div className="shell relative z-10">
         <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
-          <h2
-            id="stages-heading"
-            className="max-w-md font-display text-[clamp(1.8rem,3.2vw,2.75rem)] font-semibold leading-[1.08] tracking-[-0.03em] text-ink"
-            data-reveal="letters"
-          >
-            {inProcess.eyebrow}
-          </h2>
-          <p className="max-w-sm text-[14px] leading-relaxed text-mid" data-reveal>
-            {inProcess.intro}
-          </p>
+          <div data-reveal data-reveal-dir="left" data-reveal-delay="0.1">
+            <h2
+              id="stages-heading"
+              className="font-display text-[clamp(1.9rem,3.2vw,2.75rem)] font-extrabold leading-[1.08] tracking-tight text-ink"
+            >
+              {inProcess.eyebrow}
+            </h2>
+          </div>
+          <div data-reveal data-reveal-dir="right" data-reveal-delay="0.15">
+            <p className="max-w-md text-[14px] sm:text-[14.5px] leading-relaxed text-slate-600">
+              {inProcess.intro}
+            </p>
+          </div>
         </div>
 
         <div
-          className="mt-10 grid items-stretch gap-6 lg:grid-cols-12 lg:gap-10"
+          className="mt-8 grid items-stretch gap-6 lg:grid-cols-12 lg:gap-8"
           onPointerEnter={() => setPaused(true)}
           onPointerLeave={() => setPaused(false)}
           onFocusCapture={() => setPaused(true)}
           onBlurCapture={() => setPaused(false)}
         >
+          {/* Left Column: Machinery Photo Carousel with Scale Reveal */}
           <div className="relative lg:col-span-7">
-            {/* Colour glow that follows the selected route */}
             {stages.map((stage, index) => (
               <span
                 key={`glow-${stage.title}`}
                 aria-hidden
-                className={`pointer-events-none absolute -inset-6 rounded-[40px] blur-2xl transition-opacity duration-1000 ${
+                className={`pointer-events-none absolute -inset-4 rounded-[36px] blur-2xl transition-opacity duration-1000 ${
                   stage.glow
                 } ${index === active ? "opacity-100" : "opacity-0"}`}
               />
             ))}
 
-            <div className="relative h-[300px] overflow-hidden rounded-[26px] bg-light shadow-[0_40px_80px_-55px_rgba(17,17,17,0.6)] sm:h-[400px] lg:h-full lg:min-h-[500px]">
+            <div
+              data-reveal
+              data-reveal-dir="scale"
+              data-reveal-delay="0.2"
+              className="relative h-[280px] overflow-hidden rounded-[26px] bg-slate-900 border border-slate-200/90 shadow-sm sm:h-[340px] lg:h-full lg:min-h-[420px]"
+            >
               {stages.map((stage, index) => (
                 <div
                   key={stage.image + stage.title}
@@ -164,86 +190,84 @@ export function InProcessStages() {
                     alt={stage.alt}
                     fill
                     sizes="(max-width: 1024px) 100vw, 58vw"
-                    className={`object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                      index === active ? "scale-100" : "scale-[1.05]"
-                    }`}
+                    className="object-cover object-center transition-transform duration-700"
                   />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="lg:col-span-5">
-            <ul className="flex h-full flex-col justify-center gap-2.5">
-              {stages.map((stage, index) => {
-                const open = index === active;
-                const Icon = stage.icon;
+          {/* Right Column: Interactive Stage Cards with Staggered Directional Reveal */}
+          <div className="flex flex-col gap-3 lg:col-span-5">
+            {stages.map((stage, index) => {
+              const open = index === active;
 
-                return (
-                  <li key={stage.title} data-reveal data-reveal-delay={String(index * 0.07)}>
-                    <button
-                      type="button"
-                      onClick={() => setActive(index)}
-                      onMouseEnter={() => setActive(index)}
-                      aria-pressed={open}
-                      className={`group flex w-full items-start gap-4 rounded-[18px] px-4 py-4 text-left transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:px-5 ${
-                        open
-                          ? `${stage.surface} shadow-[0_24px_46px_-38px_rgba(17,17,17,0.6)] ring-1 ${stage.ring}`
-                          : "bg-white ring-1 ring-line hover:bg-light"
-                      }`}
-                    >
-                      <span
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] transition-all duration-700 ${
-                          open ? `${stage.tileActive} scale-105` : stage.tile
-                        }`}
-                      >
-                        <Icon aria-hidden className="h-[18px] w-[18px]" strokeWidth={1.8} />
-                      </span>
+              return (
+                <div
+                  key={stage.title}
+                  data-reveal
+                  data-reveal-dir="right"
+                  data-reveal-delay={(0.2 + index * 0.08).toFixed(2)}
+                  className="w-full"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setActive(index)}
+                    className={`group relative flex w-full flex-col text-left overflow-hidden rounded-[20px] p-4.5 sm:p-5 transition-all duration-300 border ${
+                      open
+                        ? `bg-white border-transparent shadow-[0_16px_36px_-12px_rgba(15,23,42,0.14)] ring-2 ${stage.ring}`
+                        : "bg-white/90 border-slate-200/80 hover:border-slate-300 hover:bg-white hover:shadow-xs"
+                    }`}
+                  >
+                    {/* Left edge active indicator bar */}
+                    <span
+                      aria-hidden
+                      className={`absolute inset-y-0 left-0 w-[3.5px] origin-top transition-transform duration-300 ${
+                        stage.accentBar
+                      } ${open ? "scale-y-100" : "scale-y-0"}`}
+                    />
 
-                      <span className="min-w-0 flex-1">
-                        <span className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                          <span
-                            className={`font-display text-[18px] font-semibold leading-snug tracking-[-0.015em] transition-colors duration-500 sm:text-[20px] ${
-                              open ? "text-ink" : "text-ink/70"
-                            }`}
-                          >
-                            {stage.title}
-                          </span>
-                          <span
-                            className={`text-[11.5px] font-semibold uppercase tracking-[0.1em] transition-colors duration-500 ${
-                              open ? stage.accentText : "text-mid/70"
-                            }`}
-                          >
-                            {stage.capacity}
-                          </span>
-                        </span>
-
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-3">
                         <span
-                          className={`grid transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                            open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] transition-all duration-300 ${
+                            open ? `${stage.tileActive} scale-105 shadow-xs` : stage.tile
                           }`}
                         >
-                          <span className="overflow-hidden">
-                            <span className="mt-1.5 block text-[13.5px] leading-relaxed text-mid">
-                              {stage.detail}
-                            </span>
-                            {stage.note && (
-                              <span className="mt-1.5 flex items-center gap-2 text-[12.5px] text-mid/85">
-                                <span
-                                  aria-hidden
-                                  className={`h-1 w-1 shrink-0 rounded-full ${stage.accentBar}`}
-                                />
-                                {stage.note}
-                              </span>
-                            )}
-                          </span>
+                          <stage.icon aria-hidden className="h-5 w-5" strokeWidth={1.9} />
                         </span>
+
+                        <h3 className="font-display text-[16px] sm:text-[17px] font-bold text-ink leading-tight">
+                          {stage.title}
+                        </h3>
+                      </div>
+
+                      <span
+                        className={`font-mono text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-md transition-colors ${
+                          open ? "bg-slate-100 text-slate-800" : "text-slate-400 group-hover:text-slate-600"
+                        }`}
+                      >
+                        {stage.capacity}
                       </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+                    </div>
+
+                    {open && (
+                      <div className="mt-2.5 pl-[52px]">
+                        <p className="text-[13px] leading-relaxed text-slate-600 font-normal">
+                          {stage.detail}
+                        </p>
+                        {stage.note && (
+                          <p className="mt-1 text-[11.5px] font-medium text-slate-400">
+                            • {stage.note}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

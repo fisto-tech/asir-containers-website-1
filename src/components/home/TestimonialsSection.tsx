@@ -80,7 +80,7 @@ export function TestimonialsSection() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-white py-20 lg:py-28 border-b border-slate-100/80">
+    <section className="relative overflow-hidden bg-white py-10 sm:py-12 lg:py-16 border-b border-slate-100/80">
       {/* Subtle background angled color accents matching reference */}
       <div
         aria-hidden
@@ -94,24 +94,15 @@ export function TestimonialsSection() {
       <div className="shell relative z-10">
         {/* Header matching reference */}
         <Reveal>
-          <div data-reveal data-reveal-delay="0.1" className="flex flex-col justify-between gap-4 pb-12 sm:flex-row sm:items-end">
-            <div>
-              {/* Eyebrow: Red dash + 08 TESTIMONIALS */}
-              <div className="flex items-center gap-2.5">
-                <span className="h-[2.5px] w-5 rounded-full bg-brand" />
-                <span className="font-mono text-[12px] font-bold text-brand">08</span>
-                <span className="text-[12px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                  TESTIMONIALS
-                </span>
-              </div>
-
+          <div className="flex flex-col justify-between gap-4 pb-7 sm:pb-8 sm:flex-row sm:items-end">
+            <div data-reveal data-reveal-dir="left" data-reveal-delay="0.1">
               {/* Heading: Straight from the buyers. with red dot */}
-              <h2 className="mt-3 font-display text-[2.4rem] font-bold tracking-tight text-ink sm:text-[3rem] lg:text-[3.25rem] leading-[1.08]">
+              <h2 className="mt-2.5 font-display text-[2.5rem] sm:text-[3.25rem] lg:text-[3.5rem] font-bold tracking-tight text-ink leading-[1.06]">
                 Straight from the buyers<span className="text-brand">.</span>
               </h2>
             </div>
 
-            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400 sm:pb-2 sm:text-right">
+            <p data-reveal data-reveal-dir="right" data-reveal-delay="0.15" className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400 sm:pb-2 sm:text-right">
               VERIFIED CLIENT FOOTAGE
             </p>
           </div>
@@ -121,11 +112,13 @@ export function TestimonialsSection() {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           {videos.map((item, idx) => {
             const isCurrent = playingId === item.id;
+            const videoDir = idx === 0 ? "left" : idx === 1 ? "scale" : "right";
 
             return (
               <Reveal key={item.id}>
                 <div
                   data-reveal
+                  data-reveal-dir={videoDir}
                   data-reveal-delay={(0.15 + idx * 0.1).toFixed(2)}
                   className="group relative overflow-hidden rounded-[20px] bg-slate-950 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-slate-800/80"
                 >

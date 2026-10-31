@@ -72,7 +72,9 @@ export function PageMasthead({
             className={`font-semibold tracking-tight text-ink sm:col-span-7 lg:col-span-6 ${
               compact ? "text-[32px] sm:text-[40px] lg:text-[48px] leading-tight" : "display-lg max-w-2xl"
             }`}
-            data-reveal="letters"
+            data-reveal
+            data-reveal-dir="left"
+            data-reveal-delay="0.1"
           >
             {title}
           </h1>

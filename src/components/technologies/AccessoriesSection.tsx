@@ -1,88 +1,72 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import {
-  CheckCircle2,
   CircleDot,
-  Factory,
-  Globe2,
   Layers,
-  Leaf,
   Pipette,
   Radio,
   ShieldCheck,
   Wrench,
 } from "lucide-react";
+import { useScrollReveal } from "@/lib/animations";
 
 const accessoriesList = [
   {
     name: "Lids",
+    desc: "Tamper-evident, snap-lock & threaded options",
     icon: CircleDot,
     iconColor: "text-red-500 bg-red-50 ring-red-100",
   },
   {
     name: "Seals & Gaskets",
+    desc: "EPDM and polyurethane hermetic seal lines",
     icon: ShieldCheck,
     iconColor: "text-emerald-500 bg-emerald-50 ring-emerald-100",
   },
   {
     name: "Handles",
+    desc: "High-tensile wire bails and ergonomic plastic",
     icon: Radio,
     iconColor: "text-orange-500 bg-orange-50 ring-orange-100",
   },
   {
     name: "Caps & Closures",
+    desc: "Flex-spouts, vented caps and pour apertures",
     icon: Layers,
     iconColor: "text-blue-500 bg-blue-50 ring-blue-100",
   },
   {
     name: "Spouts & Taps",
+    desc: "Precision dispensing spouts for chemicals & agro",
     icon: Pipette,
     iconColor: "text-purple-500 bg-purple-50 ring-purple-100",
   },
   {
     name: "Custom Accessories",
+    desc: "Tailored mould tooling for bespoke formats",
     icon: Wrench,
     iconColor: "text-violet-500 bg-violet-50 ring-violet-100",
   },
 ];
 
-const stats = [
-  {
-    value: "99.9%",
-    label: "Uptime",
-    icon: CheckCircle2,
-    iconColor: "text-brand bg-red-50 ring-red-100",
-  },
-  {
-    value: "24/7",
-    label: "Operations",
-    icon: Leaf,
-    iconColor: "text-emerald-600 bg-emerald-50 ring-emerald-100",
-  },
-  {
-    value: "Single",
-    label: "Facility",
-    icon: Factory,
-    iconColor: "text-purple-600 bg-purple-50 ring-purple-100",
-  },
-  {
-    value: "Global",
-    label: "Standards",
-    icon: Globe2,
-    iconColor: "text-blue-600 bg-blue-50 ring-blue-100",
-  },
-];
-
 export function AccessoriesSection() {
+  const root = useRef<HTMLElement | null>(null);
+  useScrollReveal(root);
+
   return (
-    <section className="bg-white py-14 lg:py-20 border-b border-line/60">
+    <section ref={root} className="bg-slate-50/70 py-14 lg:py-20 border-b border-line/60">
       <div className="shell">
-        {/* Main Content: Image & Checklist without outer card wrapping */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-          {/* Left: Image & Caption */}
+          {/* Left Column: Image with Directional Left Reveal */}
           <div className="lg:col-span-6 flex flex-col">
-            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-200/80">
+            <div
+              data-reveal
+              data-reveal-dir="scale"
+              data-reveal-delay="0.15"
+              className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-200/80 transition-all duration-500 hover:shadow-md"
+            >
               <Image
                 src="/images/technologies/technology-accessories.webp"
                 alt="Asir containers accessories collection: lids, handles, seals and spouts"
@@ -91,43 +75,53 @@ export function AccessoriesSection() {
                 className="object-cover"
               />
             </div>
-
           </div>
 
-          {/* Right: Accessories Header & 6 Categories */}
+          {/* Right Column: Title, Subtitle & 6 Accessories Checklist */}
           <div className="lg:col-span-6 flex flex-col">
-            <h2 className="font-display text-[2.2rem] sm:text-[2.75rem] font-bold text-ink tracking-tight leading-tight">
-              Accessories
-            </h2>
-            <p className="mt-2.5 text-[15px] sm:text-[16px] leading-relaxed text-slate-600 max-w-lg">
-              A complete range of accessories to enhance functionality, safety and brand value.
-            </p>
+            <div data-reveal data-reveal-dir="left" data-reveal-delay="0.1">
+              <h2 className="font-display text-[clamp(2rem,3.4vw,2.75rem)] font-extrabold text-ink tracking-tight leading-tight">
+                Accessories
+              </h2>
+            </div>
 
-            {/* 6 Accessories grid (2 columns) */}
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-              {accessoriesList.map((item) => {
+            <div data-reveal data-reveal-dir="up" data-reveal-delay="0.18">
+              <p className="mt-2 text-[14.5px] sm:text-[15.5px] leading-relaxed text-slate-600 max-w-lg">
+                A complete range of accessories to enhance functionality, safety and brand value.
+              </p>
+            </div>
+
+            {/* 6 Accessories grid (2 columns) with Staggered Two-Way Entrance */}
+            <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+              {accessoriesList.map((item, idx) => {
                 const Icon = item.icon;
                 return (
                   <div
                     key={item.name}
-                    className="flex items-center gap-3.5 py-1"
+                    data-reveal
+                    data-reveal-dir="up"
+                    data-reveal-delay={(0.22 + idx * 0.06).toFixed(2)}
+                    className="flex items-start gap-3.5 py-1.5 transition-transform duration-200 hover:translate-x-1"
                   >
                     <span
-                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ring-1 shadow-xs ${item.iconColor}`}
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 shadow-xs mt-0.5 ${item.iconColor}`}
                     >
-                      <Icon className="h-4.5 w-4.5" />
+                      <Icon className="h-5 w-5" />
                     </span>
-                    <span className="font-display text-[15px] font-bold text-ink">
-                      {item.name}
-                    </span>
+                    <div>
+                      <span className="font-display text-[15px] font-bold text-ink block leading-snug">
+                        {item.name}
+                      </span>
+                      <span className="text-[12px] text-slate-500 block leading-tight mt-0.5">
+                        {item.desc}
+                      </span>
+                    </div>
                   </div>
                 );
               })}
             </div>
           </div>
         </div>
-
-      
       </div>
     </section>
   );

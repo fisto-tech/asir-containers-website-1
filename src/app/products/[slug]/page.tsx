@@ -174,28 +174,28 @@ export default async function ProductPage({ params }: PageProps) {
             <Reveal className="lg:col-span-7">          
               <div>
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                  <h1 className="sheen-ink font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl md:text-5xl lg:text-[46px] lg:leading-[1.12]">
+                  <h1 className="sheen-ink font-display text-[clamp(1.85rem,5.2vw,2.75rem)] font-semibold tracking-tight text-ink sm:text-4xl md:text-5xl lg:text-[46px] lg:leading-[1.12]">
                     {product.name}
                   </h1>
 
-                  {/* Product codes badge — clean single card without outer wrapper */}
-                  <div className="flex shrink-0 items-center gap-2.5 self-start sm:mt-1">
-                    <div className="rounded-xl border border-line bg-white px-3.5 py-1.5 text-center shadow-2xs">
+                  {/* Product codes badge — responsive layout wrapping on small phones */}
+                  <div className="flex flex-wrap shrink-0 items-center gap-2 self-start sm:mt-1">
+                    <div className="rounded-xl border border-line bg-white px-3 py-1.5 text-center shadow-2xs sm:px-3.5">
                       <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-mid">
                         Plain Code
                       </span>
-                      <span className="flex items-center justify-center gap-1.5 font-mono text-[18px] font-extrabold tracking-tight text-ink sm:text-[20px]">
+                      <span className="flex items-center justify-center gap-1.5 font-mono text-[16px] sm:text-[18px] md:text-[20px] font-extrabold tracking-tight text-ink">
                         {product.codes.plain}
                         <AnimatedIcon name="pack" motion="float" className="h-4 w-4 text-brand" />
                       </span>
                     </div>
 
                     {product.codes.tin && (
-                      <div className="rounded-xl border border-brand/25 bg-white px-3.5 py-1.5 text-center shadow-2xs">
+                      <div className="rounded-xl border border-brand/25 bg-white px-3 py-1.5 text-center shadow-2xs sm:px-3.5">
                         <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-brand">
                           Tin/Sp. Code
                         </span>
-                        <span className="flex items-center justify-center gap-1.5 font-mono text-[18px] font-extrabold tracking-tight text-brand sm:text-[20px]">
+                        <span className="flex items-center justify-center gap-1.5 font-mono text-[16px] sm:text-[18px] md:text-[20px] font-extrabold tracking-tight text-brand">
                           {product.codes.tin}
                           <AnimatedIcon name="finish" motion="swing" className="h-4 w-4 text-brand" />
                         </span>
@@ -204,21 +204,21 @@ export default async function ProductPage({ params }: PageProps) {
                   </div>
                 </div>
 
-                <p className="mt-3.5 max-w-xl text-[15px] leading-relaxed text-mid sm:text-[15.5px]" data-reveal>
+                <p className="mt-3.5 max-w-xl text-[14.5px] leading-relaxed text-mid sm:text-[15.5px]" data-reveal>
                   {product.summary}
                 </p>
 
                 {/* Specification table — enhanced readability & typography */}
-                <dl className="mt-7 border-t border-line" data-reveal>
+                <dl className="mt-6 sm:mt-7 border-t border-line" data-reveal>
                   {specRows.map((row) => (
                     <div
                       key={row.label}
-                      className="flex flex-col gap-1 border-b border-line py-3.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+                      className="flex flex-col gap-0.5 border-b border-line py-3 sm:py-3.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
                     >
-                      <dt className="text-[14.5px] font-medium text-mid sm:text-[15px]">
+                      <dt className="text-[14px] font-medium text-mid sm:text-[15px]">
                         {row.label}
                       </dt>
-                      <dd className="text-[15px] font-semibold text-ink sm:max-w-[65%] sm:text-right sm:text-[15.5px]">
+                      <dd className="text-[14.5px] font-semibold text-ink sm:max-w-[65%] sm:text-right sm:text-[15.5px] break-words">
                         {row.value}
                       </dd>
                     </div>
@@ -226,20 +226,20 @@ export default async function ProductPage({ params }: PageProps) {
                 </dl>
 
                 {/* CTAs */}
-                <div className="mt-6 flex flex-wrap items-center gap-3" data-reveal>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" data-reveal>
                   <Link
                     href={`/contact?product=${product.slug}`}
-                    className="group inline-flex h-11 items-center gap-2 bg-brand px-5 text-sm font-medium text-white transition-colors hover:bg-brand-dark"
+                    className="group inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-brand px-5 text-sm font-medium text-white transition-colors hover:bg-brand-dark"
                   >
-                    Enquire about {product.codes.plain}
+                    <span>Enquire about {product.codes.plain}</span>
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                   <Link
                     href="/products"
-                    className="inline-flex h-11 items-center gap-2 border border-ink/20 px-5 text-sm font-medium text-ink transition-colors hover:border-ink"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-ink/20 px-5 text-sm font-medium text-ink transition-colors hover:border-ink hover:bg-slate-50"
                   >
                     <ArrowLeft className="h-4 w-4" />
-                    Back to products
+                    <span>Back to products</span>
                   </Link>
                 </div>
               </div>

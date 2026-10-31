@@ -1,8 +1,10 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Box, Bot, Droplets, Printer } from "lucide-react";
+import { useScrollReveal } from "@/lib/animations";
 
 const capabilities = [
   {
@@ -40,33 +42,41 @@ const capabilities = [
 ];
 
 export function OurCapabilities() {
+  const root = useRef<HTMLElement | null>(null);
+  useScrollReveal(root);
+
   return (
-    <section className="bg-white py-14 lg:py-20 border-b border-line/60">
+    <section ref={root} className="bg-white py-14 lg:py-20 border-b border-line/60">
       <div className="shell">
         {/* Section Header */}
         <div className="flex flex-wrap items-end justify-between gap-4 pb-8 lg:pb-10">
-          <div>
-            <h2 className="font-display text-[2.2rem] sm:text-[2.6rem] font-bold text-ink tracking-tight">
+          <div data-reveal data-reveal-dir="left" data-reveal-delay="0.1">
+            <h2 className="font-display text-[clamp(1.9rem,3.2vw,2.6rem)] font-extrabold text-ink tracking-tight">
               Our Capabilities
             </h2>
           </div>
-          <Link
-            href="/about"
-            className="group inline-flex items-center gap-1.5 text-[15px] font-semibold text-brand hover:text-brand-dark transition-colors"
-          >
-            <span>View facility</span>
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
+          <div data-reveal data-reveal-dir="right" data-reveal-delay="0.15">
+            <Link
+              href="/about"
+              className="group inline-flex items-center gap-1.5 text-[14.5px] sm:text-[15px] font-semibold text-brand hover:text-brand-dark transition-colors"
+            >
+              <span>View facility</span>
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </div>
         </div>
 
-        {/* 4 Cards Grid */}
+        {/* 4 Cards Grid with Bidirectional Staggered Animation */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
-          {capabilities.map((cap) => {
+          {capabilities.map((cap, idx) => {
             const Icon = cap.icon;
             return (
               <div
                 key={cap.title}
-                className="group relative flex flex-col rounded-2xl border border-slate-200/90 bg-white p-3.5 shadow-sm transition-all duration-300 hover:border-slate-300 hover:shadow-md"
+                data-reveal
+                data-reveal-dir="scale"
+                data-reveal-delay={(0.18 + idx * 0.08).toFixed(2)}
+                className="group relative flex flex-col rounded-2xl border border-slate-200/90 bg-white p-3.5 shadow-sm transition-all duration-300 hover:border-slate-300 hover:shadow-md hover:-translate-y-1"
               >
                 {/* Card Top Image */}
                 <div className="relative aspect-[3/2] w-full overflow-hidden rounded-xl bg-slate-100">

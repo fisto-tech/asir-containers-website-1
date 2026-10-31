@@ -61,8 +61,9 @@ export function ManufacturingSection() {
               {/* Bold Dual-Color Heading */}
               <h2
                 data-reveal
+                data-reveal-dir="left"
                 data-reveal-delay="0.1"
-                className="font-display text-[2.35rem] sm:text-[2.85rem] lg:text-[3.2rem] font-black tracking-tight leading-[1.05]"
+                className="font-display text-[2.5rem] sm:text-[3.25rem] lg:text-[3.5rem] font-bold tracking-tight leading-[1.06]"
               >
                 <span className="text-[#002b49] block">Where Design</span>
                 <span className="text-[#e51827] block">Meets Manufacturing</span>
@@ -71,7 +72,8 @@ export function ManufacturingSection() {
               {/* Formatted Narrative */}
               <p
                 data-reveal
-                data-reveal-delay="0.15"
+                data-reveal-dir="left"
+                data-reveal-delay="0.18"
                 className="mt-3.5 text-[14.5px] sm:text-[15.5px] leading-[1.6] text-slate-600 font-normal max-w-[520px]"
               >
                 Our manufacturing facility brings moulding, robotic decoration, and quality auditing together under one roof—ensuring airtight seal integrity and reliable production timelines.
@@ -83,6 +85,7 @@ export function ManufacturingSection() {
                   <div
                     key={feature.title}
                     data-reveal
+                    data-reveal-dir={idx % 2 === 0 ? "left" : "right"}
                     data-reveal-delay={(0.2 + idx * 0.08).toFixed(2)}
                     className="group flex items-start gap-3.5 transition-transform duration-300 hover:translate-x-1"
                   >
@@ -117,6 +120,7 @@ export function ManufacturingSection() {
             <Reveal>
               <div
                 data-reveal
+                data-reveal-dir="right"
                 data-reveal-delay="0.25"
                 className="relative w-full aspect-[4/3.8] min-h-[320px] sm:min-h-[380px] lg:min-h-[430px] overflow-hidden rounded-[28px] border border-slate-200/90 bg-slate-900 shadow-xl transition-all duration-500 hover:shadow-2xl"
               >

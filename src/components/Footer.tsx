@@ -102,20 +102,22 @@ const applicationsList = [
 export function Footer() {
   return (
     <footer className="relative bg-white text-slate-900 overflow-hidden border-t border-slate-200/80">
-      {/* Background Graphic Image (public/images/footer-bg.webp) - spans full width with pails on right */}
-      <div className="pointer-events-none absolute inset-0 z-0">
-        <Image
-          src="/images/footer-bg.webp"
-          alt="ASIR Industrial Packaging"
-          fill
-          priority={false}
-          className="object-cover object-right"
-        />
+      {/* Background Graphic Image: contained at the bottom on mobile/tablet, full cover on desktop */}
+      <div className="pointer-events-none absolute inset-0 z-0 flex items-end justify-end">
+        <div className="relative h-full w-full">
+          <Image
+            src="/images/footer-bg.webp"
+            alt="ASIR Industrial Packaging"
+            fill
+            priority={false}
+            className="object-contain object-bottom sm:object-contain sm:object-bottom lg:object-cover lg:object-right"
+          />
+        </div>
       </div>
 
       {/* Main Footer Content — clean flex layout so columns have rock-solid widths */}
       <div className="relative z-10 w-full pt-12 pb-12 lg:pt-16 lg:pb-16 px-6 sm:px-10 lg:pl-[4.5vw]">
-        <div className="flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start gap-8 lg:gap-8 xl:gap-10">
+        <div className="flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start gap-8 lg:gap-10 xl:gap-12">
           
           {/* Column 1: Brand & About */}
           <div className="w-full sm:w-[300px] lg:w-[320px] xl:w-[340px] shrink-0 flex flex-col justify-between">
@@ -177,7 +179,7 @@ export function Footer() {
           </div>
 
           {/* Column 2: Contact Card */}
-          <div className="w-full sm:w-[275px] lg:w-[275px] shrink-0 rounded-2xl bg-[#FFF6F6] border border-[#FEE1E1] p-5 shadow-xs">
+          <div className="w-full sm:w-[305px] lg:w-[305px] xl:w-[315px] shrink-0 rounded-2xl bg-[#FFF6F6] border border-[#FEE1E1] p-5.5 sm:p-6 shadow-xs">
             <h3 className="font-display text-[17.5px] font-bold text-ink tracking-tight leading-none">
               Contact
             </h3>
@@ -232,12 +234,12 @@ export function Footer() {
             </h3>
             <div className="mt-2.5 mb-5 h-[2px] w-6 bg-brand" />
 
-            <ul className="space-y-1">
+            <ul className="space-y-1.5">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="group flex items-center justify-between text-[14.5px] sm:text-[15px] font-medium text-slate-700 hover:text-brand py-2 transition-colors"
+                    className="group flex items-center justify-between text-[14.5px] sm:text-[15px] font-medium text-slate-700 hover:text-brand py-2.5 transition-colors"
                   >
                     <span>{link.label}</span>
                     <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-brand group-hover:translate-x-0.5 transition-all" />
@@ -254,14 +256,14 @@ export function Footer() {
             </h3>
             <div className="mt-2.5 mb-5 h-[2px] w-6 bg-brand" />
 
-            <ul className="space-y-1">
+            <ul className="space-y-1.5">
               {applicationsList.map((app) => {
                 const Icon = app.icon;
                 return (
                   <li key={app.label}>
                     <Link
                       href={app.href}
-                      className="group flex items-center justify-between text-[14.5px] sm:text-[15px] font-medium text-slate-700 hover:text-brand py-2 transition-colors"
+                      className="group flex items-center justify-between text-[14.5px] sm:text-[15px] font-medium text-slate-700 hover:text-brand py-2.5 transition-colors"
                     >
                       <span className="flex items-center gap-2.5">
                         <Icon className="h-4.5 w-4.5 text-brand shrink-0" />

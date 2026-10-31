@@ -15,50 +15,58 @@ const gateTiles = [
   "bg-amber-light text-amber-accent",
 ];
 
-/**
- * Quality statement as a pull-quote band: the quote and its note on the left,
- * a photograph of the finished container on the right. Both columns share the
- * same height because the image plate stretches to the copy.
- */
 export function QualityStatement() {
   return (
-    <section className="bg-[#fbfaf7] py-20 lg:py-28" aria-labelledby="quality-heading">
+    <section className="relative overflow-hidden bg-white py-12 lg:py-16 border-b border-slate-200/60" aria-labelledby="quality-heading">
       <Reveal className="shell">
-        <div className="grid items-stretch gap-10 lg:grid-cols-12 lg:gap-16">
+        <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
+          {/* Left Column: Quality Pull Quote and Inspection Gates */}
           <div className="flex flex-col justify-center lg:col-span-7">
-            <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-emerald-accent">
-              Quality
-            </p>
+            <div data-reveal data-reveal-dir="left" data-reveal-delay="0.1" className="flex items-center gap-2">
+              <span className="h-[2px] w-5 bg-emerald-accent" />
+              <p className="font-mono text-[11.5px] font-bold uppercase tracking-[0.2em] text-emerald-accent">
+                QUALITY ASSURANCE
+              </p>
+            </div>
 
             <h2 id="quality-heading" className="sr-only">
               {qualityStatement.eyebrow}
             </h2>
 
-            <blockquote
-              className="mt-6 border-l-2 border-emerald-accent pl-6 font-display text-[clamp(1.7rem,2.8vw,2.5rem)] font-semibold leading-[1.24] tracking-[-0.025em] text-ink sm:pl-8"
-              data-reveal="letters"
-            >
-              {qualityStatement.quote}
-            </blockquote>
+            <div data-reveal data-reveal-dir="left" data-reveal-delay="0.18">
+              <blockquote
+                className="mt-4 border-l-2 border-emerald-accent pl-5 font-display text-[clamp(1.5rem,2.4vw,2.15rem)] font-bold leading-[1.2] tracking-tight text-ink sm:pl-6"
+              >
+                {qualityStatement.quote}
+              </blockquote>
+            </div>
 
-            <p className="mt-7 max-w-lg text-[14.5px] leading-relaxed text-mid" data-reveal>
-              {qualityStatement.note}
-            </p>
+            <div data-reveal data-reveal-dir="up" data-reveal-delay="0.25">
+              <p className="mt-3.5 max-w-lg text-[13.5px] sm:text-[14px] leading-relaxed text-slate-500 font-normal">
+                {qualityStatement.note}
+              </p>
+            </div>
 
-            <ul className="mt-9 grid gap-x-6 gap-y-6 sm:grid-cols-3" data-reveal>
+            <ul className="mt-6 grid gap-x-5 gap-y-4 sm:grid-cols-3">
               {inspectionStages.map((stage, index) => {
                 const Icon = gateIcons[stage.icon] ?? PackageCheck;
 
                 return (
-                  <li key={stage.index} className="border-t border-line pt-4">
+                  <li
+                    key={stage.index}
+                    data-reveal
+                    data-reveal-dir="up"
+                    data-reveal-delay={(0.28 + index * 0.08).toFixed(2)}
+                    className="border-t border-slate-200/80 pt-3"
+                  >
                     <span
-                      className={`flex h-10 w-10 items-center justify-center rounded-[12px] ${
+                      className={`flex h-9 w-9 items-center justify-center rounded-[10px] ${
                         gateTiles[index] ?? gateTiles[0]
                       }`}
                     >
-                      <Icon aria-hidden className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                      <Icon aria-hidden className="h-4 w-4" strokeWidth={1.9} />
                     </span>
-                    <span className="mt-3 block text-[13.5px] font-semibold leading-snug text-ink">
+                    <span className="mt-2 block text-[13px] font-bold leading-snug text-ink">
                       {stage.title}
                     </span>
                   </li>
@@ -67,8 +75,14 @@ export function QualityStatement() {
             </ul>
           </div>
 
+          {/* Right Column: Stacked Pails Photography - Scaled Down Height & Staggered Reveal */}
           <div className="lg:col-span-5">
-            <div className="relative h-full min-h-[280px] overflow-hidden rounded-[26px] bg-light shadow-[0_30px_70px_-50px_rgba(17,17,17,0.55)] sm:min-h-[340px]">
+            <div
+              data-reveal
+              data-reveal-dir="scale"
+              data-reveal-delay="0.25"
+              className="relative aspect-[4/3.4] w-full max-h-[380px] overflow-hidden rounded-[24px] bg-slate-100 border border-slate-200/80 shadow-md transition-all duration-500 hover:shadow-xl"
+            >
               <Image
                 src="/images/detail/stacked-pails.jpg"
                 alt="Finished containers stacked after inspection"

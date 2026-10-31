@@ -289,8 +289,8 @@ export function HeroSlider() {
                 className="object-cover object-[78%_center] lg:object-[82%_center]"
               />
 
-              {/* Left scrim: slightly increased for optimal readability while keeping product photography open */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FBF8F3] via-[#FBF8F3]/80 sm:via-[#FBF8F3]/55 to-transparent w-full lg:w-[54%]" />
+              {/* Left scrim: responsive gradient for crisp contrast on phones while keeping background open on desktop */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FBF8F3] via-[#FBF8F3]/90 sm:via-[#FBF8F3]/60 to-transparent w-full lg:w-[54%]" />
             </div>
           );
         })}
@@ -328,15 +328,15 @@ export function HeroSlider() {
                   ref={(node) => {
                     titleRefs.current[slideIndex] = node;
                   }}
-                  className="font-display text-[2.85rem] sm:text-[3.8rem] lg:text-[4.5vw] font-black tracking-tight leading-[1.02]"
+                  className="font-display text-[clamp(2.35rem,6.8vw,2.85rem)] sm:text-[3.8rem] lg:text-[4.5vw] font-black tracking-tight leading-[1.08] pb-1"
                 >
-                  <span className="block overflow-hidden">
-                    <span data-anim-dir="left" className={`block ${slide.colors.title1}`}>
+                  <span className="block overflow-hidden py-0.5">
+                    <span data-anim-dir="left" className={`block ${slide.colors.title1} pb-1`}>
                       {slide.titleLine1}
                     </span>
                   </span>
-                  <span className="block overflow-hidden">
-                    <span data-anim-dir="right" className={`block ${slide.colors.title2}`}>
+                  <span className="block overflow-hidden py-1">
+                    <span data-anim-dir="right" className={`block ${slide.colors.title2} pb-1.5`}>
                       {slide.titleLine2}
                     </span>
                   </span>
@@ -344,11 +344,11 @@ export function HeroSlider() {
 
                 {/* 3. Description: Line 1 from LEFT & Line 2 from RIGHT */}
                 <div className="mt-4 sm:mt-5 lg:mt-[1.3vw] text-[15px] sm:text-[16.5px] lg:text-[1.15vw] leading-[1.55] text-slate-700 font-normal space-y-1">
-                  <div className="overflow-hidden">
-                    <p data-anim-dir="desc1">{slide.descLine1}</p>
+                  <div className="overflow-hidden py-0.5">
+                    <p data-anim-dir="desc1" className="pb-0.5">{slide.descLine1}</p>
                   </div>
-                  <div className="overflow-hidden">
-                    <p data-anim-dir="desc2">{slide.descLine2}</p>
+                  <div className="overflow-hidden py-0.5">
+                    <p data-anim-dir="desc2" className="pb-0.5">{slide.descLine2}</p>
                   </div>
                 </div>
 

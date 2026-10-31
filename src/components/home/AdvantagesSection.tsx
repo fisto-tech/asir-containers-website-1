@@ -51,7 +51,7 @@ export function AdvantagesSection() {
           {/* Left Column: Machinery Graphic with Offset Red Decorative Backdrop */}
           <div className="lg:col-span-5">
             <Reveal>
-              <div data-reveal data-reveal-delay="0.1" className="relative mx-auto max-w-[440px] lg:max-w-none">
+              <div data-reveal data-reveal-dir="left" data-reveal-delay="0.1" className="relative mx-auto max-w-[440px] lg:max-w-none">
                 {/* Asymmetrical Curved Red Decorative Ribbon Backing matching exact design */}
                 <div
                   aria-hidden
@@ -83,7 +83,7 @@ export function AdvantagesSection() {
           <div className="lg:col-span-7">
             <Reveal>
               {/* Header Label: WHY CHOOSE US with horizontal accent line */}
-              <div data-reveal data-reveal-delay="0.1" className="flex items-center gap-3">
+              <div data-reveal data-reveal-dir="down" data-reveal-delay="0.1" className="flex items-center gap-3">
                 <span className="text-[12.5px] font-bold uppercase tracking-[0.18em] text-brand">
                   WHY CHOOSE US
                 </span>
@@ -91,13 +91,13 @@ export function AdvantagesSection() {
               </div>
 
               {/* Main Headline */}
-              <h2 data-reveal data-reveal-delay="0.15" className="mt-3.5 font-display text-[2.5rem] font-bold tracking-tight text-ink sm:text-[3.25rem] lg:text-[3.5rem] leading-[1.06]">
+              <h2 data-reveal data-reveal-dir="right" data-reveal-delay="0.15" className="mt-3.5 font-display text-[2.5rem] font-bold tracking-tight text-ink sm:text-[3.25rem] lg:text-[3.5rem] leading-[1.06]">
                 Engineered for <br className="hidden sm:inline" />
                 <span className="text-brand">Reliability</span>
               </h2>
 
               {/* Descriptive Paragraph */}
-              <p data-reveal data-reveal-delay="0.2" className="mt-4 max-w-xl text-[15.5px] font-medium leading-relaxed text-slate-600 sm:text-[16.5px]">
+              <p data-reveal data-reveal-dir="up" data-reveal-delay="0.2" className="mt-4 max-w-xl text-[15.5px] font-medium leading-relaxed text-slate-600 sm:text-[16.5px]">
                 We manufacture high-quality plastic components with precision, consistency and on-time delivery — ensuring your supply chain never stops.
               </p>
 
@@ -109,6 +109,7 @@ export function AdvantagesSection() {
                     <div
                       key={card.label}
                       data-reveal
+                      data-reveal-dir="scale"
                       data-reveal-delay={(0.25 + idx * 0.08).toFixed(2)}
                       className="group flex flex-col items-center justify-center rounded-[22px] border border-slate-200/90 bg-white px-4 py-6 text-center shadow-[0_4px_16px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                     >

@@ -139,11 +139,11 @@ export function FeaturesSection({ index = "02" }: Props) {
       <div className="shell relative z-10">
         {/* Header */}
         <Reveal>
-          <div data-reveal data-reveal-delay="0.1" className="mx-auto mb-14 max-w-2xl text-center">
-            <h2 className="font-display text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-              Container Features
+          <div data-reveal data-reveal-dir="down" data-reveal-delay="0.1" className="mx-auto mb-14 max-w-2xl text-center">
+            <h2 className="font-display text-[2.5rem] font-bold tracking-tight text-slate-900 sm:text-[3.25rem] lg:text-[3.5rem] leading-[1.06]">
+              Product Features
             </h2>
-            <p className="mt-2.5 text-[15px] text-slate-500">
+            <p className="mt-3.5 text-[15.5px] font-medium leading-relaxed text-slate-500 sm:text-[16.5px]">
               Thoughtfully designed for safer, cleaner and more convenient storage.
             </p>
           </div>
@@ -154,12 +154,15 @@ export function FeaturesSection({ index = "02" }: Props) {
           {featuresList.map((item, idx) => {
             const t = item.theme;
             const isHighlighted = hoveredIdx !== null ? hoveredIdx === idx : activeIdx === idx;
+            // Diverse directional reveals across the 4-column grid
+            const cardDir = idx % 4 === 0 ? "left" : idx % 4 === 1 ? "scale" : idx % 4 === 2 ? "scale-rotate" : "right";
 
             return (
               <Reveal key={item.title}>
                 <div
                   data-reveal
-                  data-reveal-delay={(0.08 * (idx % 4)).toFixed(2)}
+                  data-reveal-dir={cardDir}
+                  data-reveal-delay={(0.06 * (idx % 4)).toFixed(2)}
                   onMouseEnter={() => setHoveredIdx(idx)}
                   onMouseLeave={() => setHoveredIdx(null)}
                   className={`group relative flex items-center overflow-hidden rounded-[28px] bg-white p-6 transition-all duration-300 ${

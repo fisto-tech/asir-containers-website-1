@@ -367,7 +367,7 @@ export function ProductsBrowser() {
 
             <div
               ref={gridRef}
-              className="mt-8 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xl:gap-x-9 xl:gap-y-16"
+              className="mt-6 sm:mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 lg:grid-cols-2 xl:grid-cols-3 xl:gap-x-9 xl:gap-y-14"
               aria-live="polite"
               aria-busy={!hydrated}
             >
