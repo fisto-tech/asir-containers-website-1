@@ -34,7 +34,7 @@ export function AboutSection() {
   );
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-slate-50/80 py-16 lg:py-24 border-b border-slate-200/60">
+    <section ref={root} className="relative overflow-hidden bg-sandal py-16 lg:py-24 border-b border-sandal-border">
       {/* Background Decorative Graphic Elements */}
       <div
         aria-hidden
@@ -79,9 +79,9 @@ export function AboutSection() {
                 
                 {/* 1. Precision Engineering: Left aligned */}
                 <div data-reveal data-reveal-dir="scale" data-reveal-delay="0.22" className="flex flex-col items-start text-left">
-                  <div className="flex h-[72px] w-[72px] sm:h-[80px] sm:w-[80px] items-center justify-center rounded-[24px] bg-[#eff6ff] transition-transform duration-300 hover:scale-105">
+                  <div className="flex h-[72px] w-[72px] sm:h-[80px] sm:w-[80px] items-center justify-center rounded-[24px] bg-[#fbf3e4] border border-[#ebdcc4] transition-all duration-300 hover:scale-105 hover:shadow-sm">
                     {/* High-definition gear icon with circular center hole */}
-                    <Icon icon="fa6-solid:gear" className="h-8 w-8 sm:h-9 sm:w-9 text-[#0066cc]" />
+                    <Icon icon="fa6-solid:gear" className="h-8 w-8 sm:h-9 sm:w-9 text-[#b46b14]" />
                   </div>
                   <p className="mt-3 font-display text-[13.5px] sm:text-[14.5px] font-bold text-[#1a233a] leading-tight">
                     Precision<br />Engineering
@@ -90,9 +90,9 @@ export function AboutSection() {
 
                 {/* 2. Trusted Protection: Left aligned */}
                 <div data-reveal data-reveal-dir="scale" data-reveal-delay="0.3" className="flex flex-col items-start text-left">
-                  <div className="flex h-[72px] w-[72px] sm:h-[80px] sm:w-[80px] items-center justify-center rounded-[24px] bg-[#eff6ff] transition-transform duration-300 hover:scale-105">
+                  <div className="flex h-[72px] w-[72px] sm:h-[80px] sm:w-[80px] items-center justify-center rounded-[24px] bg-[#fbf3e4] border border-[#ebdcc4] transition-all duration-300 hover:scale-105 hover:shadow-sm">
                     {/* High-definition shield with checkmark */}
-                    <Icon icon="fluent:shield-task-24-filled" className="h-9 w-9 sm:h-10 sm:w-10 text-[#0066cc]" />
+                    <Icon icon="fluent:shield-task-24-filled" className="h-9 w-9 sm:h-10 sm:w-10 text-[#b46b14]" />
                   </div>
                   <p className="mt-3 font-display text-[13.5px] sm:text-[14.5px] font-bold text-[#1a233a] leading-tight">
                     Trusted<br />Protection
@@ -101,9 +101,9 @@ export function AboutSection() {
 
                 {/* 3. Built for Your Brand: Left aligned */}
                 <div data-reveal data-reveal-dir="scale" data-reveal-delay="0.38" className="flex flex-col items-start text-left">
-                  <div className="flex h-[72px] w-[72px] sm:h-[80px] sm:w-[80px] items-center justify-center rounded-[24px] bg-[#eff6ff] transition-transform duration-300 hover:scale-105">
+                  <div className="flex h-[72px] w-[72px] sm:h-[80px] sm:w-[80px] items-center justify-center rounded-[24px] bg-[#fbf3e4] border border-[#ebdcc4] transition-all duration-300 hover:scale-105 hover:shadow-sm">
                     {/* High-definition 3-person team silhouette */}
-                    <Icon icon="fluent:people-community-24-filled" className="h-9 w-9 sm:h-10 sm:w-10 text-[#0066cc]" />
+                    <Icon icon="fluent:people-community-24-filled" className="h-9 w-9 sm:h-10 sm:w-10 text-[#b46b14]" />
                   </div>
                   <p className="mt-3 font-display text-[13.5px] sm:text-[14.5px] font-bold text-[#1a233a] leading-tight">
                     Built for<br />Your Brand

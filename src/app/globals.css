@@ -18,6 +18,12 @@
   --color-soft: #f8fafc;
   --color-white: #ffffff;
 
+  /* Rich Architectural Sandal / Sand Warmth palette for alternating sections */
+  --color-sandal: #f4eee2;
+  --color-sandal-subtle: #efe7d8;
+  --color-sandal-border: #e3d7c3;
+  --color-sandal-dark: #e8dcc8;
+
   /* Vibrant modern industrial color accents */
   --color-ocean: #0284c7;
   --color-ocean-light: #f0f9ff;

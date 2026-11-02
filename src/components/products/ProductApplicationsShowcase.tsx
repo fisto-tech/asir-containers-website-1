@@ -15,7 +15,7 @@ export function ProductApplicationsShowcase({
   const isSingle = applications.length === 1;
 
   return (
-    <section className="border-t border-line/60 bg-[#FAF7F2] py-14 lg:py-20">
+    <section className="bg-sandal border-t border-line/60 py-14 lg:py-20">
       <div className="shell">
         <div
           className={`grid items-center gap-10 lg:gap-14 ${

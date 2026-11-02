@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Play, ShieldCheck, Layers, Link as LinkIcon } from "lucide-react";
 import { gsap, SplitText, reduceMotion } from "@/lib/animations";
 
-const SLIDE_DURATION = 3000;
+const SLIDE_DURATION = 5000;
 
 export const heroSlidesData = [
   {
@@ -126,6 +126,7 @@ export function HeroSlider() {
       }
 
       const currentElements = currentContent.querySelectorAll("[data-anim-dir]");
+      const nextElements = nextContent.querySelectorAll("[data-anim-dir]");
       const eyebrow = nextContent.querySelector("[data-anim-dir='top']");
       const title1 = nextContent.querySelector("[data-anim-dir='left']");
       const title2 = nextContent.querySelector("[data-anim-dir='right']");
@@ -138,6 +139,8 @@ export function HeroSlider() {
           setAnimating(false);
           gsap.set(currentImage, { autoAlpha: 0, clearProps: "clipPath,transform" });
           gsap.set(currentContent, { autoAlpha: 0 });
+          // Ensure all elements in the active slide are explicitly cleared and visible
+          gsap.set(nextElements, { clearProps: "all", autoAlpha: 1 });
         },
       });
 
@@ -145,7 +148,7 @@ export function HeroSlider() {
       gsap.set(nextImage, { autoAlpha: 1, zIndex: 10 });
       gsap.set(currentImage, { zIndex: 1 });
 
-      const imageDuration = 1.15; // Time taken for image to wipe in fully
+      const imageDuration = 0.9;
 
       timeline
         .fromTo(
@@ -160,74 +163,68 @@ export function HeroSlider() {
           0,
         )
         // Previous image softly fades out underneath
-        .to(currentImage, { autoAlpha: 0, duration: 0.8, ease: "power2.out" }, 0.3)
+        .to(currentImage, { autoAlpha: 0, duration: 0.6, ease: "power2.out" }, 0.2)
         // Previous text lines fade/slide out immediately
-        .to(currentElements, { y: -14 * direction, autoAlpha: 0, duration: 0.3, stagger: 0.03, ease: "power2.in" }, 0);
+        .to(currentElements, { y: -12 * direction, autoAlpha: 0, duration: 0.25, stagger: 0.02, ease: "power2.in" }, 0);
 
-      // Time point when the text animation begins (0.3 seconds after the image finishes revealing!)
-      const textStartTime = imageDuration + 0.3;
+      // Time point when the text animation begins
+      const textStartTime = 0.45;
 
-      // Make next content visible right before text animation starts
-      timeline.set(nextContent, { autoAlpha: 1 }, textStartTime - 0.05);
+      // Make next content visible
+      timeline.set(nextContent, { autoAlpha: 1 }, textStartTime);
 
-      // 2. Left side animated reveals: each line comes from different directions!
-      // - Eyebrow drops in from TOP
+      // 2. Left side animated reveals - smooth, relaxed, elegant pace:
       if (eyebrow) {
         timeline.fromTo(
           eyebrow,
-          { y: -26, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.65, ease: "back.out(1.4)" },
+          { y: -24, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.8, ease: "power3.out" },
           textStartTime,
         );
       }
 
-      // - Title Line 1 slides in from LEFT
       if (title1) {
         timeline.fromTo(
           title1,
-          { x: -60, autoAlpha: 0 },
-          { x: 0, autoAlpha: 1, duration: 0.7, ease: "power3.out" },
-          textStartTime + 0.1,
+          { x: -50, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.95, ease: "expo.out" },
+          textStartTime + 0.14,
         );
       }
 
-      // - Title Line 2 slides in from RIGHT
       if (title2) {
         timeline.fromTo(
           title2,
-          { x: 60, autoAlpha: 0 },
-          { x: 0, autoAlpha: 1, duration: 0.7, ease: "power3.out" },
-          textStartTime + 0.2,
+          { x: 50, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.95, ease: "expo.out" },
+          textStartTime + 0.26,
         );
       }
 
-      // - Description Line 1 slides in from LEFT
       if (desc1) {
         timeline.fromTo(
           desc1,
-          { x: -40, autoAlpha: 0 },
-          { x: 0, autoAlpha: 1, duration: 0.65, ease: "power3.out" },
-          textStartTime + 0.3,
+          { x: -35, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.85, ease: "power3.out" },
+          textStartTime + 0.38,
         );
       }
 
-      // - Description Line 2 slides in from RIGHT
       if (desc2) {
         timeline.fromTo(
           desc2,
-          { x: 40, autoAlpha: 0 },
-          { x: 0, autoAlpha: 1, duration: 0.65, ease: "power3.out" },
-          textStartTime + 0.4,
+          { x: 35, autoAlpha: 0 },
+          { x: 0, autoAlpha: 1, duration: 0.85, ease: "power3.out" },
+          textStartTime + 0.48,
         );
       }
 
-      // - Button pops up from BOTTOM with spring
       if (ctaBtn) {
         timeline.fromTo(
           ctaBtn,
-          { y: 30, scale: 0.94, autoAlpha: 0 },
-          { y: 0, scale: 1, autoAlpha: 1, duration: 0.65, ease: "back.out(1.5)" },
-          textStartTime + 0.5,
+          { y: 22, scale: 0.95, autoAlpha: 0 },
+          { y: 0, scale: 1, autoAlpha: 1, duration: 0.8, ease: "power3.out" },
+          textStartTime + 0.58,
         );
       }
     },

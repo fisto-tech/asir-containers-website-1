@@ -107,7 +107,7 @@ export function Header() {
 
   const linkTone = overLightHero
     ? "text-slate-900 font-semibold hover:text-brand"
-    : "text-slate-700 font-medium hover:text-ink";
+    : "text-slate-800 font-semibold hover:text-brand";
 
   return (
     <>
@@ -121,15 +121,15 @@ export function Header() {
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,height,box-shadow] duration-500 ${
           overLightHero
-            ? "border-b border-transparent bg-transparent"
+            ? "border-b border-line/40 bg-white/95 backdrop-blur-md shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
             : scrolled
-              ? "border-b border-line/80 bg-white/95 backdrop-blur-md shadow-xs"
-              : "border-b border-line bg-white"
+              ? "border-b border-line/80 bg-white/95 backdrop-blur-md shadow-[0_6px_28px_rgba(0,0,0,0.09)]"
+              : "border-b border-line/60 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)]"
         }`}
       >
         <div
           className={`shell flex items-center justify-between gap-6 transition-[height] duration-500 ${
-            scrolled ? "h-[64px]" : "h-[74px]"
+            scrolled ? "h-[68px]" : "h-[80px]"
           }`}
         >
           <Logo tone="dark" />
@@ -147,8 +147,8 @@ export function Header() {
                   <div className="flex items-center gap-1">
                     <Link
                       href={item.href}
-                      className={`link-rule text-[14px] font-medium tracking-tight ${linkTone} ${
-                        onProductsPage ? (overHero ? "text-white font-semibold" : "!text-ink font-semibold") : ""
+                      className={`link-rule text-[15.5px] font-semibold tracking-tight ${linkTone} ${
+                        onProductsPage ? "!text-brand font-semibold" : ""
                       }`}
                       data-active={onProductsPage}
                     >
@@ -164,7 +164,7 @@ export function Header() {
                     >
                       <ChevronDown
                         aria-hidden
-                        className={`h-3.5 w-3.5 transition-transform duration-300 ${
+                        className={`h-4 w-4 transition-transform duration-300 stroke-[2.5] ${
                           productsOpen ? "rotate-180 text-brand" : ""
                         }`}
                       />
@@ -182,22 +182,14 @@ export function Header() {
                     {/* Header bar */}
                     <div className="flex items-center justify-between pb-4">
                       <div className="flex items-center gap-3">
-                        <span className="font-display text-[17px] font-bold tracking-tight text-ink">
+                        <span className="font-display text-[17px] font-semibold tracking-tight text-ink">
                           All Products <span className="font-semibold text-mid/80">(17)</span>
                         </span>
                         <span className="text-[13px] font-medium text-mid/70">
-                          Explore our complete range of plastic containers
+                          Explore our complete range of products
                         </span>
                       </div>
-                      <Link
-                        href="/products"
-                        tabIndex={productsOpen ? 0 : -1}
-                        onClick={() => setProductsOpen(false)}
-                        className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand transition-colors hover:text-brand/80"
-                      >
-                        <span>View product catalogue</span>
-                        <ArrowUpRight aria-hidden className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                      </Link>
+                    
                     </div>
 
                     {/* 4-column balanced grid of 17 product cards */}
@@ -233,8 +225,8 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   data-active={isActive(item.href)}
-                  className={`link-rule text-[14px] font-medium tracking-tight ${linkTone} ${
-                    isActive(item.href) ? "!text-brand font-bold" : ""
+                  className={`link-rule text-[15.5px] font-semibold tracking-tight ${linkTone} ${
+                    isActive(item.href) ? "!text-brand font-semibold" : ""
                   }`}
                 >
                   {item.label}
@@ -245,15 +237,15 @@ export function Header() {
 
           <div className="hidden items-center gap-6 lg:flex">
             <a
-              href="https://www.example.com/"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
-              className={`link-rule group inline-flex items-center gap-1.5 text-[14px] font-medium tracking-tight ${linkTone}`}
+              className={`link-rule group inline-flex items-center gap-1.5 text-[15px] font-semibold tracking-tight ${linkTone}`}
             >
               Catalogue
               <ArrowUpRight
                 aria-hidden
-                className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 text-brand"
+                className="h-4 w-4 stroke-[2.5] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 text-brand"
               />
             </a>
             <Button

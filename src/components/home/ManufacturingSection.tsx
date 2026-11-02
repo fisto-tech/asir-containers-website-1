@@ -33,7 +33,7 @@ export function ManufacturingSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-slate-50/70 py-12 lg:py-16 border-b border-slate-200/60">
+    <section className="relative overflow-hidden bg-sandal py-12 lg:py-16 border-b border-sandal-border">
       {/* Architectural Background Graphic Elements (similar to Who We Are) */}
       <div
         aria-hidden

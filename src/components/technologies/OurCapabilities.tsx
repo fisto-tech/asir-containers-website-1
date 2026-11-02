@@ -46,7 +46,7 @@ export function OurCapabilities() {
   useScrollReveal(root);
 
   return (
-    <section ref={root} className="bg-white py-14 lg:py-20 border-b border-line/60">
+    <section ref={root} className="bg-sandal py-14 lg:py-12 border-b border-line/60">
       <div className="shell">
         {/* Section Header */}
         <div className="flex flex-wrap items-end justify-between gap-4 pb-8 lg:pb-10">
@@ -55,15 +55,7 @@ export function OurCapabilities() {
               Our Capabilities
             </h2>
           </div>
-          <div data-reveal data-reveal-dir="right" data-reveal-delay="0.15">
-            <Link
-              href="/about"
-              className="group inline-flex items-center gap-1.5 text-[14.5px] sm:text-[15px] font-semibold text-brand hover:text-brand-dark transition-colors"
-            >
-              <span>View facility</span>
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-          </div>
+          
         </div>
 
         {/* 4 Cards Grid with Bidirectional Staggered Animation */}
@@ -102,7 +94,7 @@ export function OurCapabilities() {
                       {cap.title}
                     </span>
                   </div>
-                  <ArrowRight className="h-4 w-4 shrink-0 text-brand transition-transform duration-300 group-hover:translate-x-1 ml-2 pt-1.5" />
+                  
                 </div>
               </div>
             );

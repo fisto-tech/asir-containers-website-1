@@ -60,7 +60,7 @@ export function Auxiliaries() {
   return (
     <section
       ref={root}
-      className="relative overflow-hidden bg-[#fafafa] min-h-[60vh] max-h-[78vh] flex flex-col justify-center py-12 border-b border-slate-100"
+      className="relative overflow-hidden bg-sandal min-h-[60vh] max-h-[78vh] flex flex-col justify-center py-12 border-b border-sandal-border"
       aria-labelledby="auxiliaries-heading"
     >
       <div className="shell relative z-10">

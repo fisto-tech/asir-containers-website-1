@@ -56,7 +56,7 @@ export function AccessoriesSection() {
   useScrollReveal(root);
 
   return (
-    <section ref={root} className="bg-slate-50/70 py-14 lg:py-20 border-b border-line/60">
+    <section ref={root} className=" py-14 lg:py-20">
       <div className="shell">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           {/* Left Column: Image with Directional Left Reveal */}

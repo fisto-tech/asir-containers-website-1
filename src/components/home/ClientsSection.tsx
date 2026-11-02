@@ -10,7 +10,7 @@ export function ClientsSection() {
   const marqueeList = [...allHomeClients, ...allHomeClients];
 
   return (
-    <section className="relative overflow-hidden bg-slate-50/80 py-16 lg:py-20 border-b border-slate-200/60">
+    <section className="relative overflow-hidden bg-sandal py-16 lg:py-20 border-b border-sandal-border">
       {/* Background soft color blurs */}
       <div className="pointer-events-none absolute -left-20 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-blue-100/40 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-rose-100/30 blur-3xl" />
@@ -31,8 +31,8 @@ export function ClientsSection() {
       {/* Edge gradient mask for clean marquee fade */}
       <Reveal className="relative w-full overflow-hidden">
         <div data-reveal data-reveal-dir="scale" data-reveal-delay="0.2">
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-28 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-28 bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-28 bg-gradient-to-r from-sandal via-sandal/80 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-28 bg-gradient-to-l from-sandal via-sandal/80 to-transparent" />
 
           {/* Marquee Track with clean white cards */}
           <div className="animate-marquee flex gap-5 py-3">
