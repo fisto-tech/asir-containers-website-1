@@ -12,6 +12,7 @@ type Fields = {
   email: string;
   phone: string;
   enquiryType: EnquiryType | "";
+  otherSpecific: string;
   message: string;
 };
 
@@ -23,6 +24,7 @@ const EMPTY: Fields = {
   email: "",
   phone: "",
   enquiryType: "",
+  otherSpecific: "",
   message: "",
 };
 
@@ -38,6 +40,9 @@ const validate = (values: Fields, productRef: string): Errors => {
     errors.phone = "Enter a valid phone number, digits and + only.";
   }
   if (!values.enquiryType) errors.enquiryType = "Select an enquiry type.";
+  if (values.enquiryType === "Other" && !values.otherSpecific.trim()) {
+    errors.otherSpecific = "Please specify your enquiry.";
+  }
   if (values.message.trim().length < 20) {
     errors.message = "Tell us a little more — at least 20 characters.";
   }
@@ -226,7 +231,12 @@ export function ContactForm() {
           hint="Optional"
         /></div>
 
-        <div data-reveal data-reveal-delay="0.3" className="sm:col-span-2" ref={enquiryDropdownRef}>
+        <div
+          data-reveal
+          data-reveal-delay="0.3"
+          className={`${values.enquiryType === "Other" ? "sm:col-span-1" : "sm:col-span-2"} relative ${enquiryMenuOpen ? "z-50" : "z-10"}`}
+          ref={enquiryDropdownRef}
+        >
           <div
             className={`field-shell group relative rounded-[14px] border bg-[#fafafa]/80 px-4.5 pb-2.5 pt-3 transition-all duration-200 hover:bg-white ${
               errors.enquiryType
@@ -254,7 +264,7 @@ export function ContactForm() {
               onClick={() => setEnquiryMenuOpen((prev) => !prev)}
               className="mt-1 flex h-8 w-full items-center justify-between text-left text-[15.5px] font-medium outline-none focus-visible:outline-none"
             >
-              <span className={values.enquiryType ? "text-ink" : "text-mid/45"}>
+              <span className={values.enquiryType ? "text-ink font-semibold" : "text-mid/45"}>
                 {values.enquiryType || "Select an enquiry type"}
               </span>
               <ChevronDown
@@ -270,7 +280,7 @@ export function ContactForm() {
               <div
                 role="listbox"
                 aria-labelledby="enquiryType-label"
-                className="absolute inset-x-0 top-full z-40 mt-2 overflow-hidden rounded-[14px] border border-line bg-white py-1.5 shadow-[0_16px_36px_-10px_rgba(0,0,0,0.18)]"
+                className="absolute inset-x-0 top-[calc(100%+6px)] z-50 overflow-hidden rounded-[14px] border border-slate-200 bg-white py-1.5 shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)]"
               >
                 {site.enquiryTypes.map((type) => {
                   const isSelected = values.enquiryType === type;
@@ -282,12 +292,15 @@ export function ContactForm() {
                       aria-selected={isSelected}
                       onClick={() => {
                         update("enquiryType", type);
+                        if (type !== "Other") {
+                          update("otherSpecific", "");
+                        }
                         setEnquiryMenuOpen(false);
                       }}
                       className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-[14.5px] transition-colors ${
                         isSelected
-                          ? "bg-light font-semibold text-brand"
-                          : "text-ink hover:bg-soft"
+                          ? "bg-slate-50 font-semibold text-brand"
+                          : "text-ink hover:bg-slate-50"
                       }`}
                     >
                       <span>{type}</span>
@@ -315,6 +328,21 @@ export function ContactForm() {
             </p>
           )}
         </div>
+
+        {/* Dynamic Specific Other Input Field (Right beside Enquiry type) */}
+        {values.enquiryType === "Other" && (
+          <div className="sm:col-span-1 animate-in fade-in slide-in-from-left-2 duration-300">
+            <Field
+              label="Specify enquiry"
+              name="otherSpecific"
+              required
+              value={values.otherSpecific}
+              onChange={(value) => update("otherSpecific", value)}
+              error={errors.otherSpecific}
+              placeholder="E.g., custom mold, export tender, etc."
+            />
+          </div>
+        )}
 
         <div data-reveal data-reveal-delay="0.35" className="sm:col-span-2">
           <div

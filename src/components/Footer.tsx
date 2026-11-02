@@ -101,7 +101,10 @@ const applicationsList = [
 
 export function Footer() {
   return (
-    <footer className="relative bg-white text-slate-900 overflow-hidden border-t border-slate-200/80">
+    <footer
+      className="relative text-slate-900 overflow-hidden border-t border-slate-200/80 bg-[#e6f1ee]"
+      style={{ backgroundColor: "#e6f1ee" }}
+    >
       {/* Background Graphic Image: contained at the bottom on mobile/tablet, full cover on desktop */}
       <div className="pointer-events-none absolute inset-0 z-0 flex items-end justify-end">
         <div className="relative h-full w-full">
@@ -116,110 +119,110 @@ export function Footer() {
       </div>
 
       {/* Main Footer Content — clean flex layout so columns have rock-solid widths */}
-      <div className="relative z-10 w-full pt-12 pb-12 lg:pt-16 lg:pb-16 px-6 sm:px-10 lg:pl-[4.5vw]">
-        <div className="flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start gap-8 lg:gap-10 xl:gap-12">
+      <div className="relative z-10 w-full pt-12 pb-12 lg:pt-[3.2vw] lg:pb-[1.2vw] px-6 sm:px-10 lg:px-[4.5vw]">
+        <div className="flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start gap-8 lg:gap-[2.6vw]">
           
           {/* Column 1: Brand & About */}
-          <div className="w-full sm:w-[300px] lg:w-[320px] xl:w-[340px] shrink-0 flex flex-col justify-between">
+          <div className="w-full sm:w-[300px] lg:w-[22vw] shrink-0 flex flex-col justify-between">
             <div>
-              <div className="flex items-center -mt-1">
-                <Logo tone="dark" imageClassName="!h-11 sm:!h-12" />
+              <div className="flex items-center -mt-1 lg:-mt-[0.2vw]">
+                <Logo tone="dark" imageClassName="!h-11 sm:!h-12 lg:!h-[2.85vw]" />
               </div>
 
-              <p className="mt-5 text-[14.5px] sm:text-[15px] leading-relaxed text-slate-600 font-normal">
+              <p className="mt-5 lg:mt-[1.2vw] text-[14.5px] sm:text-[15px] lg:text-[0.92vw] leading-relaxed lg:leading-[1.6] text-slate-600 font-normal">
                 ASIR Containers manufactures rigid plastic pails and containers for the paint, agro, food and lubricant industries — in round and square formats, with multiple closure options and industry-specific colour availability.
               </p>
             </div>
 
             {/* Social Icons */}
-            <div className="mt-7 flex items-center gap-3">
+            <div className="mt-7 lg:mt-[1.6vw] flex items-center gap-3 lg:gap-[0.7vw]">
               <a
                 href={site.social.find((s) => s.icon === "linkedin")?.href || "https://linkedin.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="flex h-9.5 w-9.5 items-center justify-center rounded-full bg-slate-100 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
+                className="flex h-9.5 w-9.5 lg:h-[2.25vw] lg:w-[2.25vw] items-center justify-center rounded-full bg-white/80 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
               >
-                <LinkedinIcon className="h-4 w-4" />
+                <LinkedinIcon className="h-4 w-4 lg:h-[0.95vw] lg:w-[0.95vw]" />
               </a>
               <a
                 href={site.social.find((s) => s.icon === "instagram")?.href || "https://instagram.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="flex h-9.5 w-9.5 items-center justify-center rounded-full bg-slate-100 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
+                className="flex h-9.5 w-9.5 lg:h-[2.25vw] lg:w-[2.25vw] items-center justify-center rounded-full bg-white/80 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
               >
-                <InstagramIcon className="h-4 w-4" />
+                <InstagramIcon className="h-4 w-4 lg:h-[0.95vw] lg:w-[0.95vw]" />
               </a>
               <a
                 href={site.social.find((s) => s.icon === "facebook")?.href || "https://facebook.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="flex h-9.5 w-9.5 items-center justify-center rounded-full bg-slate-100 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
+                className="flex h-9.5 w-9.5 lg:h-[2.25vw] lg:w-[2.25vw] items-center justify-center rounded-full bg-white/80 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
               >
-                <FacebookIcon className="h-4 w-4" />
+                <FacebookIcon className="h-4 w-4 lg:h-[0.95vw] lg:w-[0.95vw]" />
               </a>
               <a
                 href={site.social.find((s) => s.icon === "youtube")?.href || "https://youtube.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
-                className="flex h-9.5 w-9.5 items-center justify-center rounded-full bg-slate-100 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
+                className="flex h-9.5 w-9.5 lg:h-[2.25vw] lg:w-[2.25vw] items-center justify-center rounded-full bg-white/80 hover:bg-brand hover:text-white text-slate-800 transition-colors shadow-xs"
               >
-                <YoutubeIcon className="h-4 w-4" />
+                <YoutubeIcon className="h-4 w-4 lg:h-[0.95vw] lg:w-[0.95vw]" />
               </a>
             </div>
 
             {/* Red accent line indicator */}
-            <div className="mt-7 flex items-center">
-              <div className="h-[2.5px] w-12 bg-brand" />
-              <div className="h-[1px] w-28 bg-slate-200" />
+            <div className="mt-7 lg:mt-[1.6vw] flex items-center">
+              <div className="h-[2.5px] lg:h-[0.15vw] w-12 lg:w-[2.8vw] bg-brand" />
+              <div className="h-[1px] lg:h-[0.06vw] w-28 lg:w-[6.5vw] bg-slate-200" />
             </div>
           </div>
 
-          {/* Column 2: Contact Card */}
-          <div className="w-full sm:w-[305px] lg:w-[305px] xl:w-[315px] shrink-0 rounded-2xl bg-[#FFF6F6] border border-[#FEE1E1] p-5.5 sm:p-6 shadow-xs">
-            <h3 className="font-display text-[17.5px] font-bold text-ink tracking-tight leading-none">
+          {/* Column 2: Contact Details */}
+          <div className="w-full sm:w-[280px] lg:w-[17vw] shrink-0 pt-0 sm:pt-5 lg:pt-[1.2vw]">
+            <h3 className="font-display text-[17.5px] lg:text-[1.08vw] font-bold text-ink tracking-tight leading-none">
               Contact
             </h3>
-            <div className="mt-2.5 mb-5 h-[2px] w-6 bg-brand" />
+            <div className="mt-2.5 lg:mt-[0.55vw] mb-5 lg:mb-[1.1vw] h-[2px] lg:h-[0.14vw] w-6 lg:w-[1.4vw] bg-brand" />
 
-            <div className="space-y-3.5">
+            <div className="space-y-3.5 lg:space-y-[0.8vw]">
               {/* Address */}
-              <div className="flex items-start gap-3">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FEECEB] text-brand mt-0.5">
-                  <MapPin className="h-4 w-4" />
+              <div className="flex items-start gap-3 lg:gap-[0.7vw]">
+                <span className="flex h-8 w-8 lg:h-[1.9vw] lg:w-[1.9vw] shrink-0 items-center justify-center rounded-full bg-white/90 text-brand shadow-xs mt-0.5 lg:mt-[0.1vw]">
+                  <MapPin className="h-4 w-4 lg:h-[0.95vw] lg:w-[0.95vw]" />
                 </span>
-                <p className="text-slate-700 text-[13.5px] sm:text-[14px] leading-relaxed font-normal">
+                <p className="text-slate-800 text-[14px] sm:text-[14.5px] lg:text-[0.88vw] font-medium leading-snug lg:leading-[1.45]">
                   1734-c1, Pallapatti Rd,<br />
-                  near Central Excise Office<br />
+                  near Central Excise Office,<br />
                   Thiruthangal, Sivakasi,<br />
                   Tamil Nadu 626130
                 </p>
               </div>
 
               {/* Phone */}
-              <div className="flex items-center gap-3 pt-0.5">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FEECEB] text-brand">
-                  <Phone className="h-4 w-4" />
+              <div className="flex items-center gap-3 lg:gap-[0.7vw] pt-0.5 lg:pt-[0.1vw]">
+                <span className="flex h-8 w-8 lg:h-[1.9vw] lg:w-[1.9vw] shrink-0 items-center justify-center rounded-full bg-white/90 text-brand shadow-xs">
+                  <Phone className="h-4 w-4 lg:h-[0.95vw] lg:w-[0.95vw]" />
                 </span>
                 <a
                   href="tel:+919876543210"
-                  className="text-slate-800 text-[14px] sm:text-[14.5px] font-medium hover:text-brand transition-colors"
+                  className="text-slate-800 text-[14px] sm:text-[14.5px] lg:text-[0.88vw] font-medium hover:text-brand transition-colors"
                 >
                   +91 98765 43210
                 </a>
               </div>
 
               {/* Email */}
-              <div className="flex items-center gap-3 pt-0.5">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FEECEB] text-brand">
-                  <Mail className="h-4 w-4" />
+              <div className="flex items-center gap-3 lg:gap-[0.7vw] pt-0.5 lg:pt-[0.1vw]">
+                <span className="flex h-8 w-8 lg:h-[1.9vw] lg:w-[1.9vw] shrink-0 items-center justify-center rounded-full bg-white/90 text-brand shadow-xs">
+                  <Mail className="h-4 w-4 lg:h-[0.95vw] lg:w-[0.95vw]" />
                 </span>
                 <a
                   href="mailto:sales@asircontainers.com"
-                  className="text-slate-800 text-[14px] sm:text-[14.5px] font-medium hover:text-brand transition-colors"
+                  className="text-slate-800 text-[14px] sm:text-[14.5px] lg:text-[0.88vw] font-medium hover:text-brand transition-colors"
                 >
                   sales@asircontainers.com
                 </a>
@@ -227,51 +230,51 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Column 3: Navigate — pt-5 on desktop so header aligns with Contact */}
-          <div className="w-full sm:w-[145px] lg:w-[145px] shrink-0 pt-0 sm:pt-5">
-            <h3 className="font-display text-[17.5px] font-bold text-ink tracking-tight leading-none">
+          {/* Column 3: Navigate */}
+          <div className="w-full sm:w-[145px] lg:w-[9.5vw] shrink-0 pt-0 sm:pt-5 lg:pt-[1.2vw] lg:-ml-[0.8vw]">
+            <h3 className="font-display text-[17.5px] lg:text-[1.08vw] font-bold text-ink tracking-tight leading-none">
               Navigate
             </h3>
-            <div className="mt-2.5 mb-5 h-[2px] w-6 bg-brand" />
+            <div className="mt-2.5 lg:mt-[0.55vw] mb-5 lg:mb-[1.1vw] h-[2px] lg:h-[0.14vw] w-6 lg:w-[1.4vw] bg-brand" />
 
-            <ul className="space-y-1.5">
+            <ul className="space-y-1.5 lg:space-y-[0.2vw]">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="group flex items-center justify-between text-[14.5px] sm:text-[15px] font-medium text-slate-700 hover:text-brand py-2.5 transition-colors"
+                    className="group flex items-center justify-between text-[14.5px] sm:text-[15px] lg:text-[0.92vw] font-medium text-slate-700 hover:text-brand py-2.5 lg:py-[0.3vw] transition-colors"
                   >
                     <span>{link.label}</span>
-                    <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-brand group-hover:translate-x-0.5 transition-all" />
+                    <ChevronRight className="h-4 w-4 lg:h-[0.9vw] lg:w-[0.9vw] text-slate-400 group-hover:text-brand group-hover:translate-x-0.5 lg:group-hover:translate-x-[0.12vw] transition-all" />
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Column 4: Applications — pt-5 on desktop so header aligns with Contact */}
-          <div className="w-full sm:w-[175px] lg:w-[175px] shrink-0 pt-0 sm:pt-5">
-            <h3 className="font-display text-[17.5px] font-bold text-ink tracking-tight leading-none">
+          {/* Column 4: Applications */}
+          <div className="w-full sm:w-[175px] lg:w-[12vw] shrink-0 pt-0 sm:pt-5 lg:pt-[1.2vw]">
+            <h3 className="font-display text-[17.5px] lg:text-[1.08vw] font-bold text-ink tracking-tight leading-none">
               Applications
             </h3>
-            <div className="mt-2.5 mb-5 h-[2px] w-6 bg-brand" />
+            <div className="mt-2.5 lg:mt-[0.55vw] mb-5 lg:mb-[1.1vw] h-[2px] lg:h-[0.14vw] w-6 lg:w-[1.4vw] bg-brand" />
 
-            <ul className="space-y-1.5">
+            <ul className="space-y-1.5 lg:space-y-[0.35vw]">
               {applicationsList.map((app) => {
                 const Icon = app.icon;
                 return (
                   <li key={app.label}>
                     <Link
                       href={app.href}
-                      className="group flex items-center justify-between text-[14.5px] sm:text-[15px] font-medium text-slate-700 hover:text-brand py-2.5 transition-colors"
+                      className="group flex items-center justify-between text-[14.5px] sm:text-[15px] lg:text-[0.92vw] font-medium text-slate-700 hover:text-brand py-2.5 lg:py-[0.5vw] transition-colors"
                     >
-                      <span className="flex items-center gap-2.5">
-                        <Icon className="h-4.5 w-4.5 text-brand shrink-0" />
+                      <span className="flex items-center gap-2.5 lg:gap-[0.55vw]">
+                        <Icon className="h-4.5 w-4.5 lg:h-[0.98vw] lg:w-[0.98vw] text-brand shrink-0" />
                         <span>{app.label}</span>
                       </span>
-                      <span className="flex items-center gap-1 font-mono text-[13px] text-slate-400 group-hover:text-brand transition-colors">
+                      <span className="flex items-center gap-1 lg:gap-[0.2vw] font-mono text-[13px] lg:text-[0.8vw] text-slate-400 group-hover:text-brand transition-colors">
                         <span>{app.count}</span>
-                        <ArrowUpRight className="h-3.5 w-3.5" />
+                        <ArrowUpRight className="h-3.5 w-3.5 lg:h-[0.8vw] lg:w-[0.8vw]" />
                       </span>
                     </Link>
                   </li>
@@ -284,20 +287,13 @@ export function Footer() {
       </div>
 
       {/* Bottom Copyright Bar with Slogan */}
-      <div className="relative z-10 border-t border-slate-200/80 py-5 px-6 sm:px-10 lg:px-[5vw]">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="relative z-10 border-t border-slate-200/80 lg:border-t-[0.07vw] py-5 lg:py-[1.3vw] px-6 sm:px-10 lg:px-[4.5vw]">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 lg:gap-[1vw]">
           
-          {/* Left: Tagline marker */}
-          <div className="flex items-center gap-3">
-            <div className="h-[2px] w-8 bg-brand shrink-0" />
-            <span className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">
-              BUILT FOR A BRIGHTER TOMORROW
-            </span>
-          </div>
-
-          {/* Right: Copyright Text */}
-          <div className="text-center sm:text-right pr-0 sm:pr-16">
-            <p className="text-[13px] text-slate-500 font-normal">
+         
+          {/* Center: Copyright Text */}
+          <div className="text-center">
+            <p className="text-[13px] lg:text-[0.8vw] text-slate-500 font-normal">
               © {year} {site.name}. All rights reserved.
             </p>
           </div>
