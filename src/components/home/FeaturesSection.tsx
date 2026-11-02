@@ -150,16 +150,17 @@ export function FeaturesSection({ index = "02" }: Props) {
         </Reveal>
 
         {/* 4x2 Horizontal Pill Card Grid */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-          {featuresList.map((item, idx) => {
-            const t = item.theme;
-            const isHighlighted = hoveredIdx !== null ? hoveredIdx === idx : activeIdx === idx;
-            // Diverse directional reveals across the 4-column grid
-            const cardDir = idx % 4 === 0 ? "left" : idx % 4 === 1 ? "scale" : idx % 4 === 2 ? "scale-rotate" : "right";
+        <Reveal>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            {featuresList.map((item, idx) => {
+              const t = item.theme;
+              const isHighlighted = hoveredIdx !== null ? hoveredIdx === idx : activeIdx === idx;
+              // Diverse directional reveals across the 4-column grid
+              const cardDir = idx % 4 === 0 ? "left" : idx % 4 === 1 ? "scale" : idx % 4 === 2 ? "scale-rotate" : "right";
 
-            return (
-              <Reveal key={item.title}>
+              return (
                 <div
+                  key={item.title}
                   data-reveal
                   data-reveal-dir={cardDir}
                   data-reveal-delay={(0.06 * (idx % 4)).toFixed(2)}
@@ -235,10 +236,10 @@ export function FeaturesSection({ index = "02" }: Props) {
                     </div>
                   </div>
                 </div>
-              </Reveal>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </Reveal>
       </div>
     </section>
   );

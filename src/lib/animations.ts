@@ -113,40 +113,14 @@ export const useScrollReveal = (scope: RefObject<HTMLElement | null>) => {
         ScrollTrigger.create({
           trigger: element,
           start: "top 92%",
-          end: "bottom 6%",
+          once: true,
           invalidateOnRefresh: true,
-          // Forward scroll entry (scrolling down into view)
           onEnter: () =>
             gsap.to(element, {
               ...activeProps,
               duration: 0.9,
               delay,
               ease: "power3.out",
-              overwrite: "auto",
-            }),
-          // Forward scroll leave (scrolled past top) -> soft reverse exit
-          onLeave: () =>
-            gsap.to(element, {
-              opacity: 0,
-              y: dir === "down" ? 25 : -25,
-              duration: 0.45,
-              ease: "power2.in",
-              overwrite: "auto",
-            }),
-          // Backward scroll entry (scrolling back up into view) -> reverse in
-          onEnterBack: () =>
-            gsap.to(element, {
-              ...activeProps,
-              duration: 0.8,
-              ease: "power3.out",
-              overwrite: "auto",
-            }),
-          // Backward scroll leave (scrolled back down below view) -> reverse reset
-          onLeaveBack: () =>
-            gsap.to(element, {
-              ...initialProps,
-              duration: 0.5,
-              ease: "power2.in",
               overwrite: "auto",
             }),
         });
@@ -158,16 +132,10 @@ export const useScrollReveal = (scope: RefObject<HTMLElement | null>) => {
         ScrollTrigger.create({
           trigger: element,
           start: "top 92%",
-          end: "bottom 8%",
+          once: true,
           invalidateOnRefresh: true,
           onEnter: () =>
             gsap.to(element, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.25, ease: "expo.out", overwrite: "auto" }),
-          onLeave: () =>
-            gsap.to(element, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.5, ease: "power2.in", overwrite: "auto" }),
-          onEnterBack: () =>
-            gsap.to(element, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.9, ease: "expo.out", overwrite: "auto" }),
-          onLeaveBack: () =>
-            gsap.to(element, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.5, ease: "power2.in", overwrite: "auto" }),
         });
       });
     },
@@ -290,15 +258,10 @@ export const revealLines = (
       ? null
       : ScrollTrigger.create({
           trigger: element,
-          start: "top 98%",
-          end: "bottom 5%",
+          start: "top 95%",
+          once: true,
           invalidateOnRefresh: true,
           onEnter: () => play("down"),
-          onLeave: () =>
-            gsap.to(pieces, { yPercent: -120, opacity: 0, duration: 0.35, ease: "power2.in", overwrite: "auto" }),
-          onEnterBack: () => play("up"),
-          onLeaveBack: () =>
-            gsap.to(pieces, { yPercent: 120, opacity: 0, duration: 0.35, ease: "power2.in", overwrite: "auto" }),
         });
 
   // If already inside the viewport or near the top on initial load, trigger entry immediately
