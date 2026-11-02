@@ -66,6 +66,7 @@ export default function ContactPage() {
                     icon={<MapPin aria-hidden className="h-5 w-5" />}
                     label="Location"
                     value={address}
+                    href={contact.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
                     delay="0.25"
                   />
                   <ContactRow
@@ -99,7 +100,7 @@ export default function ContactPage() {
                   </div>
                 ) : (
                   <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
+                    href={contact.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group mt-3 flex h-[240px] w-full flex-col justify-end rounded-[18px] bg-[linear-gradient(140deg,#151515_0%,#242424_100%)] p-6 text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
@@ -156,7 +157,11 @@ function ContactRow({
       <span className="min-w-0">
         <span className="block text-[13px] text-mid">{label}</span>
         {href ? (
-          <a href={href} className="group block">
+          <a
+            href={href}
+            {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            className="group block"
+          >
             {content}
           </a>
         ) : (

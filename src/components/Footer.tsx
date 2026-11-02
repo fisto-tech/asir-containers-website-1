@@ -194,12 +194,17 @@ export function Footer() {
                 <span className="flex h-8 w-8 lg:h-[1.9vw] lg:w-[1.9vw] shrink-0 items-center justify-center rounded-full bg-white/90 text-brand shadow-xs mt-0.5 lg:mt-[0.1vw]">
                   <MapPin className="h-4 w-4 lg:h-[0.95vw] lg:w-[0.95vw]" />
                 </span>
-                <p className="text-slate-800 text-[14px] sm:text-[14.5px] lg:text-[0.88vw] font-medium leading-snug lg:leading-[1.45]">
+                <a
+                  href={site.contact.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([site.contact.addressLines.join(", "), site.contact.country].filter(Boolean).join(", "))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-800 text-[14px] sm:text-[14.5px] lg:text-[0.88vw] font-medium leading-snug lg:leading-[1.45] hover:text-brand transition-colors"
+                >
                   1734-c1, Pallapatti Rd,<br />
                   near Central Excise Office,<br />
                   Thiruthangal, Sivakasi,<br />
                   Tamil Nadu 626130
-                </p>
+                </a>
               </div>
 
               {/* Phone */}

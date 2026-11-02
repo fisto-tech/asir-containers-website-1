@@ -53,6 +53,7 @@ export const site = {
     postalCode: "626130" as string | null,
     country: "India",
     businessHours: ["Mon–Sat: 9:00 – 18:00"] as string[],
+    googleMapsUrl: "https://maps.app.goo.gl/T5ann4Egmn6ZKuSn9",
     mapEmbedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3935.4450587842034!2d77.8132596!3d9.4699615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b06cfbcb375cea3%3A0xca55b187bf45fd00!2sAsir%20Containers!5e0!3m2!1sen!2sin!4v1793099969746!5m2!1sen!2sin",
   },
