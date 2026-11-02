@@ -61,9 +61,9 @@ export function ProcessHero() {
             {/* Plate 1: Wide Plant Floor Image */}
             <div
               data-reveal
-              data-reveal-dir="scale"
-              data-reveal-delay="0.2"
-              className="relative col-span-3 overflow-hidden rounded-[24px] bg-slate-900 border border-slate-200/80 shadow-md transition-all duration-500 hover:shadow-xl"
+              data-reveal-dir="clip-down"
+              data-reveal-delay="0.18"
+              className="group/img relative col-span-3 overflow-hidden rounded-[24px] bg-slate-900 border border-slate-200/80 shadow-md transition-all duration-500 hover:shadow-xl"
             >
               <Image
                 src="/images/hero/hero-01.jpg"
@@ -71,7 +71,7 @@ export function ProcessHero() {
                 fill
                 priority
                 sizes="(max-width: 1024px) 60vw, 36vw"
-                className="ambient-media-slow object-cover"
+                className="ambient-media-slow object-cover transition-transform duration-700 ease-out group-hover/img:scale-106"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/10" />
             </div>
@@ -79,9 +79,9 @@ export function ProcessHero() {
             {/* Plate 2: Narrow Machinery Detail Image */}
             <div
               data-reveal
-              data-reveal-dir="scale"
+              data-reveal-dir="clip-down"
               data-reveal-delay="0.32"
-              className="relative col-span-2 overflow-hidden rounded-[24px] bg-slate-900 border border-slate-200/80 shadow-md transition-all duration-500 hover:shadow-xl"
+              className="group/img relative col-span-2 overflow-hidden rounded-[24px] bg-slate-900 border border-slate-200/80 shadow-md transition-all duration-500 hover:shadow-xl"
             >
               <Image
                 src="/images/facility/machinery-01.jpg"
@@ -89,7 +89,7 @@ export function ProcessHero() {
                 fill
                 priority
                 sizes="(max-width: 1024px) 40vw, 24vw"
-                className="ambient-media object-cover"
+                className="ambient-media object-cover transition-transform duration-700 ease-out group-hover/img:scale-106"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/10" />
             </div>

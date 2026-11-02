@@ -103,9 +103,13 @@ export const useScrollReveal = (scope: RefObject<HTMLElement | null>) => {
         } else if (dir === "clip-left") {
           initialProps = { opacity: 0, clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)", x: -20 };
           activeProps = { opacity: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0 };
-        } else if (dir === "clip-right") {
-          initialProps = { opacity: 0, clipPath: "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)", x: 20 };
-          activeProps = { opacity: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0 };
+        } else if (dir === "clip-right" || dir === "clip-rtl" || dir === "reveal-rtl") {
+          // Reveal from Right to Left: unmasks from the right edge toward the left
+          initialProps = { opacity: 0, clipPath: "inset(0% 0% 0% 100%)", x: 35 };
+          activeProps = { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", x: 0 };
+        } else if (dir === "clip-down" || dir === "clip-top") {
+          initialProps = { opacity: 0, clipPath: "inset(0% 0% 100% 0%)", y: -25 };
+          activeProps = { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", y: 0 };
         }
 
         gsap.set(element, initialProps);

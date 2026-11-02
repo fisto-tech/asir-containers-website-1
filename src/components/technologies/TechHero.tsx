@@ -114,11 +114,11 @@ export function TechHero() {
         </div>
 
         {/* Right Column: Full-Bleed Hero Visual with Two-Way Animation */}
-        <div className="lg:col-span-6 xl:col-span-7 relative min-h-[340px] sm:min-h-[420px] lg:min-h-full w-full overflow-hidden">
+        <div className="lg:col-span-6 xl:col-span-7 relative min-h-[340px] sm:min-h-[420px] lg:min-h-full w-full overflow-hidden group/techhero">
           <div
             data-reveal
-            data-reveal-dir="scale"
-            data-reveal-delay="0.2"
+            data-reveal-dir="clip-rtl"
+            data-reveal-delay="0.18"
             className="relative h-full w-full min-h-[340px] sm:min-h-[420px] lg:min-h-full"
           >
             <Image
@@ -127,7 +127,7 @@ export function TechHero() {
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 60vw"
-              className="object-cover object-center lg:object-left"
+              className="object-cover object-center lg:object-left transition-transform duration-700 ease-out group-hover/techhero:scale-105"
             />
 
             {/* Top ambient scrim under transparent header for crisp text contrast */}
