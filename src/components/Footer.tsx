@@ -102,10 +102,10 @@ const applicationsList = [
 export function Footer() {
   return (
     <footer
-      className="relative text-slate-900 overflow-hidden border-t border-slate-200/80 bg-[#e6f1ee]"
-      style={{ backgroundColor: "#e6f1ee" }}
+      className="relative text-slate-900 overflow-hidden border-t border-sandal-border bg-sandal"
+      style={{ backgroundColor: "#f4eee2" }}
     >
-      {/* Background Graphic Image: contained at the bottom on mobile/tablet, full cover on desktop */}
+      {/* Background Graphic Image: seamless pure sandal matching footer background */}
       <div className="pointer-events-none absolute inset-0 z-0 flex items-end justify-end">
         <div className="relative h-full w-full">
           <Image
@@ -292,7 +292,7 @@ export function Footer() {
       </div>
 
       {/* Bottom Copyright Bar with Slogan */}
-      <div className="relative z-10 border-t border-slate-200/80 lg:border-t-[0.07vw] py-5 lg:py-[1.3vw] px-6 sm:px-10 lg:px-[4.5vw]">
+      <div className="relative z-10 border-t border-sandal-border lg:border-t-[0.07vw] py-5 lg:py-[1.3vw] px-6 sm:px-10 lg:px-[4.5vw]">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 lg:gap-[1vw]">
           
          
