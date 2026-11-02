@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Filter, RotateCcw, Search, SlidersHorizontal, X } from "lucide-react";
+import { ChevronDown, Filter, RotateCcw, Search, SlidersHorizontal, X } from "lucide-react";
 import { ProductCard } from "@/components/products/ProductCard";
 import { AnimatedIcon, applicationIcons } from "@/components/ui/AnimatedIcon";
 import { PageMasthead } from "@/components/ui/PageMasthead";
@@ -465,19 +465,53 @@ function FilterGroup({
   legend,
   children,
   hint,
+  activeCount = 0,
+  defaultOpen = true,
 }: {
   legend: string;
   children: React.ReactNode;
   hint?: string;
+  activeCount?: number;
+  defaultOpen?: boolean;
 }) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
   return (
-    <fieldset>
-      <legend className="text-[15.5px] font-bold tracking-tight text-ink">
-        {legend}
-        {hint && <span className="ml-1 text-[13px] font-normal normal-case tracking-normal text-mid">{hint}</span>}
-      </legend>
-      <div className="mt-3.5 space-y-2.5">{children}</div>
-    </fieldset>
+    <div className="border-b border-line/70 pb-5 pt-1 first:pt-0 last:border-b-0 last:pb-0">
+      <button
+        type="button"
+        onClick={() => setIsOpen((prev) => !prev)}
+        aria-expanded={isOpen}
+        className="group flex w-full items-center justify-between text-left transition-colors"
+      >
+        <span className="flex items-center gap-2">
+          <span className="text-[15.5px] font-bold tracking-tight text-ink group-hover:text-brand transition-colors">
+            {legend}
+          </span>
+          {hint && (
+            <span className="text-[12.5px] font-normal normal-case tracking-normal text-mid">
+              {hint}
+            </span>
+          )}
+          {activeCount > 0 && (
+            <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-brand/10 px-1.5 text-[11px] font-semibold text-brand">
+              {activeCount}
+            </span>
+          )}
+        </span>
+        <span className="flex h-7 w-7 items-center justify-center rounded-full text-mid group-hover:bg-slate-100 group-hover:text-ink transition-all">
+          <ChevronDown
+            className={`h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+          />
+        </span>
+      </button>
+
+      {isOpen && (
+        <div className="mt-3.5 space-y-2.5 animate-in fade-in slide-in-from-top-1 duration-150">
+          {children}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -520,8 +554,8 @@ function FilterPanel({
   hideApplications?: boolean;
 }) {
   return (
-    <div className="space-y-8">
-      <FilterGroup legend="Product name">
+    <div className="space-y-4">
+      <FilterGroup legend="Product name" activeCount={filters.names.length}>
         {filterOptions.names.map((option) => (
           <CheckRow
             key={option.value}
@@ -534,7 +568,7 @@ function FilterPanel({
       </FilterGroup>
 
       {!hideApplications && (
-        <FilterGroup legend="Application">
+        <FilterGroup legend="Application" activeCount={filters.applications.length}>
           <div className="space-y-2.5">
             {applications.map((application) => (
               <CheckRow
@@ -556,7 +590,7 @@ function FilterPanel({
         </FilterGroup>
       )}
 
-      <FilterGroup legend="Lid options">
+      <FilterGroup legend="Lid options" activeCount={filters.lids.length}>
         {filterOptions.lids.map((option) => (
           <CheckRow
             key={option.value}
@@ -568,7 +602,7 @@ function FilterPanel({
         ))}
       </FilterGroup>
 
-      <FilterGroup legend="Lock type">
+      <FilterGroup legend="Lock type" activeCount={filters.locks.length}>
         {filterOptions.locks.map((option) => (
           <CheckRow
             key={option.value}
